@@ -25,4 +25,9 @@ public class DriverGamepad implements DriverHid {
     public DriveSignal getDriveSignal() {
         return new DriveSignal(gamepad.getY(GenericHID.Hand.kLeft), gamepad.getY(GenericHID.Hand.kRight));
     }
+
+    @Override
+    public boolean liftJack() {
+        return gamepad.getAButton();
+    }
 }

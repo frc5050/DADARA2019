@@ -1,29 +1,28 @@
 package frc.subsystem;
 
-import com.revrobotics.*;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
-import frc.states.ElevatorStateMachine;
+import frc.states.ElevatorStateMachineDeprecated;
 import frc.utils.DriveSignal;
 import frc.utils.UnitConversions;
 
 import static frc.utils.Constants.*;
 
 public class ElevatorVictorSP extends Subsystem {
+    private static final double COUNTS_PER_REVOLUTION = 1024;
+    private static final double DISTANCE_PER_REVOLUTION = UnitConversions.inchesToMeters(1.732);
+    private static final double DISTANCE_PER_COUNT = DISTANCE_PER_REVOLUTION * (1.0 / COUNTS_PER_REVOLUTION);
     private static ElevatorVictorSP instance;
-
     // TODO do we need to add right side to anything else after slaving?
     private final VictorSP left;
     private final VictorSP right;
     private final Encoder leftEncoder;
     private final Encoder rightEncoder;
-    private final ElevatorStateMachine leftStateMachine;
-    private final ElevatorStateMachine rightStateMachine;
-
+    private final ElevatorStateMachineDeprecated leftStateMachine;
+    private final ElevatorStateMachineDeprecated rightStateMachine;
     // TODO add limit switch validation against cargo/hatches hitting it
     private final DigitalInput bottomLimit;
-
     private PeriodicIO periodicIo = new PeriodicIO();
 
     private ElevatorVictorSP() {
@@ -31,8 +30,8 @@ public class ElevatorVictorSP extends Subsystem {
         right = new VictorSP(RIGHT_LIFT_NEO);
         leftEncoder = new Encoder(0, 1);
         rightEncoder = new Encoder(2, 3);
-        leftStateMachine = new ElevatorStateMachine();
-        rightStateMachine = new ElevatorStateMachine();
+        leftStateMachine = new ElevatorStateMachineDeprecated();
+        rightStateMachine = new ElevatorStateMachineDeprecated();
 
         // TODO do we need to swap top or bottom?
         bottomLimit = new DigitalInput(0);
@@ -41,32 +40,12 @@ public class ElevatorVictorSP extends Subsystem {
         right.setInverted(true);
     }
 
-    private static class PeriodicIO {
-        // inputs
-        double leftRawPosition;
-        double leftVelocity;
-        double rightRawPosition;
-        double rightDistance;
-        double leftDistance;
-        double rightVelocity;
-        boolean bottomLimitHit;
-
-        // TODO implement me with query about having a ball
-        boolean cargoHeld;
-
-        // outputs
-    }
-
     public static ElevatorVictorSP getInstance() {
         if (instance == null) {
             instance = new ElevatorVictorSP();
         }
         return instance;
     }
-
-    private static final double COUNTS_PER_REVOLUTION = 1024;
-    private static final double DISTANCE_PER_REVOLUTION = UnitConversions.inchesToMeters(1.732);
-    private static final double DISTANCE_PER_COUNT = DISTANCE_PER_REVOLUTION * (1.0 / COUNTS_PER_REVOLUTION);
 
     @Override
     public synchronized void readPeriodicInputs() {
@@ -107,5 +86,19 @@ public class ElevatorVictorSP extends Subsystem {
     public void stop() {
         left.stopMotor();
         right.stopMotor();
+    }
+
+    private static class PeriodicIO {
+        // Inputs
+        double leftRawPosition;
+        double leftVelocity;
+        double rightRawPosition;
+        double rightDistance;
+        double leftDistance;
+        double rightVelocity;
+        boolean bottomLimitHit;
+
+        // TODO implement me with query about having a ball
+        boolean cargoHeld;
     }
 }

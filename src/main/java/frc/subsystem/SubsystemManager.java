@@ -1,12 +1,12 @@
 package frc.subsystem;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.loops.Loop;
 import frc.loops.Looper;
 import frc.loops.LooperInterface;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubsystemManager implements LooperInterface {
     private final List<Subsystem> subsystems;
@@ -23,10 +23,29 @@ public class SubsystemManager implements LooperInterface {
         }
     }
 
-    public void outputTelemetry(){
+    public void outputTelemetry() {
         subsystems.forEach(Subsystem::outputTelemetry);
     }
 
+    public void registerEnabledLoops(Looper looper) {
+        subsystems.forEach((s) -> s.registerEnabledLoops(this));
+        looper.registerLoop(new EnabledLoop());
+    }
+
+    public void registerDisabledLoop(Looper disabledLooper) {
+        disabledLooper.registerLoop(new DisabledLoop());
+    }
+
+    @Override
+    public void registerLoop(Loop loop) {
+        if (loop == null) {
+            DriverStation.reportWarning("Loop null", true);
+        } else if (loops == null) {
+            DriverStation.reportWarning("Loops are null", true);
+        } else {
+            loops.add(loop);
+        }
+    }
 
     private class EnabledLoop implements Loop {
 
@@ -78,26 +97,6 @@ public class SubsystemManager implements LooperInterface {
         @Override
         public void onStop(double timestamp) {
 
-        }
-    }
-
-    public void registerEnabledLoops(Looper looper) {
-        subsystems.forEach((s) -> s.registerEnabledLoops(this));
-        looper.registerLoop(new EnabledLoop());
-    }
-
-    public void registerDisabledLoop(Looper disabledLooper) {
-        disabledLooper.registerLoop(new DisabledLoop());
-    }
-
-    @Override
-    public void registerLoop(Loop loop) {
-        if (loop == null) {
-            DriverStation.reportWarning("Loop null", true);
-        } else if (loops == null) {
-            DriverStation.reportWarning("Loops are null", true);
-        } else {
-            loops.add(loop);
         }
     }
 }

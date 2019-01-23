@@ -11,9 +11,8 @@ import frc.utils.DriveSignal;
  */
 public class DriverJoystick implements DriverHid {
 
-    private final Joystick driverJoystick;
-
     private static DriverJoystick instance;
+    private final Joystick driverJoystick;
 
     private DriverJoystick() {
         driverJoystick = new Joystick(Constants.DRIVER_JOYSTICK_PORT);
@@ -29,5 +28,10 @@ public class DriverJoystick implements DriverHid {
     @Override
     public DriveSignal getDriveSignal() {
         return DriveHelper.arcadeToDriveSignal(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0));
+    }
+
+    @Override
+    public boolean liftJack() {
+        return driverJoystick.getRawButton(6);
     }
 }

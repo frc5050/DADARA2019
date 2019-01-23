@@ -7,6 +7,11 @@ public class GamepadTest implements SubsystemTest {
 
     @Override
     public void periodic(double timestamp) {
+        // TODO, do nothing?
+    }
+
+    @Override
+    public void outputTelemetry() {
         gameController.outputTelemetry();
     }
 }

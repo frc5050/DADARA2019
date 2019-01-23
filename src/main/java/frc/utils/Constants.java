@@ -1,15 +1,6 @@
 package frc.utils;
 
 public class Constants {
-    private Constants() {
-
-    }
-
-    // TODO do we need these
-    private static final double ELEVATOR_RATIO = 9;
-    private static final double INTAKE_RATIO = 300;
-
-
     // Motor controller ports
     public static final int LEFT_DRIVE_1 = 15; // SRX
     public static final int LEFT_DRIVE_2 = 0; // SPX
@@ -28,24 +19,20 @@ public class Constants {
     public static final int CARGO_CENTER = 10; // SRX
     public static final int CARGO_LEFT = 9; // SRX
     public static final int CARGO_RIGHT = 8; // SRX
-
-    // HID ports
-
     // TODO do we even want this option?
     public static final boolean USE_JOYSTICK_FOR_DRIVING = true;
     public static final boolean USE_GAMEPAD_FOR_OPERATING = true;
     public static final int DRIVER_JOYSTICK_PORT = 0;
+
+    // HID ports
     public static final int DRIVER_GAMEPAD_PORT = 1;
     // TODO make these not collide
     public static final int OPERATOR_GAMEPAD_PORT = 1;
     public static final int OPERATOR_JOYSTICK_PORT = 0;
-
-
     // TODO get the actual port
     public static final int CARGO_SENSOR = 0;
-
     public static final String DEFAULT_NETWORK_TABLE_KEY = "SmartDashboard";
-    public static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = false;
+    public static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = true;
     public static final ShuffleboardWriter ROBOT_MAIN_SHUFFLEBOARD;
     public static final ShuffleboardWriter LOOPER_SHUFFLEBOARD;
     public static final ShuffleboardWriter DRIVE_SHUFFLEBOARD;
@@ -53,6 +40,11 @@ public class Constants {
     public static final ShuffleboardWriter JACKS_SHUFFLEBOARD;
     public static final ShuffleboardWriter CARGO_SHUFFLEBOARD;
     public static final ShuffleboardWriter ROBOT_STATE_SHUFFLEBOARD;
+    public static final int CAN_TIMEOUT_MS = 10; // ms
+    public static final double DRIVE_VOLTAGE_RAMP_RATE = 0; // time from neutral to full power
+    // TODO do we need these
+    private static final double ELEVATOR_RATIO = 9;
+    private static final double INTAKE_RATIO = 300;
 
     static {
         if (USE_CUSTOM_NETWORK_TABLE_KEYS) {
@@ -72,5 +64,9 @@ public class Constants {
             CARGO_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
             ROBOT_STATE_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
         }
+    }
+
+    private Constants() {
+
     }
 }

@@ -3,8 +3,7 @@ package frc.subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.*;
-import edu.wpi.first.wpilibj.AnalogInput;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.utils.UnitConversions;
 
@@ -73,15 +72,13 @@ public class ElevatorBBot extends Subsystem {
     }
 
     private static class PeriodicIO {
-        // inputs
+        // Inputs
         double rawPosition;
         double velocity;
         double feedforward;
 
         // TODO implement me with query about having a ball
         boolean cargoHeld;
-
-        // outputs
     }
 
     public static ElevatorBBot getInstance() {

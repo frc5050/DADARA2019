@@ -16,6 +16,10 @@ import java.util.Set;
 public class ShuffleboardWriter {
     public static Map<String, ShuffleboardWriter> instances = new HashMap<>();
 
+    static {
+        HAL.report(43, 0);
+    }
+
     private final NetworkTable table;
     private final Map<String, Data> tablesToData = new HashMap<>();
 
@@ -225,10 +229,6 @@ public class ShuffleboardWriter {
             Data data = (Data) var0.next();
             data.m_builder.updateTable();
         }
-    }
-
-    static {
-        HAL.report(43, 0);
     }
 
     private static class Data {

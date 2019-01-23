@@ -7,38 +7,12 @@ import static frc.utils.Constants.DRIVE_SHUFFLEBOARD;
 
 public class DriveTest implements SubsystemTest {
     private static final double BREAK_PERIOD = 0.30;
+    private static final double SPEED = 0.4;
     private DriveVictorSP drive = DriveVictorSP.getInstance();
     private DriveTestState state = DriveTestState.INIT_DISABLED;
     private double goalTimestamp = 0.0;
     private boolean initializedState = false;
-    private static final double SPEED = 0.4;
 
-    private enum DriveTestState {
-        INIT_DISABLED("The robot should not move before setup", 1.0),
-        DRIVE_FORWARD("The robot drive forward", 2.0),
-        TURN_RIGHT("The robot should be turning right", 2.0),
-        TURN_LEFT("The robot should be turning left", 2.0),
-        DRIVE_REVERSE("The robot should be moving in reverse", 2.0),
-        END_DISABLED("The robot shouldn't be moving once disabled", 2.0);
-
-        private String information;
-        private double timeToRun;
-
-        DriveTestState(String information, double timeToRun) {
-            this.information = information;
-            this.timeToRun = timeToRun;
-        }
-
-        public String getInformation() {
-            return information;
-        }
-
-        public double getTimeToRun() {
-            return timeToRun;
-        }
-
-
-    }
     public DriveTest() {
         drive.setOpenLoop(DriveSignal.NEUTRAL);
     }
@@ -61,7 +35,7 @@ public class DriveTest implements SubsystemTest {
         }
     }
 
-    private void outputTelemetry() {
+    public void outputTelemetry() {
         DRIVE_SHUFFLEBOARD.putString("Test State", state.toString());
         DRIVE_SHUFFLEBOARD.putString("Test State Expected", state.getInformation());
         drive.outputTelemetry();
@@ -93,6 +67,32 @@ public class DriveTest implements SubsystemTest {
                 break;
         }
         drive.writePeriodicOutputs();
-        outputTelemetry();
+    }
+
+    private enum DriveTestState {
+        INIT_DISABLED("The robot should not move before setup", 1.0),
+        DRIVE_FORWARD("The robot drive forward", 2.0),
+        TURN_RIGHT("The robot should be turning right", 2.0),
+        TURN_LEFT("The robot should be turning left", 2.0),
+        DRIVE_REVERSE("The robot should be moving in reverse", 2.0),
+        END_DISABLED("The robot shouldn't be moving once disabled", 2.0);
+
+        private String information;
+        private double timeToRun;
+
+        DriveTestState(String information, double timeToRun) {
+            this.information = information;
+            this.timeToRun = timeToRun;
+        }
+
+        public String getInformation() {
+            return information;
+        }
+
+        public double getTimeToRun() {
+            return timeToRun;
+        }
+
+
     }
 }

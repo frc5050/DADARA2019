@@ -1,10 +1,13 @@
 package frc.subsystem;
 
-import com.revrobotics.*;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ControlType;
 import frc.utils.UnitConversions;
 
-import static frc.utils.Constants.*;
+import static frc.utils.Constants.ELEVATOR_SHUFFLEBOARD;
 
 public class Elevator extends Subsystem {
     private static final double FEEDFORWARD_NO_CARGO = 0.3;
@@ -14,7 +17,12 @@ public class Elevator extends Subsystem {
     private static final double LOWER_LIMIT_DISTANCE_FROM_GROUND = UnitConversions.inchesToMeters(6.0);
     // TODO measure
     private static final double TOP_LIFT_HEIGHT = UnitConversions.inchesToMeters(63);
-
+    private static Elevator instance;
+    // TODO do we need to add right side to anything else after slaving?
+    private final CANSparkMax left;
+    //    private final CANSparkMax right;
+    private final CANEncoder leftEncoder;
+    private final CANPIDController leftController;
     // todo tune and make static final
     private double KP = 0.1;
     private double KI = 0.1;
@@ -24,18 +32,9 @@ public class Elevator extends Subsystem {
     private double MIN_OUTPUT = -0.3;
     private double DESIRED_ROTATIONS = 0.1;
 
-    private static Elevator instance;
-
-    // TODO do we need to add right side to anything else after slaving?
-    private final CANSparkMax left;
-//    private final CANSparkMax right;
-    private final CANEncoder leftEncoder;
-    private final CANPIDController leftController;
-
     // TODO add limit switch validation against cargo/hatches hitting it
 //    private final CANDigitalInput topLimit;
 //    private final CANDigitalInput bottomLimit;
-
     private PeriodicIO periodicIo = new PeriodicIO();
     private double offset = 0.0;
 
@@ -77,17 +76,6 @@ public class Elevator extends Subsystem {
 //        right.follow(left);
     }
 
-    private static class PeriodicIO {
-        // inputs
-        double rawPosition;
-        double velocity;
-        double feedforward;
-        // TODO implement me with query about having a ball
-        boolean cargoHeld;
-
-        // outputs
-    }
-
     public static Elevator getInstance() {
         if (instance == null) {
             instance = new Elevator();
@@ -116,16 +104,32 @@ public class Elevator extends Subsystem {
         double minOutput = ELEVATOR_SHUFFLEBOARD.getNumber("Min Output", 0);
         double desiredRotations = ELEVATOR_SHUFFLEBOARD.getNumber("Set Rotations", 0);
 
-        if (p != KP) {KP = p; leftController.setP(KP); }
-        if (i != KI) {KI = i;leftController.setP(KI); }
-        if (d != KD) {KD = d;leftController.setD(KD); }
-        if (iZone != KI_ZONE) {KI_ZONE = iZone; leftController.setIZone(KI_ZONE); };
+        if (p != KP) {
+            KP = p;
+            leftController.setP(KP);
+        }
+        if (i != KI) {
+            KI = i;
+            leftController.setP(KI);
+        }
+        if (d != KD) {
+            KD = d;
+            leftController.setD(KD);
+        }
+        if (iZone != KI_ZONE) {
+            KI_ZONE = iZone;
+            leftController.setIZone(KI_ZONE);
+        }
+        ;
         if (maxOutput != MAX_OUTPUT || minOutput != MIN_OUTPUT) {
             MAX_OUTPUT = maxOutput;
             MIN_OUTPUT = minOutput;
             leftController.setOutputRange(MIN_OUTPUT, MIN_OUTPUT);
         }
-        if (desiredRotations != DESIRED_ROTATIONS) {DESIRED_ROTATIONS = desiredRotations; leftController.setReference(DESIRED_ROTATIONS, ControlType.kPosition); }
+        if (desiredRotations != DESIRED_ROTATIONS) {
+            DESIRED_ROTATIONS = desiredRotations;
+            leftController.setReference(DESIRED_ROTATIONS, ControlType.kPosition);
+        }
     }
 
     @Override
@@ -151,5 +155,16 @@ public class Elevator extends Subsystem {
     public void stop() {
         left.stopMotor();
 //        right.stopMotor();
+    }
+
+    private static class PeriodicIO {
+        // inputs
+        double rawPosition;
+        double velocity;
+        double feedforward;
+        // TODO implement me with query about having a ball
+        boolean cargoHeld;
+
+        // outputs
     }
 }
