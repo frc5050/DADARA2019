@@ -106,18 +106,9 @@ public class Cargo extends Subsystem {
     }
 
     private synchronized void updateOutputFromState(CargoState state) {
-<<<<<<< HEAD
-        rearSide.set(ControlMode.PercentOutput, state.rearMotor);
-        leftFront.set(ControlMode.PercentOutput, state.leftMotor);
-        rightFront.set(ControlMode.PercentOutput, state.rightMotor);
-        intake.set(ControlMode.PercentOutput, state.intake);
-    }}
-    // set PID
-=======
         rearSide.set(ControlMode.PercentOutput, state.rearMotorOutput);
         leftFront.set(ControlMode.PercentOutput, state.leftMotorOutput);
         rightFront.set(ControlMode.PercentOutput, state.rightMotorOutput);
         intake.set(ControlMode.PercentOutput, state.intakeOutput);
     }
 }
->>>>>>> b282f76c36d7f51c815ca76b98027896241ce0a1

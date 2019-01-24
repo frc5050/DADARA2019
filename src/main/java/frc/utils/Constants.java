@@ -40,15 +40,12 @@ public class Constants {
     public static final ShuffleboardWriter JACKS_SHUFFLEBOARD;
     public static final ShuffleboardWriter CARGO_SHUFFLEBOARD;
     public static final ShuffleboardWriter ROBOT_STATE_SHUFFLEBOARD;
-<<<<<<< HEAD
     public static final ShuffleboardWriter HATCH_SHUFFLEBOARD;
-=======
     public static final int CAN_TIMEOUT_MS = 10; // ms
     public static final double DRIVE_VOLTAGE_RAMP_RATE = 0; // time from neutral to full power
     // TODO do we need these
     private static final double ELEVATOR_RATIO = 9;
     private static final double INTAKE_RATIO = 300;
->>>>>>> b282f76c36d7f51c815ca76b98027896241ce0a1
 
     static {
         if (USE_CUSTOM_NETWORK_TABLE_KEYS) {

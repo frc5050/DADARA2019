@@ -12,15 +12,11 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.loops.Looper;
 import frc.states.CargoState;
-<<<<<<< HEAD
-import frc.subsystem.*;
-=======
 import frc.subsystem.Cargo;
 import frc.subsystem.Drive;
 import frc.subsystem.Jacks;
 import frc.subsystem.SubsystemManager;
 import frc.subsystem.test.CargoTest;
->>>>>>> b282f76c36d7f51c815ca76b98027896241ce0a1
 import frc.subsystem.test.DriveTest;
 import frc.subsystem.test.GamepadTest;
 import frc.subsystem.test.SubsystemTest;

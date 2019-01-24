@@ -72,6 +72,6 @@ public class Looper implements LooperInterface {
     }
 
     public void outputTelemetry() {
-        LOOPER_SHUFFLEBOARD.putNumber("Looper dt", dt);
+        LOOPER_SHUFFLEBOARD.putNumber("Looper dt", dt * 100);
     }
 }
