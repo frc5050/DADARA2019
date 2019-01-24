@@ -158,12 +158,9 @@ public class Robot extends TimedRobot {
     }
 
     public void outputTelemetry() {
-        // TODO test subsystemManager.outputTelemetry();
-        // TODO do we want disabledLooper to ever output?
         enabledLooper.outputTelemetry();
     }
 
-    // TODO should we add manual tests?
     public enum Test {
         DEFAULT_TEST("None"),
         GAMEPAD_TEST("Gamepad Automated Test"),

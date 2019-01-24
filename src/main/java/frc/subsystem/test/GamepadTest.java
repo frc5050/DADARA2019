@@ -2,6 +2,8 @@ package frc.subsystem.test;
 
 import frc.robot.GameController;
 
+import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
+
 public class GamepadTest implements SubsystemTest {
     private GameController gameController = GameController.getInstance();
 
@@ -12,6 +14,20 @@ public class GamepadTest implements SubsystemTest {
 
     @Override
     public void outputTelemetry() {
-        gameController.outputTelemetry();
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("Drive Signal Left", gameController.getDriveSignal().getLeftOutput());
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("Drive Signal Right", gameController.getDriveSignal().getRightOutput());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Intake", gameController.cargoIntake());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Front", gameController.cargoOuttakeFront());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Left", gameController.cargoOuttakeLeft());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Right", gameController.cargoOuttakeRight());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Lift Jack", gameController.liftJack());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Low Cargo", gameController.setElevatorPositionLowCargo());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Mid Cargo", gameController.setElevatorPositionMidCargo());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position High Cargo", gameController.setElevatorPositionHighCargo());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Low Hatch", gameController.setElevatorPositionLowHatch());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Mid Hatch", gameController.setElevatorPositionMidHatch());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position High Hatch", gameController.setElevatorPositionHighHatch());
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("Hatch Manual", gameController.hatchManual());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Hatch Release", gameController.hatchRelease());
     }
 }

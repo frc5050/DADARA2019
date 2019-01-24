@@ -9,8 +9,7 @@ public class DriveSignal {
     private boolean brake;
 
     public DriveSignal(double left, double right) {
-        // TODO(Max) do we want brake or coast mode by default?
-        this(left, right, false);
+        this(left, right, true);
     }
 
     public DriveSignal(double left, double right, boolean brake) {

@@ -1,7 +1,6 @@
 package frc.states;
 
 public class CargoStateMachine {
-    // TODO what should these speeds be?
     // These should probably always be positive, we can negate motors individually
     private static final double DEFAULT_OUTTAKE_POWER = 1.0;
     private static final double DEFAULT_INTAKE_POWER = 1.0;
@@ -47,7 +46,6 @@ public class CargoStateMachine {
                 systemState.intakeOutput = DEFAULT_INTAKE_POWER;
                 break;
             case OUTTAKE_FRONT:
-                // TODO what should we make rear motor do?
                 systemState.rearMotorOutput = 0.0;
                 systemState.leftMotorOutput = -DEFAULT_OUTTAKE_POWER;
                 systemState.rightMotorOutput = -DEFAULT_OUTTAKE_POWER;

@@ -35,9 +35,7 @@ public interface OperatorHid {
     boolean setElevatorPositionHighHatch();
 
     // Hatch
-    // TODO(Raina) unless we have a student named Manuel on the team who will be moving the hatch, this should probably
-    //  be spelled "Manual"
-    double hatchManuel();
+    double hatchManual();
 
     boolean hatchRelease();
 }

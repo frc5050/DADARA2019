@@ -3,7 +3,6 @@ package frc.subsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
-import frc.states.ElevatorStateMachineDeprecated;
 import frc.utils.DriveSignal;
 import frc.utils.UnitConversions;
 
@@ -19,8 +18,6 @@ public class ElevatorVictorSP extends Subsystem {
     private final VictorSP right;
     private final Encoder leftEncoder;
     private final Encoder rightEncoder;
-    private final ElevatorStateMachineDeprecated leftStateMachine;
-    private final ElevatorStateMachineDeprecated rightStateMachine;
     // TODO add limit switch validation against cargo/hatches hitting it
     private final DigitalInput bottomLimit;
     private PeriodicIO periodicIo = new PeriodicIO();
@@ -30,8 +27,6 @@ public class ElevatorVictorSP extends Subsystem {
         right = new VictorSP(RIGHT_LIFT_NEO);
         leftEncoder = new Encoder(0, 1);
         rightEncoder = new Encoder(2, 3);
-        leftStateMachine = new ElevatorStateMachineDeprecated();
-        rightStateMachine = new ElevatorStateMachineDeprecated();
 
         // TODO do we need to swap top or bottom?
         bottomLimit = new DigitalInput(0);

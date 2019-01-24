@@ -112,7 +112,7 @@ public class GameController implements GameHid {
     }
 
     @Override
-    public double hatchManuel() {
+    public double hatchManual() {
         // TODO(Raina)
         return 0;
     }
@@ -121,15 +121,5 @@ public class GameController implements GameHid {
     public boolean hatchRelease() {
         // TODO(Raina)
         return false;
-    }
-
-    public void outputTelemetry() {
-        // TODO(Raina) add output for all variables
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Intake", this.cargoIntake());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Front", this.cargoOuttakeFront());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Left", this.cargoOuttakeLeft());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Right", this.cargoOuttakeRight());
-        ROBOT_MAIN_SHUFFLEBOARD.putNumber("Drive Signal Left", this.getDriveSignal().getLeftOutput());
-        ROBOT_MAIN_SHUFFLEBOARD.putNumber("Drive Signal Right", this.getDriveSignal().getRightOutput());
     }
 }

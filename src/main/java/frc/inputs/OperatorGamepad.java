@@ -17,7 +17,6 @@ public class OperatorGamepad implements OperatorHid {
     private final XboxController operatorGamepad;
 
     private OperatorGamepad() {
-        // TODO(Raina/Ryan) make the port into a constant
         operatorGamepad = new XboxController(Constants.OPERATOR_GAMEPAD_PORT);
     }
 
@@ -91,13 +90,14 @@ public class OperatorGamepad implements OperatorHid {
     }
 
     @Override
-    public double hatchManuel() {
+    public double hatchManual() {
         // TODO(Raina)
         return 0;
     }
 
     @Override
     public boolean hatchRelease() {
+        // TODO(Raina)
         return false;
     }
 
