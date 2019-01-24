@@ -4,8 +4,6 @@ import frc.inputs.*;
 import frc.utils.Constants;
 import frc.utils.DriveSignal;
 
-import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
-
 public class GameController implements GameHid {
     private static GameController instance;
     private final DriverHid driverHid;
@@ -35,13 +33,13 @@ public class GameController implements GameHid {
     @Override
     public DriveSignal getDriveSignal() {
         // TODO(Raina)
-        return null;
+        return driverHid.getDriveSignal();
     }
 
     @Override
     public boolean liftJack() {
         // TODO(Raina)
-        return false;
+        return driverHid.liftJack();
     }
 
 
@@ -72,43 +70,43 @@ public class GameController implements GameHid {
     @Override
     public boolean setElevatorPositionLowCargo() {
         // TODO(Raina)
-        return false;
+        return operatorHid.setElevatorPositionLowCargo();
     }
 
     @Override
     public boolean setElevatorPositionMidCargo() {
         // TODO(Raina)
-        return false;
+        return operatorHid.setElevatorPositionMidCargo();
     }
 
     @Override
     public boolean setElevatorPositionHighCargo() {
         // TODO(Raina)
-        return false;
+        return operatorHid.setElevatorPositionHighCargo();
     }
 
     @Override
     public boolean setElevatorPositionGroundHatch() {
         // TODO(Raina)
-        return false;
+        return operatorHid.setElevatorPositionGroundHatch();
     }
 
     @Override
     public boolean setElevatorPositionLowHatch() {
         // TODO(Raina)
-        return false;
+        return operatorHid.setElevatorPositionLowHatch();
     }
 
     @Override
     public boolean setElevatorPositionMidHatch() {
         // TODO(Raina)
-        return false;
+        return operatorHid.setElevatorPositionMidHatch();
     }
 
     @Override
     public boolean setElevatorPositionHighHatch() {
         // TODO(Raina)
-        return false;
+        return operatorHid.setElevatorPositionHighHatch();
     }
 
     @Override
@@ -120,6 +118,6 @@ public class GameController implements GameHid {
     @Override
     public boolean hatchRelease() {
         // TODO(Raina)
-        return false;
+        return operatorHid.hatchRelease();
     }
 }

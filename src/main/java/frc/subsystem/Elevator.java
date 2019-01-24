@@ -20,7 +20,7 @@ public class Elevator extends Subsystem {
     private static Elevator instance;
     // TODO do we need to add right side to anything else after slaving?
     private final CANSparkMax left;
-    //    private final CANSparkMax right;
+    //private final CANSparkMax right;
     private final CANEncoder leftEncoder;
     private final CANPIDController leftController;
     // todo tune and make static final
@@ -41,8 +41,10 @@ public class Elevator extends Subsystem {
     private Elevator() {
         // TODO
         left = new CANSparkMax(14, ELEVATOR_MOTOR_TYPE);
+
 //        right = new CANSparkMax(RIGHT_LIFT_NEO, ELEVATOR_MOTOR_TYPE);
 //        leftEncoder = left.getEncoder();
+
         leftEncoder = new CANEncoder(left);
         leftController = left.getPIDController();
 

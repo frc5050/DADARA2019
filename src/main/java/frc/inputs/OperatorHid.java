@@ -34,7 +34,6 @@ public interface OperatorHid {
 
     boolean setElevatorPositionHighHatch();
 
-    // Hatch
     double hatchManual();
 
     boolean hatchRelease();
