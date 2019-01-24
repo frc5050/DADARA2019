@@ -53,6 +53,7 @@ public class Constants {
     public static final ShuffleboardWriter JACKS_SHUFFLEBOARD;
     public static final ShuffleboardWriter CARGO_SHUFFLEBOARD;
     public static final ShuffleboardWriter ROBOT_STATE_SHUFFLEBOARD;
+    public static final ShuffleboardWriter HATCH_SHUFFLEBOARD;
 
     static {
         if (USE_CUSTOM_NETWORK_TABLE_KEYS) {
@@ -63,6 +64,7 @@ public class Constants {
             JACKS_SHUFFLEBOARD = ShuffleboardWriter.getInstance("Jacks");
             CARGO_SHUFFLEBOARD = ShuffleboardWriter.getInstance("Cargo");
             ROBOT_STATE_SHUFFLEBOARD = ShuffleboardWriter.getInstance("RobotState");
+            HATCH_SHUFFLEBOARD = ShuffleboardWriter.getInstance("Hatch");
         } else {
             ROBOT_MAIN_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
             LOOPER_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
@@ -71,6 +73,7 @@ public class Constants {
             JACKS_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
             CARGO_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
             ROBOT_STATE_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
+            HATCH_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
         }
     }
 }

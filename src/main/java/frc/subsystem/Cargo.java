@@ -103,3 +103,4 @@ public class Cargo extends Subsystem {
         rightFront.set(ControlMode.PercentOutput, state.rightMotor);
         intake.set(ControlMode.PercentOutput, state.intake);
     }}
+    // set PID

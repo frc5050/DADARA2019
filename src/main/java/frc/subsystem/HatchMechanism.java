@@ -3,6 +3,9 @@ package frc.subsystem;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.utils.Constants;
 
+import static frc.utils.Constants.HATCH_SHUFFLEBOARD;
+
+
 // TODO pretty much this whole thing
 //  invert whatever needs to be inverted
 //  setup sensors &|| closed loop control for this
@@ -24,7 +27,6 @@ public class HatchMechanism extends Subsystem{
     @Override
     public void outputTelemetry() {
         // TODO(Raina)
-
 
     }
 

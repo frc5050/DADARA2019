@@ -12,10 +12,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.loops.Looper;
 import frc.states.CargoState;
-import frc.subsystem.Cargo;
-import frc.subsystem.Drive;
-import frc.subsystem.Jacks;
-import frc.subsystem.SubsystemManager;
+import frc.subsystem.*;
 import frc.subsystem.test.DriveTest;
 import frc.subsystem.test.SubsystemTest;
 
