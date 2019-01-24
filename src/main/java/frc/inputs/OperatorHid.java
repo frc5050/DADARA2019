@@ -36,5 +36,7 @@ public interface OperatorHid {
 
     double hatchManual();
 
+    double elevateManual();
+
     boolean hatchRelease();
 }

@@ -60,7 +60,7 @@ public class Elevator extends Subsystem {
         leftController.setI(KI);
         leftController.setD(KD);
         leftController.setIZone(KI_ZONE);
-        leftController.setFF(periodicIo.feedforward);
+        leftController.setFF(periodicIo.feedForward);
         leftController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 
         // display PID coefficients on ELEVATOR_SHUFFLEBOARD
@@ -68,7 +68,7 @@ public class Elevator extends Subsystem {
         ELEVATOR_SHUFFLEBOARD.putNumber("I Gain", KI);
         ELEVATOR_SHUFFLEBOARD.putNumber("D Gain", KD);
         ELEVATOR_SHUFFLEBOARD.putNumber("I Zone", KI_ZONE);
-        ELEVATOR_SHUFFLEBOARD.putNumber("Feed Forward", periodicIo.feedforward);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Feed Forward", periodicIo.feedForward);
         ELEVATOR_SHUFFLEBOARD.putNumber("Max Output", MAX_OUTPUT);
         ELEVATOR_SHUFFLEBOARD.putNumber("Min Output", MIN_OUTPUT);
         ELEVATOR_SHUFFLEBOARD.putNumber("Set Rotations", DESIRED_ROTATIONS);
@@ -90,7 +90,7 @@ public class Elevator extends Subsystem {
         periodicIo.rawPosition = leftEncoder.getPosition();
         periodicIo.velocity = leftEncoder.getVelocity();
         // TODO reimplement this with a branch based on whether we have cargo or not
-        //  periodicIo.feedforward = FEEDFORWARD_NO_CARGO;
+        //  periodicIo.feedForward = FEEDFORWARD_NO_CARGO;
 
         // TODO remove when making tuning values const
         double p = ELEVATOR_SHUFFLEBOARD.getNumber("P Gain", 0);
@@ -99,8 +99,8 @@ public class Elevator extends Subsystem {
         double iZone = ELEVATOR_SHUFFLEBOARD.getNumber("I Zone", 0);
         double f = ELEVATOR_SHUFFLEBOARD.getNumber("Feed Forward", 0);
 
-        if (f != periodicIo.feedforward) {
-            periodicIo.feedforward = f;
+        if (f != periodicIo.feedForward) {
+            periodicIo.feedForward = f;
         }
         double maxOutput = ELEVATOR_SHUFFLEBOARD.getNumber("Max Output", 0);
         double minOutput = ELEVATOR_SHUFFLEBOARD.getNumber("Min Output", 0);
@@ -145,7 +145,7 @@ public class Elevator extends Subsystem {
         ELEVATOR_SHUFFLEBOARD.putNumber("Left Position", leftEncoder.getPosition());
         ELEVATOR_SHUFFLEBOARD.putNumber("Left Velocity", periodicIo.velocity);
         ELEVATOR_SHUFFLEBOARD.putBoolean("Cargo Held", periodicIo.cargoHeld);
-        ELEVATOR_SHUFFLEBOARD.putNumber("Feedforward", periodicIo.feedforward);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Feedforward", periodicIo.feedForward);
 //        ELEVATOR_SHUFFLEBOARD.putNumber("Right Output", right.getOutputCurrent());
 //        ELEVATOR_SHUFFLEBOARD.putBoolean("Top Limit Hit", topLimit.get());
 //        ELEVATOR_SHUFFLEBOARD.putBoolean("Bottom Limit Hit", bottomLimit.get());
@@ -163,7 +163,7 @@ public class Elevator extends Subsystem {
         // inputs
         double rawPosition;
         double velocity;
-        double feedforward;
+        double feedForward;
         // TODO implement me with query about having a ball
         boolean cargoHeld;
 
