@@ -91,7 +91,7 @@ public class OperatorGamepad implements OperatorHid {
     }
 
     @Override
-    public double hatchManuel() {
+    public double hatchManual() {
         // TODO(Raina)
         return 0;
     }
