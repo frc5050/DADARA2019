@@ -1,8 +1,5 @@
 package frc.subsystem;
 
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
-
 import static frc.utils.Constants.ROBOT_STATE_SHUFFLEBOARD;
 
 public class RobotState extends Subsystem {
@@ -10,15 +7,12 @@ public class RobotState extends Subsystem {
     //  adding an extra notifier just for this might be worth it if it proves useful
     private static RobotState instance;
 
-    private final AHRS navX;
-
-    private static class PeriodicIO {
-        double yaw;
-        double roll;
-        double pitch;
-    }
-
+    private MuDrive drive = MuDrive.getInstance();
     private PeriodicIO periodicIo = new PeriodicIO();
+
+    private RobotState() {
+
+    }
 
     public static RobotState getInstance() {
         if (instance != null) {
@@ -27,15 +21,11 @@ public class RobotState extends Subsystem {
         return instance;
     }
 
-    private RobotState() {
-        navX = new AHRS(SPI.Port.kMXP);
-    }
-
     @Override
     public synchronized void readPeriodicInputs() {
-        periodicIo.yaw = navX.getYaw();
-        periodicIo.roll = navX.getRoll();
-        periodicIo.pitch = navX.getPitch();
+        periodicIo.yaw = drive.getYaw();
+        periodicIo.roll = drive.getRoll();
+        periodicIo.pitch = drive.getPitch();
     }
 
     @Override
@@ -60,5 +50,11 @@ public class RobotState extends Subsystem {
 
     public synchronized double getPitch() {
         return periodicIo.pitch;
+    }
+
+    private static class PeriodicIO {
+        double yaw;
+        double roll;
+        double pitch;
     }
 }

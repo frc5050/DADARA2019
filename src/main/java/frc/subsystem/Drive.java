@@ -37,14 +37,8 @@ public class Drive extends Subsystem {
     private final VictorSPX leftSlave;
     private final WPI_TalonSRX rightMotor;
     private final VictorSPX rightSlave;
-
-    private enum State {
-        OPEN_LOOP, PATH_FOLLOWING
-    }
-
     private State state = State.OPEN_LOOP;
     private PeriodicIO periodicIo = new PeriodicIO();
-
     private final Loop loop = new Loop() {
         @Override
         public void onStart(double timestamp) {
@@ -77,7 +71,6 @@ public class Drive extends Subsystem {
         }
     };
 
-
     private Drive() {
         // TODO(Lucas) check inversion
         // TODO(Lucas) evaluate accuracy differences between velocity timings
@@ -105,24 +98,11 @@ public class Drive extends Subsystem {
         periodicIo.rightDemand = driveSignal.getRightOutput();
     }
 
-    public static class PeriodicIO {
-        // TODO
-        // Inputs
-        double yaw;
-        double roll;
-        double pitch;
-
-        // Outputs
-        double leftDemand = 0.0;
-        double rightDemand = 0.0;
-    }
-
     @Override
     public void outputTelemetry() {
-        // TODO add state
+        DRIVE_SHUFFLEBOARD.putString("Drive State", state.toString());
         DRIVE_SHUFFLEBOARD.putNumber("Left Demand", periodicIo.leftDemand);
         DRIVE_SHUFFLEBOARD.putNumber("Right Demand", periodicIo.rightDemand);
-        DRIVE_SHUFFLEBOARD.putString("Drive State", state.toString());
     }
 
     @Override
@@ -145,5 +125,21 @@ public class Drive extends Subsystem {
             leftMotor.set(0.0);
             rightMotor.set(0.0);
         }
+    }
+
+    private enum State {
+        OPEN_LOOP, PATH_FOLLOWING
+    }
+
+    public static class PeriodicIO {
+        // TODO
+        // Inputs
+        double yaw;
+        double roll;
+        double pitch;
+
+        // Outputs
+        double leftDemand = 0.0;
+        double rightDemand = 0.0;
     }
 }

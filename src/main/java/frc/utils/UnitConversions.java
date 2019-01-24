@@ -1,12 +1,12 @@
 package frc.utils;
 
 public class UnitConversions {
+    private static final double TAU = 2 * Math.PI; // 2 pi
+    private static final double RPM_TO_RAD_PER_SEC = TAU * secondsToMinutes(1);
+
     private UnitConversions() {
 
     }
-
-    private static final double TAU = 2 * Math.PI; // 2 pi
-    private static final double RPM_TO_RAD_PER_SEC = TAU * secondsToMinutes(1);
 
     public static double inchesToMeters(double inches) {
         return inches * 0.0254;

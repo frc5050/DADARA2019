@@ -1,11 +1,8 @@
 package frc.subsystem;
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.VictorSP;
 import frc.loops.Loop;
 import frc.loops.LooperInterface;
-import frc.utils.Constants;
 import frc.utils.DriveSignal;
 import frc.utils.UnitConversions;
 import jaci.pathfinder.Trajectory;
@@ -36,14 +33,8 @@ public class DriveVictorSP extends Subsystem {
 
     private final VictorSP leftMotor;
     private final VictorSP rightMotor;
-
-    private enum State {
-        OPEN_LOOP, PATH_FOLLOWING
-    }
-
     private State state = State.OPEN_LOOP;
     private PeriodicIO periodicIo = new PeriodicIO();
-
     private final Loop loop = new Loop() {
         @Override
         public void onStart(double timestamp) {
@@ -76,13 +67,12 @@ public class DriveVictorSP extends Subsystem {
         }
     };
 
-
     private DriveVictorSP() {
         // TODO(Lucas) check inversion
         // TODO(Lucas) evaluate accuracy differences between velocity timings
         leftMotor = new VictorSP(0);
-        leftMotor.setInverted(true);
         rightMotor = new VictorSP(1);
+        rightMotor.setInverted(true);
     }
 
     public static DriveVictorSP getInstance() {
@@ -98,18 +88,6 @@ public class DriveVictorSP extends Subsystem {
         }
         periodicIo.leftDemand = driveSignal.getLeftOutput();
         periodicIo.rightDemand = driveSignal.getRightOutput();
-    }
-
-    public static class PeriodicIO {
-        // TODO
-        // Inputs
-        double yaw;
-        double roll;
-        double pitch;
-
-        // Outputs
-        double leftDemand = 0.0;
-        double rightDemand = 0.0;
     }
 
     @Override
@@ -139,5 +117,21 @@ public class DriveVictorSP extends Subsystem {
             leftMotor.set(0.0);
             rightMotor.set(0.0);
         }
+    }
+
+    private enum State {
+        OPEN_LOOP, PATH_FOLLOWING
+    }
+
+    public static class PeriodicIO {
+        // TODO
+        // Inputs
+        double yaw;
+        double roll;
+        double pitch;
+
+        // Outputs
+        double leftDemand = 0.0;
+        double rightDemand = 0.0;
     }
 }

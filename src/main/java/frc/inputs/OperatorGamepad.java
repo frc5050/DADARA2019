@@ -1,6 +1,5 @@
 package frc.inputs;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.utils.Constants;
 
@@ -9,13 +8,12 @@ import frc.utils.Constants;
  * operated with a gamepad.
  */
 public class OperatorGamepad implements OperatorHid {
-    private static OperatorGamepad instance;
 
     private static final int POV_DPAD_UP = 0;
     private static final int POV_DPAD_RIGHT = 90;
     private static final int POV_DPAD_DOWN = 180;
     private static final int POV_DPAD_LEFT = 270;
-
+    private static OperatorGamepad instance;
     private final XboxController operatorGamepad;
 
     private OperatorGamepad() {
@@ -51,25 +49,57 @@ public class OperatorGamepad implements OperatorHid {
     }
 
     @Override
-    public boolean liftAllJacks() {
-        // TODO remove operatorGamepad.getRawButton(3); (if XboxController Works)
-        return operatorGamepad.getXButton();
+    public boolean setElevatorPositionLowCargo() {
+        // TODO(Raina)
+        return false;
     }
 
     @Override
-    public boolean retractFrontJack() {
-        // TODO remove (Y button) operatorGamepad.getRawButton(4); (if XboxController Works)
-        return operatorGamepad.getYButton();
+    public boolean setElevatorPositionMidCargo() {
+        // TODO(Raina)
+        return false;
     }
 
     @Override
-    public boolean retractRearJacks() {
-        // TODO remove (B button) operatorGamepad.getRawButton(2); (if XboxController Works)
-        return operatorGamepad.getBButton();
+    public boolean setElevatorPositionHighCargo() {
+        // TODO(Raina)
+        return false;
     }
 
     @Override
-    public boolean basicSynchronousLift() {
-        return operatorGamepad.getAButton();
+    public boolean setElevatorPositionGroundHatch() {
+        // TODO(Raina)
+        return false;
     }
+
+    @Override
+    public boolean setElevatorPositionLowHatch() {
+        // TODO(Raina)
+        return false;
+    }
+
+    @Override
+    public boolean setElevatorPositionMidHatch() {
+        // TODO(Raina)
+        return false;
+    }
+
+    @Override
+    public boolean setElevatorPositionHighHatch() {
+        // TODO(Raina)
+        return false;
+    }
+
+    @Override
+    public double hatchManuel() {
+        // TODO(Raina)
+        return 0;
+    }
+
+    @Override
+    public boolean hatchRelease() {
+        return false;
+    }
+
+
 }

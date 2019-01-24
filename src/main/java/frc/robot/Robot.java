@@ -12,8 +12,17 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.loops.Looper;
 import frc.states.CargoState;
+<<<<<<< HEAD
 import frc.subsystem.*;
+=======
+import frc.subsystem.Cargo;
+import frc.subsystem.Drive;
+import frc.subsystem.Jacks;
+import frc.subsystem.SubsystemManager;
+import frc.subsystem.test.CargoTest;
+>>>>>>> b282f76c36d7f51c815ca76b98027896241ce0a1
 import frc.subsystem.test.DriveTest;
+import frc.subsystem.test.GamepadTest;
 import frc.subsystem.test.SubsystemTest;
 
 import java.util.Arrays;
@@ -29,61 +38,35 @@ import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
  * project.
  */
 public class Robot extends TimedRobot {
-
-    // TODO should we add manual tests?
-    public enum Test {
-        DEFAULT_TEST("None"),
-        DRIVE_TEST("Drive Automated Test"),
-        //        DRIVE_MANUAL_CONTROL_TEST("Drive Manual Test"),
-        CARGO_TEST("Cargo Automated Test"),
-        //        CARGO_MANUAL_TEST("Cargo Manual Test"),
-        ELEVATOR_TEST("Elevator Automated Test"),
-        //        ELEVATOR_MANUAL_TEST("Elevator Manual Test"),
-        JACKS_TEST("Jacks Test"),
-        //        JACKS_MANUAL_TEST("Jacks Manual Test"),
-        ROBOT_STATE_TEST("Robot State Test");
-//        ROBOT_STATE_MANUAL_TEST("Robot State Manual Test");
-
-        private String option;
-
-        Test(String option) {
-            this.option = option;
-        }
-
-        public String getOption() {
-            return option;
-        }
-    }
-
-
-    private final SendableChooser<String> chooser = new SendableChooser<>();
-
-    private Looper enabledLooper = new Looper();
-    private Looper disabledLooper = new Looper();
+    private final SendableChooser<String> testChooser = new SendableChooser<>();
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
             Cargo.getInstance(),
             Jacks.getInstance()
     ));
-
+    private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
+    private Looper enabledLooper = new Looper();
+    private Looper disabledLooper = new Looper();
+    private GameController gameController = GameController.getInstance();
     private Drive drive = Drive.getInstance();
     private Cargo cargo = Cargo.getInstance();
-    private Jacks jacks = Jacks.getInstance();
 
-    private GameController gameController = GameController.getInstance();
-    private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
+    private double previousTimestamp = Timer.getFPGATimestamp();
+    private SubsystemTest subsystemTest;
 
     @Override
     public void robotInit() {
         tests.put(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST);
+        testChooser.setDefaultOption(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST.getOption());
+
         for (Test test : Test.values()) {
             if (test != Test.DEFAULT_TEST) {
                 tests.put(test.getOption(), test);
             }
         }
-        chooser.setDefaultOption(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST.getOption());
-        for (String s : tests.keySet()) {
-            chooser.addOption(s, s);
+
+        for (String testKey : tests.keySet()) {
+            testChooser.addOption(testKey, testKey);
         }
 
         subsystemManager.registerEnabledLoops(enabledLooper);
@@ -93,6 +76,9 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         outputTelemetry();
+        double timestamp = Timer.getFPGATimestamp();
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("dt from TimedRobot", timestamp - this.previousTimestamp);
+        previousTimestamp = timestamp;
     }
 
     @Override
@@ -132,35 +118,37 @@ public class Robot extends TimedRobot {
             cargo.setDesiredState(CargoState.IntakeState.STOPPED);
         }
 
-        if (gameController.liftAllJacks()) {
-            jacks.liftAll();
-        } else if (gameController.retractFrontJack()) {
-            jacks.retractFrontJack();
-        } else {
-            jacks.stop();
-        }
+        // TODO(Raina) add in jack controls
+        //  here's some old code to help
+        //  if (gameController.liftAllJacks()) {
+        //     jacks.liftAll();
+        //  } else if (gameController.retractFrontJack()) {
+        //     jacks.retractFrontJack();
+        //  } else {
+        //     jacks.stop();
+        //  }
 
-        double timestamp = Timer.getFPGATimestamp();
-        ROBOT_MAIN_SHUFFLEBOARD.putNumber("dt from TimedRobot", timestamp - this.previousTimestamp);
-        this.previousTimestamp = timestamp;
     }
 
     // TODO add more tests
     // TODO automate test validation
     @Override
     public void testInit() {
-        Robot.Test testSelcted = tests.get(chooser.getSelected());
+        Test testSelected = tests.get(testChooser.getSelected());
         disabledLooper.stop();
         enabledLooper.stop();
-        switch (testSelcted) {
+        switch (testSelected) {
             case DEFAULT_TEST:
                 subsystemTest = null;
+                break;
+            case GAMEPAD_TEST:
+                subsystemTest = new GamepadTest();
                 break;
             case DRIVE_TEST:
                 subsystemTest = new DriveTest();
                 break;
             case CARGO_TEST:
-                subsystemTest = null;
+                subsystemTest = new CargoTest();
                 break;
             case ELEVATOR_TEST:
                 subsystemTest = null;
@@ -174,25 +162,36 @@ public class Robot extends TimedRobot {
         }
     }
 
-    private double previousTimestamp = Timer.getFPGATimestamp();
-
-    private static final String TEST_INFORMATION_PREFIX = "Test Information";
-    private SubsystemManager testSubsystemManager;
-    private Test lastTest;
-    private SubsystemTest subsystemTest;
-
     @Override
     public void testPeriodic() {
+        subsystemTest.periodic(Timer.getFPGATimestamp());
     }
 
     public void outputTelemetry() {
-        enabledLooper.outputTelemetry();
-//        Drive.getInstance().outputTelemetry();
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("DPAD_DOWN", gameController.cargoIntake());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("DPAD_UP", gameController.cargoOuttakeFront());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("DPAD_RIGHT", gameController.cargoOuttakeRight());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("DPAD_LEFT", gameController.cargoOuttakeLeft());
         // TODO test subsystemManager.outputTelemetry();
+        // TODO do we want disabledLooper to ever output?
+        enabledLooper.outputTelemetry();
+    }
+
+    // TODO should we add manual tests?
+    public enum Test {
+        DEFAULT_TEST("None"),
+        GAMEPAD_TEST("Gamepad Automated Test"),
+        DRIVE_TEST("Drive Automated Test"),
+        CARGO_TEST("Cargo Automated Test"),
+        ELEVATOR_TEST("Elevator Automated Test"),
+        JACKS_TEST("Jacks Test"),
+        ROBOT_STATE_TEST("Robot State Test");
+
+        private String option;
+
+        Test(String option) {
+            this.option = option;
+        }
+
+        public String getOption() {
+            return option;
+        }
     }
 
 }
