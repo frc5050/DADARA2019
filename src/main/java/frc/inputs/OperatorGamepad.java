@@ -1,6 +1,7 @@
 package frc.inputs;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.utils.Constants;
 
 /**
@@ -49,32 +50,27 @@ public class OperatorGamepad implements OperatorHid {
 
     @Override
     public boolean setElevatorPositionLowCargo() {
-        // TODO(Raina)
-        return false;
+        return operatorGamepad.getAButton();
     }
 
     @Override
     public boolean setElevatorPositionMidCargo() {
-        // TODO(Raina)
-        return false;
+        return operatorGamepad.getBButton();
     }
 
     @Override
     public boolean setElevatorPositionHighCargo() {
-        // TODO(Raina)
-        return false;
+        return operatorGamepad.getYButton();
     }
 
     @Override
     public boolean setElevatorPositionGroundHatch() {
-        // TODO(Raina)
-        return false;
+        return operatorGamepad.getBumper(Hand.kRight);
     }
 
     @Override
     public boolean setElevatorPositionLowHatch() {
-        // TODO(Raina)
-        return false;
+        return operatorGamepad.getBumper(Hand.kLeft);
     }
 
     @Override
@@ -97,8 +93,7 @@ public class OperatorGamepad implements OperatorHid {
 
     @Override
     public boolean hatchRelease() {
-        // TODO(Raina)
-        return false;
+        return operatorGamepad.getXButton();
     }
 
 
