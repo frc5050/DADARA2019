@@ -93,7 +93,7 @@ public class ElevatorBBot extends Subsystem {
         periodicIo.rawPosition = left.get();
         periodicIo.velocity = left.getSelectedSensorVelocity();
         // TODO reimplement this with a branch based on whether we have cargo or not
-        //  periodicIo.feedforward = FEEDFORWARD_NO_CARGO;
+        //  periodicIo.feedForward = FEEDFORWARD_NO_CARGO;
 
         // TODO remove when making tuning values const
         double p = ELEVATOR_SHUFFLEBOARD.getNumber("P Gain", 0);

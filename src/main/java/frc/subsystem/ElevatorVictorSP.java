@@ -52,7 +52,7 @@ public class ElevatorVictorSP extends Subsystem {
         periodicIo.rightVelocity = rightEncoder.getRate() / DISTANCE_PER_COUNT;
         periodicIo.bottomLimitHit = bottomLimit.get();
         // TODO reimplement this with a branch based on whether we have cargo or not
-        //  periodicIo.feedforward = FEEDFORWARD_NO_CARGO;
+        //  periodicIo.feedForward = FEEDFORWARD_NO_CARGO;
     }
 
     @Override

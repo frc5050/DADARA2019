@@ -12,16 +12,14 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.loops.Looper;
 import frc.states.CargoState;
-import frc.subsystem.Cargo;
-import frc.subsystem.Drive;
-import frc.subsystem.Jacks;
-import frc.subsystem.SubsystemManager;
+import frc.subsystem.*;
 import frc.subsystem.test.CargoTest;
 import frc.subsystem.test.DriveTest;
 import frc.subsystem.test.GamepadTest;
 import frc.subsystem.test.SubsystemTest;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
@@ -38,7 +36,10 @@ public class Robot extends TimedRobot {
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
             Cargo.getInstance(),
-            Jacks.getInstance()
+            Jacks.getInstance(),
+            Elevator.getInstance(),
+            HatchMechanism.getInstance()
+
     ));
     private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
     private Looper enabledLooper = new Looper();
@@ -47,6 +48,8 @@ public class Robot extends TimedRobot {
     private Drive drive = Drive.getInstance();
     private Cargo cargo = Cargo.getInstance();
     private Jacks jacks = Jacks.getInstance();
+    private Elevator elevator = Elevator.getInstance();
+    private HatchMechanism hatch = HatchMechanism.getInstance();
 
     private double previousTimestamp = Timer.getFPGATimestamp();
     private SubsystemTest subsystemTest;
@@ -140,7 +143,9 @@ public class Robot extends TimedRobot {
             case CARGO_TEST:
                 subsystemTest = new CargoTest();
                 break;
-            case ELEVATOR_TEST:
+          case HATCH_MECHANISM_TEST:
+            break;
+          case ELEVATOR_TEST:
                 subsystemTest = null;
                 break;
             case JACKS_TEST:
@@ -166,9 +171,11 @@ public class Robot extends TimedRobot {
         GAMEPAD_TEST("Gamepad Automated Test"),
         DRIVE_TEST("Drive Automated Test"),
         CARGO_TEST("Cargo Automated Test"),
+        HATCH_MECHANISM_TEST("Hatch Automated Test"),
         ELEVATOR_TEST("Elevator Automated Test"),
         JACKS_TEST("Jacks Test"),
         ROBOT_STATE_TEST("Robot State Test");
+
 
         private String option;
 
