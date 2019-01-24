@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
     private GameController gameController = GameController.getInstance();
     private Drive drive = Drive.getInstance();
     private Cargo cargo = Cargo.getInstance();
+    private Jacks jacks = Jacks.getInstance();
 
     private double previousTimestamp = Timer.getFPGATimestamp();
     private SubsystemTest subsystemTest;
@@ -114,16 +115,9 @@ public class Robot extends TimedRobot {
             cargo.setDesiredState(CargoState.IntakeState.STOPPED);
         }
 
-        // TODO(Raina) add in jack controls
-        //  here's some old code to help
-        //  if (gameController.liftAllJacks()) {
-        //     jacks.liftAll();
-        //  } else if (gameController.retractFrontJack()) {
-        //     jacks.retractFrontJack();
-        //  } else {
-        //     jacks.stop();
-        //  }
-
+        if(gameController.liftJack()){
+            jacks.automaticSyncLiftBasic();
+        }
     }
 
     // TODO add more tests
