@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.loops.Looper;
 import frc.subsystem.SubsystemManager;
+import frc.subsystem.test.REMOVE_MENeoTestSubsystem;
 import frc.subsystem.test.REMOVE_METalonTestSubsystem;
 
 import java.util.Arrays;
@@ -17,7 +18,7 @@ public class REMOVE_ME_ROBOT extends TimedRobot {
     private Joystick m_stick;
     private Looper enabledLooper = new Looper();
     private Looper disabledLooper = new Looper();
-    private SubsystemManager manager = new SubsystemManager(Arrays.asList(new REMOVE_METalonTestSubsystem()));
+    private SubsystemManager manager = new SubsystemManager(Arrays.asList(new REMOVE_MENeoTestSubsystem()));
     private double lastStablePosition = 0.0;
 
     @Override
