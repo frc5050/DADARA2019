@@ -44,9 +44,6 @@ public class Robot extends TimedRobot {
     private Looper enabledLooper = new Looper();
     private Looper disabledLooper = new Looper();
     private GameController gameController = GameController.getInstance();
-    private Drive drive = Drive.getInstance();
-    private Cargo cargo = Cargo.getInstance();
-    private Jacks jacks = Jacks.getInstance();
 
     private double previousTimestamp = Timer.getFPGATimestamp();
     private SubsystemTest subsystemTest;

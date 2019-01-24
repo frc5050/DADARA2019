@@ -2,6 +2,7 @@ package frc.subsystem;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -25,9 +26,9 @@ public class MuDrive extends Subsystem {
     private boolean isBrake = false;
     private DriveState state = DriveState.OPEN_LOOP;
     private WPI_TalonSRX leftMaster;
-    private WPI_TalonSRX leftSlave;
+    private VictorSPX leftSlave;
     private WPI_TalonSRX rightMaster;
-    private WPI_TalonSRX rightSlave;
+    private VictorSPX rightSlave;
     private PeriodicIO periodicIo;
     private AHRS navX;
     private double gyroOffset = 0.0;
@@ -71,12 +72,13 @@ public class MuDrive extends Subsystem {
 
         leftMaster = new WPI_TalonSRX(LEFT_DRIVE_1);
         configureMaster(leftMaster, true);
-        leftSlave = new WPI_TalonSRX(LEFT_DRIVE_2);
+        leftSlave = new VictorSPX(LEFT_DRIVE_2);
         leftSlave.follow(leftMaster);
 
         rightMaster = new WPI_TalonSRX(RIGHT_DRIVE_1);
         configureMaster(rightMaster, false);
-        rightSlave = new WPI_TalonSRX(RIGHT_DRIVE_2);
+        rightMaster.setInverted(true);
+        rightSlave = new VictorSPX(RIGHT_DRIVE_2);
         rightSlave.follow(rightMaster);
 
         navX = new AHRS(SPI.Port.kMXP);
