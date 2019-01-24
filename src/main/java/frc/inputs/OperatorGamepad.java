@@ -14,6 +14,7 @@ public class OperatorGamepad implements OperatorHid {
     private static final int POV_DPAD_RIGHT = 90;
     private static final int POV_DPAD_DOWN = 180;
     private static final int POV_DPAD_LEFT = 270;
+    private static final double trigger_Threshold = .9;
     private static OperatorGamepad instance;
     private final XboxController operatorGamepad;
 
@@ -75,20 +76,22 @@ public class OperatorGamepad implements OperatorHid {
 
     @Override
     public boolean setElevatorPositionMidHatch() {
-        // TODO(Raina)
-        return false;
+        return operatorGamepad.getTriggerAxis(Hand.kRight) > trigger_Threshold;
     }
 
     @Override
     public boolean setElevatorPositionHighHatch() {
-        // TODO(Raina)
-        return false;
+        return operatorGamepad.getTriggerAxis(Hand.kLeft) > trigger_Threshold;
     }
 
     @Override
     public double hatchManual() {
-        // TODO(Raina)
-        return 0;
+        return operatorGamepad.getY(Hand.kLeft);
+    }
+
+    @Override
+    public double elevateManual() {
+        return operatorGamepad.getY(Hand.kRight);
     }
 
     @Override

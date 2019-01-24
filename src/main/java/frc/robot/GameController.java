@@ -116,6 +116,12 @@ public class GameController implements GameHid {
     }
 
     @Override
+    public double elevateManual() {
+        // TODO(Raina)
+        return 0;
+    }
+
+    @Override
     public boolean hatchRelease() {
         // TODO(Raina)
         return operatorHid.hatchRelease();
