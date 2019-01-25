@@ -9,6 +9,7 @@ import frc.utils.UnitConversions;
 
 import static frc.utils.Constants.*;
 
+@Deprecated
 public class ElevatorBBot extends Subsystem {
     private static final double FEEDFORWARD_NO_CARGO = 0.3;
     private static final double FEEDFORWARD_WITH_CARGO = 0.3;

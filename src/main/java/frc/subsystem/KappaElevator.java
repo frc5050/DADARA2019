@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import static frc.utils.Constants.*;
 
 public class KappaElevator extends Subsystem {
-    private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushless;
+    private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushed;
     private static final double FEED_FORWARD_WITH_CARGO = 0.35;
     private static final double FEED_FORWARD_WITHOUT_CARGO = 0.30;
     private static KappaElevator instance;

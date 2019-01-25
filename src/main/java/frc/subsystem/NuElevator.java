@@ -31,6 +31,9 @@ public class NuElevator extends Subsystem {
     private ElevatorState state = ElevatorState.OPEN_LOOP;
     private PeriodicIO periodicIo = new PeriodicIO();
 
+    /**
+     * Constructor.
+     */
     private NuElevator() {
         left = new CANSparkMax(LEFT_LIFT_NEO, MOTOR_TYPE);
         right = new CANSparkMax(RIGHT_LIFT_NEO, MOTOR_TYPE);
@@ -41,6 +44,11 @@ public class NuElevator extends Subsystem {
         stop();
     }
 
+    /**
+     * Returns the static instance of the class, and creates one if none exists already.
+     *
+     * @return a static instance of the class.
+     */
     public static NuElevator getInstance() {
         if (instance == null) {
             instance = new NuElevator();
@@ -48,11 +56,17 @@ public class NuElevator extends Subsystem {
         return instance;
     }
 
+    /**
+     * Stop the elevator.
+     */
     @Override
     public void stop() {
         setOpenLoop(0.0);
     }
 
+    /**
+     * Gets called by the looper, flushes outputs wherever it needs to go, typically to motor controllers.
+     */
     @Override
     public void writePeriodicOutputs() {
         // TODO limit switch should disable reverse movements
@@ -69,6 +83,9 @@ public class NuElevator extends Subsystem {
         left.getPIDController().setReference(periodicIo.demand, periodicIo.controlType, 0, periodicIo.feedForward);
     }
 
+    /**
+     * Gets called by the looper, reads necessary input state values.
+     */
     @Override
     public void readPeriodicInputs() {
         periodicIo.cargoHeld = cargo.cargoInHold();
@@ -86,6 +103,12 @@ public class NuElevator extends Subsystem {
 
     // TODO add zeroing method
 
+    /**
+     * Returns the distance to the ground that the elevator is currently at TODO pick a reference point.
+     *
+     * @param encoder the current raw encoder value as given by the encoder output.
+     * @return the distance to the ground that the elevator is currently at TODO pick a reference point.
+     */
     private synchronized double encoderToHeightFromGround(double encoder) {
         return ((encoder + periodicIo.offset) * DISTANCE_PER_ENCODER_TICK) + BOTTOM_DIST_FROM_GROUND;
     }
@@ -94,16 +117,32 @@ public class NuElevator extends Subsystem {
         return (heightFromGround - BOTTOM_DIST_FROM_GROUND) / DISTANCE_PER_ENCODER_TICK - periodicIo.offset;
     }
 
+    /**
+     * Sets the desired position of the elevator.
+     *
+     * @param position the {@link ElevatorPosition} that the elevator should have as its new target.
+     */
     public synchronized void setPosition(ElevatorPosition position) {
         checkAndConfigureNewState(ElevatorState.POSITION_CONTROLLED);
         periodicIo.setPosition = position;
     }
 
+    /**
+     * Converts input on the range of [-1.0, 1.0] and writes it directly to the motor.
+     *
+     * @param power
+     */
     public synchronized void setOpenLoop(double power) {
         checkAndConfigureNewState(ElevatorState.OPEN_LOOP);
         periodicIo.demand = power;
     }
 
+    /**
+     * Checks if the elevator is in the new desired state, and if it is not, it switches the state and configures
+     * the variables for the switch.
+     *
+     * @param newState the new {@link ElevatorState} that we should switch to if not alrady in it.
+     */
     private synchronized void checkAndConfigureNewState(ElevatorState newState) {
         if (newState != state) {
             switch (newState) {
@@ -122,6 +161,9 @@ public class NuElevator extends Subsystem {
         }
     }
 
+    /**
+     * Outputs telemetry to the driver via Shuffleboard.
+     */
     @Override
     public void outputTelemetry() {
         ELEVATOR_SHUFFLEBOARD.putString("Desired Position", periodicIo.setPosition.toString());
@@ -136,11 +178,17 @@ public class NuElevator extends Subsystem {
         ELEVATOR_SHUFFLEBOARD.putNumber("FeedForward", periodicIo.feedForward);
     }
 
+    /**
+     * The elevator's control mode.
+     */
     private enum ElevatorState {
         OPEN_LOOP,
         POSITION_CONTROLLED
     }
 
+    /**
+     * Contains all elevator positions that we will want to go to during a match and their heights off of the ground.
+     */
     public enum ElevatorPosition {
         LOW_HATCH(0.0254),
         MID_HATCH(0.508),
@@ -160,6 +208,10 @@ public class NuElevator extends Subsystem {
         }
     }
 
+    /**
+     * Simple data structure to hold all of the information that we will be inputting/outputting in {@link #readPeriodicInputs()}
+     * and {@link #writePeriodicOutputs()} respectively.
+     */
     private static class PeriodicIO {
         // Inputs
         ElevatorPosition setPosition = ElevatorPosition.LOW_HATCH;

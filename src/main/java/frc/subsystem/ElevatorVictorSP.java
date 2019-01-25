@@ -8,6 +8,7 @@ import frc.utils.UnitConversions;
 
 import static frc.utils.Constants.*;
 
+@Deprecated
 public class ElevatorVictorSP extends Subsystem {
     private static final double COUNTS_PER_REVOLUTION = 1024;
     private static final double DISTANCE_PER_REVOLUTION = UnitConversions.inchesToMeters(1.732);

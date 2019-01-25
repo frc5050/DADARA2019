@@ -24,6 +24,10 @@ public class HatchMechanism extends Subsystem {
         return instance;
     }
 
+    public void setOpenLoop(double power){
+        hatch.set(power);
+    }
+
     @Override
     public void outputTelemetry() {
         // TODO(Raina)

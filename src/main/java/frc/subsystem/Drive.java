@@ -12,6 +12,7 @@ import jaci.pathfinder.Trajectory.FitMethod;
 
 import static frc.utils.Constants.DRIVE_SHUFFLEBOARD;
 
+@Deprecated
 public class Drive extends Subsystem {
     private static final double WHEEL_DIAMETER = UnitConversions.inchesToMeters(6.0);
     private static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;

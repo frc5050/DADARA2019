@@ -25,8 +25,7 @@ public class Cargo extends Subsystem {
     private CargoStateMachine cargoStateMachine = new CargoStateMachine();
 
     private Cargo() {
-        // TODO should we enable voltage compensation? That could ensure more consistent output and lower
-        //  battery draw in general
+        // TODO test voltage compensation
         rearSide = new WPI_TalonSRX(Constants.CARGO_CENTER);
         leftFront = new WPI_TalonSRX(Constants.CARGO_LEFT);
         rightFront = new WPI_TalonSRX(Constants.CARGO_RIGHT);
@@ -37,9 +36,7 @@ public class Cargo extends Subsystem {
         intake.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
 
 
-        // TODO make sure that the motors run the way that we expect, should be: +1 on
-        //  left/right is intake and output, and +1 on rear moves it to the right when
-        //  viewed from the back
+        // TODO confirm output
         rightFront.setInverted(true);
     }
 
