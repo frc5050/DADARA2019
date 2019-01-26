@@ -1,6 +1,8 @@
 package frc.states;
 
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANDigitalInput.LimitSwitch;
 
 public class ElevatorStateMachine {
     private static final double FEED_FORWARD_WITH_CARGO = 0.0;
@@ -29,6 +31,14 @@ public class ElevatorStateMachine {
 
         systemState.encoderFiltered = systemState.encoder + systemState.offset;
         systemState.distFromGround = getHeightFromGround();
+
+        if(systemState.bottomLimitTouched) {
+            systemState.minimumOutput = 0;
+            systemState.maximumOutput = 1;
+        } else {
+            systemState.minimumOutput = -1;
+            systemState.maximumOutput = 1;
+        }
 
         switch (systemState.state) {
             case OPEN_LOOP:
@@ -108,6 +118,8 @@ public class ElevatorStateMachine {
         double desiredOpenLoopPercentage;
         ElevatorPosition desiredPosition;
         ElevatorControlMode state = ElevatorControlMode.OPEN_LOOP;
+        double maximumOutput;
+        double minimumOutput;
 
         // Output
 
