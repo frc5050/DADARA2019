@@ -10,7 +10,7 @@ import frc.states.CargoStateMachine;
 import frc.utils.Constants;
 
 import static frc.utils.Constants.CARGO_SHUFFLEBOARD;
-
+// Creates variables for the cargo subsystem and initializes motors
 public class Cargo extends Subsystem {
     private static Cargo instance;
 
@@ -38,7 +38,7 @@ public class Cargo extends Subsystem {
         // TODO confirm output
         rightRear.setInverted(true);
     }
-
+    // Creates new cargo instance but not if there is an existing one, to avoid conflicts.
     public synchronized static Cargo getInstance() {
         if (instance == null) {
             instance = new Cargo();
@@ -49,7 +49,7 @@ public class Cargo extends Subsystem {
     public synchronized void setDesiredState(CargoState.IntakeState intakeState) {
         cargoStateMachine.setDesiredState(intakeState);
     }
-
+    // Outputs values to shuffleboard
     @Override
     public void outputTelemetry() {
         CARGO_SHUFFLEBOARD.putString("Cargo Intake State", currentState.intakeState.toString());
@@ -59,12 +59,12 @@ public class Cargo extends Subsystem {
         CARGO_SHUFFLEBOARD.putNumber("Intake Output", currentState.intakeOutput);
         CARGO_SHUFFLEBOARD.putBoolean("Cargo In Hold", currentState.ballInHold);
     }
-
+    // Stops the wheels' motors
     @Override
     public synchronized void stop() {
         setDesiredState(CargoState.IntakeState.STOPPED);
     }
-
+    // Sets the modes that the loop uses to function
     @Override
     public void registerEnabledLoops(LooperInterface enabledLooper) {
         Loop loop = new Loop() {
@@ -92,7 +92,7 @@ public class Cargo extends Subsystem {
 
         enabledLooper.registerLoop(loop);
     }
-
+    // Used with IR sensor to stop when cargo is in hold
     public synchronized boolean cargoInHold() {
         return currentState.ballInHold;
     }
