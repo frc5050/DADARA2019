@@ -6,7 +6,7 @@ import frc.utils.Constants;
 import frc.utils.DriveSignal;
 
 import static frc.utils.Constants.JACKS_SHUFFLEBOARD;
-
+// Creates subsystem variables and initializes motors
 public class Jacks extends Subsystem {
 
     // TODO(Lucas) use pidf + navx to control ratios while maximizing speed
@@ -34,14 +34,14 @@ public class Jacks extends Subsystem {
         // TODO test the wheel inversion
         leftRearWheel.setInverted(true);
     }
-
+    // Creates an instance only if there is no existing instance to avoid conflicts
     public static Jacks getInstance() {
         if (instance == null) {
             instance = new Jacks();
         }
         return instance;
     }
-
+    // Outputs to shuffleboard
     @Override
     public void outputTelemetry() {
         JACKS_SHUFFLEBOARD.putNumber("Jack Left Rear Wheel Output", periodicIo.leftRearWheelOutput);
@@ -55,7 +55,7 @@ public class Jacks extends Subsystem {
     public synchronized void stop() {
         periodicIo = new PeriodicIO();
     }
-
+    // Creates outputs to motors/wheels
     @Override
     public synchronized void writePeriodicOutputs() {
         leftRearWheel.set(ControlMode.PercentOutput, periodicIo.leftRearWheelOutput);
@@ -95,7 +95,7 @@ public class Jacks extends Subsystem {
         periodicIo.leftRearWheelOutput = driveSignal.getLeftOutput();
         periodicIo.rightRearWheelOutput = driveSignal.getRightOutput();
     }
-
+    // Process for automatically using the lifts at the same time to climb lvl 3
     public synchronized void automaticSyncLiftBasic() {
         // TODO confirm that
         //  roll + = robot rear coming up
@@ -111,7 +111,7 @@ public class Jacks extends Subsystem {
         periodicIo.leftRearJackOutput += rollCorrectionOutput - pitchCorrectionKp;
         periodicIo.rightRearJackOutput += -rollCorrectionOutput - pitchCorrectionKp;
     }
-
+    // Lists the possible states the jacks move to
     public enum JackLiftState {
         LIFT(1.0),
         RETRACT(-1.0),
