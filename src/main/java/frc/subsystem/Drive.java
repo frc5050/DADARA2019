@@ -14,8 +14,8 @@ import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.modifiers.TankModifier;
 
 import static frc.utils.Constants.*;
-
 // TODO verify everythign
+// All setup variables for this subsystem
 public class Drive extends Subsystem {
     private static final double DRIVE_WHEEL_DIAMETER = 6.0 * 0.0254;
     private static final int DRIVE_TICKS_PER_ROTATION = 4096;
@@ -38,6 +38,7 @@ public class Drive extends Subsystem {
     private int lastTrajectoryValue = 0;
     private int trajectoryValues = 0;
     private final Loop loop = new Loop() {
+    // Startup loop, sets brakes to false.
         @Override
         public void onStart(double timestamp) {
             synchronized (Drive.this) {
@@ -45,7 +46,7 @@ public class Drive extends Subsystem {
                 setBrakeMode(false);
             }
         }
-
+// Looping function for driving, uses Pathfollowing and normal drive mode.
         @Override
         public void onLoop(double timestamp) {
             synchronized (Drive.this) {
@@ -66,7 +67,7 @@ public class Drive extends Subsystem {
 
         }
     };
-
+// Setup for motors and sensors
     private Drive() {
         periodicIo = new PeriodicIO();
 
@@ -87,7 +88,7 @@ public class Drive extends Subsystem {
 
         initGainsOnShuffleBoard();
     }
-
+// Creates an instance of drive. If there is already an instance, do nothing so it doesn't conflict
     public static Drive getInstance() {
         if (instance == null) {
             instance = new Drive();
@@ -100,11 +101,11 @@ public class Drive extends Subsystem {
         // 0 to 360: gyroHeading = (gyroHeading + gyroOffset) % 360.0;
         return (((heading + gyroOffset) - 180.0) % 360.0) - 180.0;
     }
-
+    // Determines the velocity of the robot relative to the amount of encoder ticks
     private static double wheelVelocityTicksPer100msToVelocity(double velocityTicksPer100ms) {
         return velocityTicksPer100ms * 10.0 / DRIVE_TICKS_PER_ROTATION_DOUBLE * Math.PI * DRIVE_WHEEL_DIAMETER;
     }
-
+    // Configures PID values for the motors
     private static void reloadGains(WPI_TalonSRX talon, double kP, double kI, double kD, double kF, int kIz, int timeout) {
         talon.config_kP(0, kP, timeout);
         talon.config_kI(0, kI, timeout);
@@ -125,6 +126,7 @@ public class Drive extends Subsystem {
         if (sensorPresent != ErrorCode.OK) {
             DriverStation.reportError("Could not detect " + (left ? "left" : "right") + " drive encoder: " + sensorPresent, false);
         }
+        // Configures the Talons with inversions and sensor values
         // TODO check inversion
         talon.setInverted(!left);
         // TODO check sensor phase
@@ -137,7 +139,7 @@ public class Drive extends Subsystem {
         // TODO should this be in a constant?
         talon.configNeutralDeadband(0.04, 0);
     }
-
+    // Sets the motors from neutral mode coast to neutral mode brake
     public synchronized void setBrakeMode(boolean brake) {
         if (isBrake != brake) {
             NeutralMode neutralMode = brake ? NeutralMode.Brake : NeutralMode.Coast;
@@ -148,7 +150,7 @@ public class Drive extends Subsystem {
             isBrake = brake;
         }
     }
-
+    // Changes the mode to joystick input
     public synchronized void setOpenLoop(DriveSignal signal) {
         if (state != DriveState.OPEN_LOOP) {
             setBrakeMode(false);
@@ -162,7 +164,7 @@ public class Drive extends Subsystem {
         periodicIo.leftFeedForward = 0.0;
         periodicIo.rightFeedForward = 0.0;
     }
-
+    // Puts values on the Dashboard (Shuffleboard)
     @Override
     public void outputTelemetry() {
         DRIVE_SHUFFLEBOARD.putNumber("Left Drive Distance (m)", periodicIo.leftDistance);
@@ -182,7 +184,7 @@ public class Drive extends Subsystem {
         DRIVE_SHUFFLEBOARD.putNumber("Roll", periodicIo.roll);
         DRIVE_SHUFFLEBOARD.putNumber("Pitch", periodicIo.pitch);
     }
-
+    // Outputs different values based on whether the robot is in teleop or autonomous
     @Override
     public synchronized void writePeriodicOutputs() {
         if (state == DriveState.OPEN_LOOP) {
@@ -193,37 +195,37 @@ public class Drive extends Subsystem {
             rightMaster.set(ControlMode.Velocity, periodicIo.rightDemand, DemandType.ArbitraryFeedForward, periodicIo.rightFeedForward);
         }
     }
-
+    // Stops the robot
     @Override
     public void stop() {
         setOpenLoop(DriveSignal.NEUTRAL);
     }
-
+    // Creates a trajectory and sets it to the motors, changing the case to Path following
     public synchronized void setTrajectory(Trajectory trajectory) {
         if (trajectory != null) {
             this.trajectory = trajectory;
             TankModifier modifier = new TankModifier(trajectory).modify(DRIVEBASE_WIDTH);
             leftTrajectory = modifier.getLeftTrajectory();
-            rightTrajectory = modifier.getLeftTrajectory();
+            rightTrajectory = modifier.getRightTrajectory();
             lastTrajectoryValue = 0;
             trajectoryValues = trajectory.length();
             state = DriveState.PATH_FOLLOWING;
         }
     }
-
+    // Checks for if the trajectory is completed
     public synchronized boolean isDone() {
         if (trajectory == null || state != DriveState.PATH_FOLLOWING) {
             return false;
         }
         return trajectoryValues > lastTrajectoryValue;
     }
-
+    // 
     public synchronized void updatePathFollower() {
         if (state == DriveState.PATH_FOLLOWING) {
             lastTrajectoryValue++;
             if (!this.isDone()) {
                 double leftVelocity = leftTrajectory.get(lastTrajectoryValue).velocity;
-                double rightVelocity = leftTrajectory.get(lastTrajectoryValue).velocity;
+                double rightVelocity = rightTrajectory.get(lastTrajectoryValue).velocity;
                 setVelocity(new DriveSignal(leftVelocity, rightVelocity), DriveSignal.BRAKE);
             } else {
                 setVelocity(DriveSignal.BRAKE, DriveSignal.BRAKE);
