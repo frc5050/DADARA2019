@@ -219,7 +219,7 @@ public class Drive extends Subsystem {
         }
         return trajectoryValues > lastTrajectoryValue;
     }
-    // 
+    // Checks for path completion and resets the Path followers for the desired velocity if not.
     public synchronized void updatePathFollower() {
         if (state == DriveState.PATH_FOLLOWING) {
             lastTrajectoryValue++;
@@ -234,14 +234,14 @@ public class Drive extends Subsystem {
             DriverStation.reportError("Drive is not in path follower mode", false);
         }
     }
-
+    // Resets encoders
     public synchronized void resetEncoders() {
         // TODO should this be a constant
         leftMaster.setSelectedSensorPosition(0, 0, 0);
         rightMaster.setSelectedSensorPosition(0, 0, 0);
         periodicIo = new PeriodicIO();
     }
-
+    // Configures the gyro heading
     public synchronized void setHeading(double heading) {
         gyroOffset = heading - navX.getYaw();
     }
@@ -256,7 +256,7 @@ public class Drive extends Subsystem {
     public void registerEnabledLoops(LooperInterface looper) {
         looper.registerLoop(loop);
     }
-
+    // Reads the inputs from the sensors, and sets variables
     @Override
     public void readPeriodicInputs() {
         double prevLeftTicks = periodicIo.leftPositionTicks;
@@ -312,7 +312,7 @@ public class Drive extends Subsystem {
         DRIVE_SHUFFLEBOARD.putNumber("kF", 0.0);
         DRIVE_SHUFFLEBOARD.putNumber("kIz", 0.0);
     }
-
+    // Sets the velocity the motors should follow while path following
     public synchronized void setVelocity(DriveSignal velocities, DriveSignal feedForwards) {
         if (state != DriveState.PATH_FOLLOWING) {
             setBrakeMode(true);
@@ -340,12 +340,12 @@ public class Drive extends Subsystem {
     public synchronized double getRoll() {
         return periodicIo.roll;
     }
-
+    // List of possible states/modes
     private enum DriveState {
         OPEN_LOOP,
         PATH_FOLLOWING
     }
-
+    // All the periodic values
     private static class PeriodicIO {
         // Input
         double leftPositionTicks;
