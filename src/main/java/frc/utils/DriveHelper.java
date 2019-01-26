@@ -9,7 +9,7 @@ public class DriveHelper {
     private DriveHelper() {
 
     }
-
+    // Sets tank-drive settings to the motor signals 
     public static DriveSignal tankToDriveSignal(double leftSpeed, double rightSpeed) {
         return tankToDriveSignal(leftSpeed, rightSpeed, true);
     }
@@ -17,7 +17,7 @@ public class DriveHelper {
     public static DriveSignal tankToDriveSignal(double leftSpeed, double rightSpeed, boolean squareInputs) {
         return tankToDriveSignal(leftSpeed, rightSpeed, squareInputs, TANK_DEFAULT_DEADBAND);
     }
-
+    // Applies speed and limits to motor signals on the drivebase
     public static DriveSignal tankToDriveSignal(double leftSpeed, double rightSpeed, boolean squareInputs, double deadband) {
         leftSpeed = limit(leftSpeed);
         leftSpeed = applyDeadband(leftSpeed, deadband);
@@ -31,7 +31,7 @@ public class DriveHelper {
         return new DriveSignal(leftSpeed, rightSpeed);
 
     }
-
+    // Sets values/speeds/limits to the motor signals to produce arcade drive
     public static DriveSignal arcadeToDriveSignal(double x, double zRotation) {
         return arcadeToDriveSignal(x, zRotation, true);
     }
@@ -81,7 +81,7 @@ public class DriveHelper {
         }
         return val;
     }
-
+    // Sets power limits on the motors
     private static double applyDeadband(double value, double deadband) {
         if (Math.abs(value) > deadband) {
             if (value > 0.0) {
