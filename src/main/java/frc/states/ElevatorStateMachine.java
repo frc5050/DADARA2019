@@ -99,9 +99,9 @@ public class ElevatorStateMachine {
 
     public static class ElevatorState {
         // Input
-        double encoder;
-        boolean bottomLimitTouched;
-        boolean isCargoInHold;
+        public double encoder;
+        public boolean bottomLimitTouched;
+        public boolean isCargoInHold;
         double encoderFiltered;
         double distFromGround;
         double offset;
@@ -111,8 +111,8 @@ public class ElevatorStateMachine {
 
         // Output
 
-        double demand;
-        double feedforward;
-        ControlType controlType = ControlType.kDutyCycle;
+        public double demand;
+        public double feedforward;
+        public ControlType controlType = ControlType.kDutyCycle;
     }
 }
