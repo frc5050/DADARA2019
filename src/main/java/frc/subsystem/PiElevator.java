@@ -57,7 +57,7 @@ public class PiElevator extends Subsystem {
             @Override
             public void onLoop(double timestamp) {
                 synchronized (PiElevator.this) {
-                    ElevatorStateMachine.ElevatorState newElevatorState = elevatorStateMachine.update(elevatorState);
+                    ElevatorStateMachine.ElevatorState newElevatorState = elevatorStateMachine.update(getUpdatedElevatorState());
                     updateOutputFromState(newElevatorState);
                 }
             }
@@ -72,9 +72,16 @@ public class PiElevator extends Subsystem {
         enabledLooper.registerLoop(loop);
     }
 
-    public synchronized void updateOutputFromState(ElevatorStateMachine.ElevatorState newState) {
+    private synchronized void updateOutputFromState(ElevatorStateMachine.ElevatorState newState) {
         left.getPIDController().setReference(newState.demand, newState.controlType, 0, newState.feedforward);
-        left.getPIDController().setOutputRange(new)
+        left.getPIDController().setOutputRange(newState.minimumOutput, newState.maximumOutput);
+    }
+
+    private synchronized ElevatorStateMachine.ElevatorState getUpdatedElevatorState(){
+        elevatorState.isCargoInHold = false;
+        elevatorState.bottomLimitTouched = false;
+        elevatorState.encoder = left.getEncoder().getPosition();
+        return elevatorState;
     }
 
     @Override
@@ -84,6 +91,7 @@ public class PiElevator extends Subsystem {
         ELEVATOR_SHUFFLEBOARD.putNumber("FeedForward", elevatorState.feedforward);
         ELEVATOR_SHUFFLEBOARD.putBoolean("Cargo In Hold", elevatorState.isCargoInHold);
         ELEVATOR_SHUFFLEBOARD.putBoolean("Bottom Limit", elevatorState.bottomLimitTouched);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Encoder", elevatorState.encoder);
     }
 
     @Override

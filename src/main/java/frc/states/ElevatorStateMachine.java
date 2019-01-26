@@ -112,14 +112,14 @@ public class ElevatorStateMachine {
         public double encoder;
         public boolean bottomLimitTouched;
         public boolean isCargoInHold;
+        public double maximumOutput;
+        public double minimumOutput;
         double encoderFiltered;
         double distFromGround;
         double offset;
         double desiredOpenLoopPercentage;
         ElevatorPosition desiredPosition;
         ElevatorControlMode state = ElevatorControlMode.OPEN_LOOP;
-        double maximumOutput;
-        double minimumOutput;
 
         // Output
 

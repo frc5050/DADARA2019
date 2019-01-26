@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
             MuDrive.getInstance(),
             Cargo.getInstance(),
             Jacks.getInstance(),
-            KappaElevator.getInstance(),
+            PiElevator.getInstance(),
             HatchMechanism.getInstance()
     ));
     private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
     private MuDrive drive = MuDrive.getInstance();
     private Cargo cargo = Cargo.getInstance();
     private Jacks jacks = Jacks.getInstance();
-    private KappaElevator elevator = KappaElevator.getInstance();
+    private PiElevator elevator = PiElevator.getInstance();
     private HatchMechanism hatch = HatchMechanism.getInstance();
 
     private double previousTimestamp = Timer.getFPGATimestamp();
