@@ -15,7 +15,7 @@ import jaci.pathfinder.modifiers.TankModifier;
 
 import static frc.utils.Constants.*;
 
-// TODO verify everythign
+// TODO verify everything
 public class Drive extends Subsystem {
     private static final double DRIVE_WHEEL_DIAMETER = 6.0 * 0.0254;
     private static final int DRIVE_TICKS_PER_ROTATION = 4096;

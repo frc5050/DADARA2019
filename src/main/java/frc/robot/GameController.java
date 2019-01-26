@@ -42,6 +42,41 @@ public class GameController implements GameHid {
         return driverHid.liftJack();
     }
 
+    @Override
+    public boolean extendFrontJack() {
+        return driverHid.extendFrontJack();
+    }
+
+    @Override
+    public boolean retractFrontJack() {
+        return driverHid.retractFrontJack();
+    }
+
+    @Override
+    public boolean extendLeftJack() {
+        return driverHid.extendLeftJack();
+    }
+
+    @Override
+    public boolean retractLeftJack() {
+        return driverHid.retractLeftJack();
+    }
+
+    @Override
+    public boolean extendRightJack() {
+        return driverHid.extendRightJack();
+    }
+
+    @Override
+    public boolean retractRightJack() {
+        return driverHid.retractRightJack();
+    }
+
+    @Override
+    public DriveSignal runWheels() {
+        return driverHid.runWheels();
+    }
+
 
     //
     // Operator Controls

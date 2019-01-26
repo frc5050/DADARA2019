@@ -30,4 +30,41 @@ public class DriverGamepad implements DriverHid {
     public boolean liftJack() {
         return gamepad.getAButton();
     }
+
+    // TODO
+
+    @Override
+    public boolean extendFrontJack() {
+        return false;
+    }
+
+    @Override
+    public boolean retractFrontJack() {
+        return false;
+    }
+
+    @Override
+    public boolean extendLeftJack() {
+        return false;
+    }
+
+    @Override
+    public boolean retractLeftJack() {
+        return false;
+    }
+
+    @Override
+    public boolean extendRightJack() {
+        return false;
+    }
+
+    @Override
+    public boolean retractRightJack() {
+        return false;
+    }
+
+    @Override
+    public DriveSignal runWheels() {
+        return null;
+    }
 }
