@@ -16,8 +16,11 @@ public interface DriverHid {
 
     boolean liftJack();
 
-    // front 6, 4 extend/retract
-    // left  7, 8 extend/retract
-    // right 9 10 extend/retract
-    // some random axis wheels
+    boolean extendFrontJack();
+    boolean retractFrontJack();
+    boolean extendLeftJack();
+    boolean retractLeftJack();
+    boolean extendRightJack();
+    boolean retractRightJack();
+    DriveSignal runWheels();
 }

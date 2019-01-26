@@ -11,10 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.loops.Looper;
 import frc.states.CargoState;
-import frc.subsystem.Cargo;
-import frc.subsystem.HatchMechanism;
-import frc.subsystem.Drive;
-import frc.subsystem.SubsystemManager;
+import frc.subsystem.*;
 
 import java.util.Arrays;
 
@@ -30,7 +27,7 @@ public class Robot extends TimedRobot {
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
             Cargo.getInstance(),
-//            PiElevator.getInstance(),
+            Elevator.getInstance(),
             HatchMechanism.getInstance()
     ));
     //    private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
@@ -39,7 +36,7 @@ public class Robot extends TimedRobot {
     private GameController gameController = GameController.getInstance();
     private Drive drive = Drive.getInstance();
     private Cargo cargo = Cargo.getInstance();
-    //    private PiElevator elevator = PiElevator.getInstance();
+    private Elevator elevator = Elevator.getInstance();
     private HatchMechanism hatch = HatchMechanism.getInstance();
 
 //    private SubsystemTest subsystemTest;
@@ -70,8 +67,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        enabledLooper.stop();
-        disabledLooper.start();
+//        enabledLooper.stop();
+//        disabledLooper.start();
+    }
+
+    @Override
+    public void disabledPeriodic(){
+
     }
 
     @Override
@@ -94,6 +96,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drive.setOpenLoop(gameController.getDriveSignal());
+        hatch.setOpenLoop(gameController.hatchManual());
 
         if (gameController.cargoIntake()) {
             cargo.setDesiredState(CargoState.IntakeState.INTAKE);
@@ -107,7 +110,6 @@ public class Robot extends TimedRobot {
             cargo.setDesiredState(CargoState.IntakeState.STOPPED);
         }
 
-        hatch.setOpenLoop(gameController.hatchManual());
 
 //        elevator.setOpenLoop(gameController.elevateManual());
 
