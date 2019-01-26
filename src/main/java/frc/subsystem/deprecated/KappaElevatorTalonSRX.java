@@ -1,47 +1,52 @@
-package frc.subsystem;
+package frc.subsystem.deprecated;
 
-import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.subsystem.Subsystem;
 
 import static frc.utils.Constants.*;
 
-public class KappaElevator extends Subsystem {
-    private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushed;
+@Deprecated
+public class KappaElevatorTalonSRX extends Subsystem {
+    private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushless;
     private static final double FEED_FORWARD_WITH_CARGO = 0.35;
     private static final double FEED_FORWARD_WITHOUT_CARGO = 0.30;
-    private static KappaElevator instance;
-    private final CANSparkMax left;
-    private final CANSparkMax right;
+    private static KappaElevatorTalonSRX instance;
+    private final WPI_TalonSRX left;
+    private final VictorSPX right;
     private ElevatorControlState state = ElevatorControlState.OPEN_LOOP;
     private PeriodicIO periodicIo = new PeriodicIO();
-    private Cargo cargo = Cargo.getInstance();
+//    private Cargo cargo = Cargo.getInstance();
 
     // TODO channel -> constant
     private DigitalInput bottomLimit = new DigitalInput(0);
 
-    private KappaElevator() {
-        left = new CANSparkMax(LEFT_LIFT_NEO, MOTOR_TYPE);
-        right = new CANSparkMax(RIGHT_LIFT_NEO, MOTOR_TYPE);
-        left.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        right.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    private KappaElevatorTalonSRX() {
+        left = new WPI_TalonSRX(LEFT_LIFT_NEO);
+        right = new VictorSPX(RIGHT_LIFT_NEO);
+        left.setNeutralMode(NeutralMode.Brake);
+        right.setNeutralMode(NeutralMode.Brake);
         right.setInverted(true);
         right.follow(left);
         setOpenLoop(0.0);
     }
 
-    public static KappaElevator getInstance() {
+    public static KappaElevatorTalonSRX getInstance() {
         if (instance == null) {
-            instance = new KappaElevator();
+            instance = new KappaElevatorTalonSRX();
         }
         return instance;
     }
 
     public synchronized void setOpenLoop(double power) {
         if (state != ElevatorControlState.OPEN_LOOP) {
-            left.setIdleMode(CANSparkMax.IdleMode.kCoast);
-            right.setIdleMode(CANSparkMax.IdleMode.kCoast);
+            left.setNeutralMode(NeutralMode.Coast);
+            right.setNeutralMode(NeutralMode.Coast);
             state = ElevatorControlState.OPEN_LOOP;
         }
         periodicIo.demand = power;
@@ -50,8 +55,8 @@ public class KappaElevator extends Subsystem {
 
     public synchronized void setPositionPid(double position) {
         if (state != ElevatorControlState.POSITION_PID) {
-            left.setIdleMode(CANSparkMax.IdleMode.kBrake);
-            right.setIdleMode(CANSparkMax.IdleMode.kBrake);
+            left.setNeutralMode(NeutralMode.Brake);
+            right.setNeutralMode(NeutralMode.Brake);
             state = ElevatorControlState.POSITION_PID;
         }
         periodicIo.demand = position;
@@ -69,14 +74,14 @@ public class KappaElevator extends Subsystem {
     @Override
     public synchronized void readPeriodicInputs() {
         periodicIo.bottomLimitEnabled = bottomLimit.get();
-        periodicIo.cargoInHold = cargo.cargoInHold();
+//        periodicIo.cargoInHold = cargo.cargoInHold();
     }
 
     @Override
     public synchronized void writePeriodicOutputs() {
         periodicIo.feedForward = periodicIo.cargoInHold ? FEED_FORWARD_WITH_CARGO : FEED_FORWARD_WITHOUT_CARGO;
-        ControlType controlType = state == ElevatorControlState.OPEN_LOOP ? ControlType.kDutyCycle : ControlType.kPosition;
-        left.getPIDController().setReference(periodicIo.demand, controlType, 0, periodicIo.feedForward);
+        ControlMode controlType = state == ElevatorControlState.OPEN_LOOP ? ControlMode.PercentOutput: ControlMode.Position;
+        left.set(controlType, periodicIo.demand, DemandType.ArbitraryFeedForward, periodicIo.feedForward);
     }
 
     @Override

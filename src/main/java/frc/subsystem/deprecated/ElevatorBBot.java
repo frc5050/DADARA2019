@@ -1,10 +1,11 @@
-package frc.subsystem;
+package frc.subsystem.deprecated;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.subsystem.Subsystem;
 import frc.utils.UnitConversions;
 
 import static frc.utils.Constants.*;

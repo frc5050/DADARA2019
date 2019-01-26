@@ -6,8 +6,8 @@ public class CargoState {
     public boolean ballInHold = false;
     // Outputs
     public double rearMotorOutput;
-    public double leftMotorOutput;
     public double rightMotorOutput;
+    public double leftMotorOutput;
     public double intakeOutput;
 
     // What state to set the intake to

@@ -7,7 +7,7 @@ public class RobotState extends Subsystem {
     //  adding an extra notifier just for this might be worth it if it proves useful
     private static RobotState instance;
 
-    private MuDrive drive = MuDrive.getInstance();
+    private Drive drive = Drive.getInstance();
     private PeriodicIO periodicIo = new PeriodicIO();
 
     private RobotState() {

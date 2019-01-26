@@ -4,26 +4,42 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static frc.loops.Looper.PERIOD;
+import static frc.states.ElevatorStateMachine.*;
+
 public class ElevatorStateMachineTest {
+    /*
+
+    Tests:
+    Zeroes on bottom limit triggered
+
+     */
+
     public static final double EPSILON = 1E-10;
-    private static final double FEED_FORWARD_WITH_CARGO = 0.35;
-    private static final double FEED_FORWARD_WITHOUT_CARGO = 0.30;
-    private static final double BOTTOM_DIST_FROM_GROUND = 0;
-    private static final double DT = 0.01;
-    private static final double ZEROING_VELOCITY = 0.02;
-    private static final double SHAFT_DIAMETER = 1.732 * 0.0254;
-    private static final double DISTANCE_PER_MOTOR_REVOLUTION = SHAFT_DIAMETER * Math.PI; // 1.732 * 0.0254 * Math.PI / 1.0
-    private static final double ENCODER_OUTPUT_PER_REVOLUTION = 1.0;
-    private static final double DISTANCE_PER_ENCODER_TICK = DISTANCE_PER_MOTOR_REVOLUTION / ENCODER_OUTPUT_PER_REVOLUTION;
     private ElevatorStateMachine elevatorStateMachine;
+    private ElevatorStateMachine.ElevatorState elevatorState = new ElevatorStateMachine.ElevatorState();
 
     @Before
     public void setup() {
         elevatorStateMachine = new ElevatorStateMachine();
+        elevatorState = new ElevatorStateMachine.ElevatorState();
     }
 
-    private double heightFromGroundToEncoder(double heightFromGround) {
-        return (heightFromGround - BOTTOM_DIST_FROM_GROUND) / DISTANCE_PER_ENCODER_TICK;
+    @Test
+    public void zeroes(){
+        final double startingEncoder = 100;
+        elevatorStateMachine.setZeroing();
+        elevatorState.encoder = startingEncoder;
+        elevatorState = elevatorStateMachine.update(elevatorState);
+        double lastDistFromGround = elevatorState.heightFromGround;
+        double timestamp = 0.0;
+        while(timestamp < 10.0){
+            lastDistFromGround = elevatorState.heightFromGround;
+            elevatorState.encoder = elevatorState.demand;
+            elevatorState = elevatorStateMachine.update(elevatorState);
+            Assert.assertEquals(ZEROING_VELOCITY * PERIOD, lastDistFromGround - elevatorState.heightFromGround, EPSILON);
+            timestamp += PERIOD;
+        }
     }
 
     @Test
@@ -32,7 +48,6 @@ public class ElevatorStateMachineTest {
         final double offsetValue = 100;
         final double deltaFromOffset = 20;
 
-        ElevatorStateMachine.ElevatorState elevatorState = new ElevatorStateMachine.ElevatorState();
         Assert.assertEquals(0.0, elevatorState.encoderFiltered, EPSILON);
         elevatorState.bottomLimitTouched = true;
 

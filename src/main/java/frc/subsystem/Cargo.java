@@ -15,9 +15,9 @@ public class Cargo extends Subsystem {
     private static Cargo instance;
 
     // Hardware
-    private final WPI_TalonSRX rearSide;
-    private final WPI_TalonSRX leftFront;
-    private final WPI_TalonSRX rightFront;
+    private final WPI_TalonSRX centerSide;
+    private final WPI_TalonSRX rightRear;
+    private final WPI_TalonSRX leftRear;
     private final DigitalInput cargoSensor = new DigitalInput(Constants.CARGO_SENSOR);
     private final WPI_TalonSRX intake;
 
@@ -26,18 +26,17 @@ public class Cargo extends Subsystem {
 
     private Cargo() {
         // TODO test voltage compensation
-        rearSide = new WPI_TalonSRX(Constants.CARGO_CENTER);
-        leftFront = new WPI_TalonSRX(Constants.CARGO_LEFT);
-        rightFront = new WPI_TalonSRX(Constants.CARGO_RIGHT);
+        centerSide = new WPI_TalonSRX(Constants.CARGO_CENTER);
+        rightRear = new WPI_TalonSRX(Constants.CARGO_LEFT);
+        leftRear = new WPI_TalonSRX(Constants.CARGO_RIGHT);
         intake = new WPI_TalonSRX(Constants.INTAKE);
-        rearSide.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
-        leftFront.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
-        rightFront.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
+        centerSide.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
+        rightRear.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
+        leftRear.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
         intake.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
 
-
         // TODO confirm output
-        rightFront.setInverted(true);
+        rightRear.setInverted(true);
     }
 
     public synchronized static Cargo getInstance() {
@@ -55,9 +54,10 @@ public class Cargo extends Subsystem {
     public void outputTelemetry() {
         CARGO_SHUFFLEBOARD.putString("Cargo Intake State", currentState.intakeState.toString());
         CARGO_SHUFFLEBOARD.putNumber("Rear Output", currentState.rearMotorOutput);
-        CARGO_SHUFFLEBOARD.putNumber("Left Output", currentState.leftMotorOutput);
-        CARGO_SHUFFLEBOARD.putNumber("Right Output", currentState.rightMotorOutput);
+        CARGO_SHUFFLEBOARD.putNumber("Left Output", currentState.rightMotorOutput);
+        CARGO_SHUFFLEBOARD.putNumber("Right Output", currentState.leftMotorOutput);
         CARGO_SHUFFLEBOARD.putNumber("Intake Output", currentState.intakeOutput);
+        CARGO_SHUFFLEBOARD.putBoolean("Cargo In Hold", currentState.ballInHold);
     }
 
     @Override
@@ -98,14 +98,15 @@ public class Cargo extends Subsystem {
     }
 
     private synchronized CargoState getCargoState() {
-        currentState.ballInHold = cargoSensor.get();
+        currentState.ballInHold = !cargoSensor.get();
         return currentState;
     }
 
     private synchronized void updateOutputFromState(CargoState state) {
-        rearSide.set(ControlMode.PercentOutput, state.rearMotorOutput);
-        leftFront.set(ControlMode.PercentOutput, state.leftMotorOutput);
-        rightFront.set(ControlMode.PercentOutput, state.rightMotorOutput);
+        centerSide.set(ControlMode.PercentOutput, state.rearMotorOutput);
+        rightRear.set(ControlMode.PercentOutput, state.rightMotorOutput);
+        leftRear.set(ControlMode.PercentOutput, state.leftMotorOutput);
         intake.set(ControlMode.PercentOutput, state.intakeOutput);
+        currentState = state;
     }
 }

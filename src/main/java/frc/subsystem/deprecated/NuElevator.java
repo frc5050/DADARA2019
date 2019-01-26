@@ -1,13 +1,16 @@
-package frc.subsystem;
+package frc.subsystem.deprecated;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.subsystem.Cargo;
+import frc.subsystem.Subsystem;
 import frc.utils.BrakeMode;
 
 import static frc.utils.Constants.*;
 
+@Deprecated
 public class NuElevator extends Subsystem {
     private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushless;
     // TODO move these around/get values/fixme please

@@ -15,4 +15,9 @@ public interface DriverHid {
     DriveSignal getDriveSignal();
 
     boolean liftJack();
+
+    // front 6, 4 extend/retract
+    // left  7, 8 extend/retract
+    // right 9 10 extend/retract
+    // some random axis wheels
 }

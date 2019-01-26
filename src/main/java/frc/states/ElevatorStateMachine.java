@@ -1,26 +1,26 @@
 package frc.states;
 
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.revrobotics.ControlType;
-import com.revrobotics.CANDigitalInput.LimitSwitch;
 
 public class ElevatorStateMachine {
-    private static final double FEED_FORWARD_WITH_CARGO = 0.0;
-    private static final double FEED_FORWARD_WITHOUT_CARGO = 0.0;
-    private static final double BOTTOM_DIST_FROM_GROUND = 0;
-    private static final double DT = 0.01;
-    private static final double ZEROING_VELOCITY = 0.02;
-    private static final double SHAFT_DIAMETER = 1.732 * 0.0254;
-    private static final double DISTANCE_PER_MOTOR_REVOLUTION = SHAFT_DIAMETER * Math.PI; // 1.732 * 0.0254 * Math.PI / 1.0
-    private static final double ENCODER_OUTPUT_PER_REVOLUTION = 1.0;
-    private static final double DISTANCE_PER_ENCODER_TICK = DISTANCE_PER_MOTOR_REVOLUTION / ENCODER_OUTPUT_PER_REVOLUTION;
+    public static final double FEED_FORWARD_WITH_CARGO = 0.0;
+    public static final double FEED_FORWARD_WITHOUT_CARGO = 0.0;
+    public static final double BOTTOM_DIST_FROM_GROUND = 0;
+    public static final double ZEROING_VELOCITY = 0.02;
+    public static final double SHAFT_DIAMETER = 1.732 * 0.0254;
+    public static final double DISTANCE_PER_MOTOR_REVOLUTION = SHAFT_DIAMETER * Math.PI; // 1.732 * 0.0254 * Math.PI / 1.0
+    public static final double ENCODER_OUTPUT_PER_REVOLUTION = 1.0;
+    public static final double DISTANCE_PER_ENCODER_TICK = DISTANCE_PER_MOTOR_REVOLUTION / ENCODER_OUTPUT_PER_REVOLUTION;
+    public static final double MAXIMUM_OUTPUT_STANDARD = 1.0;
+    public static final double MINIMUM_OUTPUT_STANDARD = -1.0;
+    public static final double MINIMUM_OUTPUT_BOTTOM_LIMIT = 0.0;
     private ElevatorState systemState = new ElevatorState();
 
     public ElevatorStateMachine() {
 
     }
 
-    public ElevatorState update(ElevatorState update) {
+    public synchronized ElevatorState update(ElevatorState update) {
         systemState.encoder = update.encoder;
         systemState.bottomLimitTouched = update.bottomLimitTouched;
         systemState.isCargoInHold = update.isCargoInHold;
@@ -30,30 +30,35 @@ public class ElevatorStateMachine {
         }
 
         systemState.encoderFiltered = systemState.encoder + systemState.offset;
-        systemState.distFromGround = getHeightFromGround();
+        systemState.heightFromGround = getHeightFromGround();
 
-        if(systemState.bottomLimitTouched) {
-            systemState.minimumOutput = 0;
-            systemState.maximumOutput = 1;
+        if (systemState.bottomLimitTouched) {
+            systemState.maximumOutput = MAXIMUM_OUTPUT_STANDARD;
+            systemState.minimumOutput = MINIMUM_OUTPUT_BOTTOM_LIMIT;
         } else {
-            systemState.minimumOutput = -1;
-            systemState.maximumOutput = 1;
+            systemState.maximumOutput = MAXIMUM_OUTPUT_STANDARD;
+            systemState.minimumOutput = MINIMUM_OUTPUT_STANDARD;
         }
 
         switch (systemState.state) {
             case OPEN_LOOP:
                 systemState.demand = systemState.desiredOpenLoopPercentage;
+                // TODO we could do feedforward and make manual control a little bit smoother
                 systemState.feedforward = 0.0;
                 break;
             case POSITION_PID:
                 systemState.demand = heightFromGroundToEncoder(systemState.desiredPosition.getHeight());
                 systemState.feedforward = systemState.isCargoInHold ? FEED_FORWARD_WITH_CARGO : FEED_FORWARD_WITHOUT_CARGO;
                 break;
+            case ZEROING:
+                systemState.demand = heightFromGroundToEncoder(systemState.heightFromGround - (ZEROING_VELOCITY * 0.01));
+                systemState.feedforward = systemState.isCargoInHold ? FEED_FORWARD_WITH_CARGO : FEED_FORWARD_WITHOUT_CARGO;
+                break;
         }
         return systemState;
     }
 
-    public void setOpenLoop(double percentage) {
+    public synchronized void setOpenLoop(double percentage) {
         if (systemState.state != ElevatorControlMode.OPEN_LOOP) {
             systemState.state = ElevatorControlMode.OPEN_LOOP;
             systemState.feedforward = 0.0;
@@ -62,7 +67,15 @@ public class ElevatorStateMachine {
         systemState.desiredOpenLoopPercentage = percentage;
     }
 
-    public void setPosition(ElevatorPosition position) {
+    public synchronized void setZeroing(){
+        if(systemState.state != ElevatorControlMode.ZEROING){
+            systemState.state = ElevatorControlMode.ZEROING;
+            systemState.feedforward = 0.0;
+            systemState.controlType = ControlType.kPosition;
+        }
+    }
+
+    public synchronized void setPosition(ElevatorPosition position) {
         if (systemState.state != ElevatorControlMode.POSITION_PID) {
             systemState.state = ElevatorControlMode.POSITION_PID;
             systemState.feedforward = 0.0;
@@ -71,21 +84,26 @@ public class ElevatorStateMachine {
         systemState.desiredPosition = position;
     }
 
-    private double getEncoderFiltered() {
+    private synchronized double getEncoderFiltered() {
         return systemState.encoderFiltered;
     }
 
-    private double getHeightFromGround() {
+    private synchronized double getHeightFromGround() {
         return (systemState.encoderFiltered * DISTANCE_PER_ENCODER_TICK) + BOTTOM_DIST_FROM_GROUND;
     }
 
-    private double heightFromGroundToEncoder(double heightFromGround) {
+    public synchronized double heightFromGroundToEncoder(double heightFromGround) {
         return (heightFromGround - BOTTOM_DIST_FROM_GROUND) / DISTANCE_PER_ENCODER_TICK - systemState.offset;
+    }
+
+    public synchronized double encoderToHeightFromGround(double encoder) {
+        return (encoder + systemState.offset) * DISTANCE_PER_ENCODER_TICK + BOTTOM_DIST_FROM_GROUND;
     }
 
     public enum ElevatorControlMode {
         OPEN_LOOP,
-        POSITION_PID
+        POSITION_PID,
+        ZEROING
     }
 
     public enum ElevatorPosition {
@@ -114,17 +132,16 @@ public class ElevatorStateMachine {
         public boolean isCargoInHold;
         public double maximumOutput;
         public double minimumOutput;
-        double encoderFiltered;
-        double distFromGround;
-        double offset;
-        double desiredOpenLoopPercentage;
-        ElevatorPosition desiredPosition;
-        ElevatorControlMode state = ElevatorControlMode.OPEN_LOOP;
-
-        // Output
-
         public double demand;
         public double feedforward;
         public ControlType controlType = ControlType.kDutyCycle;
+        double encoderFiltered;
+        double heightFromGround;
+        double offset;
+
+        // Output
+        double desiredOpenLoopPercentage;
+        ElevatorPosition desiredPosition;
+        ElevatorControlMode state = ElevatorControlMode.OPEN_LOOP;
     }
 }

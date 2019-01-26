@@ -86,7 +86,7 @@ public class OperatorGamepad implements OperatorHid {
 
     @Override
     public double hatchManual() {
-        return operatorGamepad.getY(Hand.kLeft);
+        return 0.5 * -operatorGamepad.getY(Hand.kLeft);
     }
 
     @Override

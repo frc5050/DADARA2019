@@ -9,7 +9,7 @@ import java.util.List;
 import static frc.utils.Constants.LOOPER_SHUFFLEBOARD;
 
 public class Looper implements LooperInterface {
-    private static final double PERIOD = 0.01;
+    public static final double PERIOD = 0.01;
     private final Notifier notifier;
     private final List<Loop> loops;
     private final Object runningLock = new Object();

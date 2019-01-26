@@ -69,61 +69,51 @@ public class GameController implements GameHid {
 
     @Override
     public boolean setElevatorPositionLowCargo() {
-        // TODO(Raina)
         return operatorHid.setElevatorPositionLowCargo();
     }
 
     @Override
     public boolean setElevatorPositionMidCargo() {
-        // TODO(Raina)
         return operatorHid.setElevatorPositionMidCargo();
     }
 
     @Override
     public boolean setElevatorPositionHighCargo() {
-        // TODO(Raina)
         return operatorHid.setElevatorPositionHighCargo();
     }
 
     @Override
     public boolean setElevatorPositionGroundHatch() {
-        // TODO(Raina)
         return operatorHid.setElevatorPositionGroundHatch();
     }
 
     @Override
     public boolean setElevatorPositionLowHatch() {
-        // TODO(Raina)
         return operatorHid.setElevatorPositionLowHatch();
     }
 
     @Override
     public boolean setElevatorPositionMidHatch() {
-        // TODO(Raina)
         return operatorHid.setElevatorPositionMidHatch();
     }
 
     @Override
     public boolean setElevatorPositionHighHatch() {
-        // TODO(Raina)
         return operatorHid.setElevatorPositionHighHatch();
     }
 
     @Override
     public double hatchManual() {
-        // TODO(Raina)
-        return 0;
+        return operatorHid.hatchManual();
     }
 
     @Override
     public double elevateManual() {
-        // TODO(Raina)
-        return 0;
+        return operatorHid.elevateManual();
     }
 
     @Override
     public boolean hatchRelease() {
-        // TODO(Raina)
         return operatorHid.hatchRelease();
     }
 }
