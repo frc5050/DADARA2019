@@ -16,7 +16,6 @@ public class Looper implements LooperInterface {
     private boolean running;
     private double timestamp = 0.0;
     private double dt = 0.0;
-
     private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
