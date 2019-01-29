@@ -1,6 +1,6 @@
 package frc.subsystem.test;
 
-import frc.robot.GameController;
+import frc.inputs.GameController;
 
 import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
 

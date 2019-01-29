@@ -19,6 +19,10 @@ public interface OperatorHid {
 
     boolean cargoOuttakeLeft();
 
+    boolean cargoIntakeRight();
+
+    boolean cargoIntakeLeft();
+
     // Elevator
     boolean setElevatorPositionLowCargo();
 
@@ -35,6 +39,8 @@ public interface OperatorHid {
     boolean setElevatorPositionHighHatch();
 
     double hatchManual();
+
+    boolean useHatchOpenLoop();
 
     double elevateManual();
 

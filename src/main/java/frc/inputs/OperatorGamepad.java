@@ -9,12 +9,11 @@ import frc.utils.Constants;
  * operated with a gamepad.
  */
 public class OperatorGamepad implements OperatorHid {
-
     private static final int POV_DPAD_UP = 0;
     private static final int POV_DPAD_RIGHT = 90;
     private static final int POV_DPAD_DOWN = 180;
     private static final int POV_DPAD_LEFT = 270;
-    private static final double trigger_Threshold = .9;
+    private static final double TRIGGER_THRESHOLD = .9;
     private static OperatorGamepad instance;
     private final XboxController operatorGamepad;
 
@@ -49,6 +48,20 @@ public class OperatorGamepad implements OperatorHid {
         return operatorGamepad.getPOV() == POV_DPAD_LEFT;
     }
 
+    private boolean invertLeftRight(){
+        return operatorGamepad.getRawButton(8);
+    }
+
+    @Override
+    public boolean cargoIntakeRight() {
+        return cargoOuttakeRight() && invertLeftRight();
+    }
+
+    @Override
+    public boolean cargoIntakeLeft() {
+        return cargoOuttakeLeft() && invertLeftRight();
+    }
+
     @Override
     public boolean setElevatorPositionLowCargo() {
         return operatorGamepad.getAButton();
@@ -80,7 +93,7 @@ public class OperatorGamepad implements OperatorHid {
    */
     @Override
     public boolean setElevatorPositionMidHatch() {
-        return operatorGamepad.getTriggerAxis(Hand.kRight) > trigger_Threshold;
+        return operatorGamepad.getTriggerAxis(Hand.kRight) > TRIGGER_THRESHOLD;
     }
 
   /**
@@ -89,12 +102,17 @@ public class OperatorGamepad implements OperatorHid {
    */
     @Override
     public boolean setElevatorPositionHighHatch() {
-        return operatorGamepad.getTriggerAxis(Hand.kLeft) > trigger_Threshold;
+        return operatorGamepad.getTriggerAxis(Hand.kLeft) > TRIGGER_THRESHOLD;
     }
 
     @Override
     public double hatchManual() {
-        return 0.5 * -operatorGamepad.getY(Hand.kLeft);
+        return -operatorGamepad.getY(Hand.kLeft);
+    }
+
+    @Override
+    public boolean useHatchOpenLoop() {
+        return operatorGamepad.getRawButton(7);
     }
 
     @Override

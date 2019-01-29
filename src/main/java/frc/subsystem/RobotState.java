@@ -1,7 +1,7 @@
 package frc.subsystem;
 
 import static frc.utils.Constants.ROBOT_STATE_SHUFFLEBOARD;
-
+// Creates subsystem variables and allows for use of instances in other functions
 public class RobotState extends Subsystem {
     // TODO actually implement an odometry system. ORB-SLAM/SVO/Simple Wheel odometry might be useful?
     //  adding an extra notifier just for this might be worth it if it proves useful

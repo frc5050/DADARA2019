@@ -12,10 +12,22 @@ public class CargoState {
 
     // What state to set the intake to
     public enum IntakeState {
-        INTAKE,
-        OUTTAKE_FRONT,
-        OUTTAKE_LEFT,
-        OUTTAKE_RIGHT,
-        STOPPED
+        INTAKE(true),
+        INTAKE_LEFT(true),
+        INTAKE_RIGHT(true),
+        OUTTAKE_FRONT(false),
+        OUTTAKE_LEFT(false),
+        OUTTAKE_RIGHT(false),
+        STOPPED(false);
+
+        private boolean stopOnSensor;
+
+        IntakeState(boolean stopOnSensor){
+            this.stopOnSensor = stopOnSensor;
+        }
+
+        public boolean getStopOnSensor(){
+            return stopOnSensor;
+        }
     }
 }

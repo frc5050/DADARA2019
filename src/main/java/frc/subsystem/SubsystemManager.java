@@ -1,6 +1,7 @@
 package frc.subsystem;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import frc.loops.Loop;
 import frc.loops.Looper;
 import frc.loops.LooperInterface;
@@ -12,9 +13,16 @@ public class SubsystemManager implements LooperInterface {
     private final List<Subsystem> subsystems;
 
     private List<Loop> loops = new ArrayList<>();
+    // TODO measure
+    private double[] lastTimestamps;
 
     public SubsystemManager(List<Subsystem> subsystems) {
         this.subsystems = subsystems;
+        lastTimestamps = new double[subsystems.size()];
+        double timestamp = Timer.getFPGATimestamp();
+        for(int i = 0; i < lastTimestamps.length; i++){
+            lastTimestamps[i] = timestamp;
+        }
     }
 
     public void stop() {
@@ -24,11 +32,15 @@ public class SubsystemManager implements LooperInterface {
     }
 
     public void outputTelemetry() {
-        subsystems.forEach(Subsystem::outputTelemetry);
+        for (Subsystem subsystem : subsystems) {
+            subsystem.outputTelemetry();
+        }
     }
 
     public void registerEnabledLoops(Looper looper) {
-        subsystems.forEach((s) -> s.registerEnabledLoops(this));
+        for (Subsystem s : subsystems) {
+            s.registerEnabledLoops(this);
+        }
         looper.registerLoop(new EnabledLoop());
     }
 
