@@ -9,6 +9,7 @@ public class GameController implements GameHid {
     private final DriverHid driverHid;
     private final OperatorHid operatorHid;
 
+
     private GameController() {
         if (Constants.USE_JOYSTICK_FOR_DRIVING) {
             driverHid = DriverJoystick.getInstance();
@@ -17,6 +18,7 @@ public class GameController implements GameHid {
         }
         operatorHid = OperatorGamepad.getInstance();
     }
+
 
     public static GameController getInstance() {
         if (instance == null) {

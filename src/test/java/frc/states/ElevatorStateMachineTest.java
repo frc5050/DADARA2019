@@ -15,76 +15,97 @@ public class ElevatorStateMachineTest {
 
      */
 
-    public static final double EPSILON = 1E-10;
-    private ElevatorStateMachine elevatorStateMachine;
-    private ElevatorStateMachine.ElevatorState elevatorState = new ElevatorStateMachine.ElevatorState();
+  public static final double EPSILON = 1E-4;
+  private ElevatorStateMachine elevatorStateMachine;
+  private ElevatorStateMachine.ElevatorState elevatorState = new ElevatorStateMachine.ElevatorState();
 
-    @Before
-    public void setup() {
-        elevatorStateMachine = new ElevatorStateMachine();
-        elevatorState = new ElevatorStateMachine.ElevatorState();
+  @Before
+  public void setup() {
+    elevatorStateMachine = new ElevatorStateMachine();
+    elevatorState = new ElevatorStateMachine.ElevatorState();
+  }
+//
+
+  /**
+   * Zeroes the encoders no matter what position the height started at
+   */
+  @Test
+  public void zeroes() {
+
+    final double startHeightFake = 100;
+    final double startHeightFakeEncoder = elevatorStateMachine.heightFromGroundToEncoder(100);
+    double position = 0.4;
+    final double deltaHeight = position - startHeightFake;
+    elevatorStateMachine.setZeroing();
+    elevatorState.encoder = startHeightFakeEncoder;
+    double lastPosition = position;
+    elevatorState = elevatorStateMachine.update(elevatorState);
+    elevatorState.encoder = elevatorState.demand;
+    double timestamp = 0.0;
+    while (timestamp < 100.0 && elevatorState.state == ElevatorControlMode.ZEROING) {
+      elevatorState = elevatorStateMachine.update(elevatorState);
+      lastPosition = position;
+      position = elevatorState.heightFromGround + deltaHeight;
+      elevatorState.encoder = elevatorState.demand;
+      elevatorState.bottomLimitTouched = position <= BOTTOM_DIST_FROM_GROUND;
+      if (elevatorState.state == ElevatorControlMode.ZEROING) {
+          Assert.assertEquals(ZEROING_VELOCITY * PERIOD, lastPosition - position, EPSILON);
+      }
+      timestamp += PERIOD;
     }
+    Assert.assertEquals(elevatorState.heightFromGround, BOTTOM_DIST_FROM_GROUND, EPSILON);
+    Assert.assertEquals(elevatorState.demand, elevatorStateMachine.heightFromGroundToEncoder(BOTTOM_DIST_FROM_GROUND), EPSILON);
+  }
 
-    @Test
-    public void zeroes(){
-        final double startingEncoder = 100;
-        elevatorStateMachine.setZeroing();
-        elevatorState.encoder = startingEncoder;
-        elevatorState = elevatorStateMachine.update(elevatorState);
-        double lastDistFromGround = elevatorState.heightFromGround;
-        double timestamp = 0.0;
-        while(timestamp < 10.0){
-            lastDistFromGround = elevatorState.heightFromGround;
-            elevatorState.encoder = elevatorState.demand;
-            elevatorState = elevatorStateMachine.update(elevatorState);
-            Assert.assertEquals(ZEROING_VELOCITY * PERIOD, lastDistFromGround - elevatorState.heightFromGround, EPSILON);
-            timestamp += PERIOD;
-        }
-    }
+  /**
+   * Ensures that the encoder zeroes properly.
+   */
+  @Test
+  public void limitZeroing() {
+    // TODO add in negative and zero offsets and a negative delta
+    final double offsetValue = 100;
+    final double deltaFromOffset = 20;
 
-    @Test
-    public void limitZeroing() {
-        // TODO add in negative and zero offsets and a negative delta
-        final double offsetValue = 100;
-        final double deltaFromOffset = 20;
+    Assert.assertEquals(0.0, elevatorState.encoderFiltered, EPSILON);
+    elevatorState.bottomLimitTouched = true;
 
-        Assert.assertEquals(0.0, elevatorState.encoderFiltered, EPSILON);
-        elevatorState.bottomLimitTouched = true;
+    elevatorState.encoder = offsetValue;
+    elevatorState = elevatorStateMachine.update(elevatorState);
+    Assert.assertEquals(0, elevatorState.encoderFiltered, EPSILON);
 
-        elevatorState.encoder = offsetValue;
-        elevatorState = elevatorStateMachine.update(elevatorState);
-        Assert.assertEquals(0, elevatorState.encoderFiltered, EPSILON);
+    elevatorState.bottomLimitTouched = false;
+    elevatorState.encoder = offsetValue + deltaFromOffset;
+    elevatorState = elevatorStateMachine.update(elevatorState);
+    Assert.assertEquals(deltaFromOffset, elevatorState.encoderFiltered, EPSILON);
+  }
 
-        elevatorState.bottomLimitTouched = false;
-        elevatorState.encoder = offsetValue + deltaFromOffset;
-        elevatorState = elevatorStateMachine.update(elevatorState);
-        Assert.assertEquals(deltaFromOffset, elevatorState.encoderFiltered, EPSILON);
-    }
+  /**
+   * Whatever you put in, you will get out.
+   */
+  @Test
+  public void setOpenLoop() {
+    final double percentage = 0.7;
+    final double percentageNegative = -0.7;
+    final double percentageZero = 0.0;
+    final double insaneFeedForward = 100000.0;
+    ElevatorStateMachine.ElevatorState elevatorState = new ElevatorStateMachine.ElevatorState();
 
-    @Test
-    public void setOpenLoop(){
-        final double percentage = 0.7;
-        final double percentageNegative = -0.7;
-        final double percentageZero = 0.0;
-        final double insaneFeedForward = 100000.0;
-        ElevatorStateMachine.ElevatorState elevatorState = new ElevatorStateMachine.ElevatorState();
+    elevatorStateMachine.setOpenLoop(percentage);
+    elevatorState.feedforward = insaneFeedForward;
+    elevatorState = elevatorStateMachine.update(elevatorState);
+    Assert.assertEquals(percentage, elevatorState.demand, EPSILON);
+    Assert.assertEquals(0.0, elevatorState.feedforward, EPSILON);
 
-        elevatorStateMachine.setOpenLoop(percentage);
-        elevatorState.feedforward = insaneFeedForward;
-        elevatorState = elevatorStateMachine.update(elevatorState);
-        Assert.assertEquals(percentage, elevatorState.demand, EPSILON);
-        Assert.assertEquals(0.0, elevatorState.feedforward, EPSILON);
+    elevatorStateMachine.setOpenLoop(percentageNegative);
+    elevatorState.feedforward = insaneFeedForward;
+    elevatorState = elevatorStateMachine.update(elevatorState);
+    Assert.assertEquals(percentageNegative, elevatorState.demand, EPSILON);
+    Assert.assertEquals(0.0, elevatorState.feedforward, EPSILON);
 
-        elevatorStateMachine.setOpenLoop(percentageNegative);
-        elevatorState.feedforward = insaneFeedForward;
-        elevatorState = elevatorStateMachine.update(elevatorState);
-        Assert.assertEquals(percentageNegative, elevatorState.demand, EPSILON);
-        Assert.assertEquals(0.0, elevatorState.feedforward, EPSILON);
-
-        elevatorStateMachine.setOpenLoop(percentageZero);
-        elevatorState.feedforward = insaneFeedForward;
-        elevatorState = elevatorStateMachine.update(elevatorState);
-        Assert.assertEquals(percentageZero, elevatorState.demand, EPSILON);
-        Assert.assertEquals(0, elevatorState.feedforward, EPSILON);
-    }
+    elevatorStateMachine.setOpenLoop(percentageZero);
+    elevatorState.feedforward = insaneFeedForward;
+    elevatorState = elevatorStateMachine.update(elevatorState);
+    Assert.assertEquals(percentageZero, elevatorState.demand, EPSILON);
+    Assert.assertEquals(0, elevatorState.feedforward, EPSILON);
+  }
 }
