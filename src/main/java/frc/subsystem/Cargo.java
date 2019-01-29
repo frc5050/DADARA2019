@@ -12,6 +12,7 @@ import frc.utils.Constants;
 import static frc.utils.Constants.CARGO_SHUFFLEBOARD;
 
 public class Cargo extends Subsystem {
+    private static final double MAXIMUM_VOLTAGE = 12.0;
     private static Cargo instance;
 
     // Hardware
@@ -30,12 +31,17 @@ public class Cargo extends Subsystem {
         rightRear = new WPI_TalonSRX(Constants.CARGO_LEFT);
         leftRear = new WPI_TalonSRX(Constants.CARGO_RIGHT);
         intake = new WPI_TalonSRX(Constants.INTAKE);
-        centerSide.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
-        rightRear.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
-        leftRear.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
-        intake.configVoltageCompSaturation(12.0, Constants.CAN_TIMEOUT_MS);
 
-        // TODO confirm output
+        centerSide.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
+        rightRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
+        leftRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
+        intake.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
+
+        centerSide.enableVoltageCompensation(true);
+        rightRear.enableVoltageCompensation(true);
+        leftRear.enableVoltageCompensation(true);
+        intake.enableVoltageCompensation(true);
+
         rightRear.setInverted(true);
     }
 

@@ -22,5 +22,6 @@ public interface DriverHid {
     boolean retractLeftJack();
     boolean extendRightJack();
     boolean retractRightJack();
-    DriveSignal runWheels();
+    DriveSignal runJackWheels();
+    boolean holdAll();
 }

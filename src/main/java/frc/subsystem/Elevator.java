@@ -9,10 +9,10 @@ import frc.states.ElevatorStateMachine;
 import static frc.utils.Constants.*;
 
 public class Elevator extends Subsystem {
+    private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushed;
     private static Elevator instance;
     private final CANSparkMax left;
     private final CANSparkMax right;
-    private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushed;
     private ElevatorStateMachine elevatorStateMachine = new ElevatorStateMachine();
     private ElevatorStateMachine.ElevatorState elevatorState = new ElevatorStateMachine.ElevatorState();
 
@@ -21,9 +21,10 @@ public class Elevator extends Subsystem {
         right = new CANSparkMax(RIGHT_LIFT_NEO, MOTOR_TYPE);
         left.setIdleMode(CANSparkMax.IdleMode.kBrake);
         right.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        right.setInverted(true);
-        left.setInverted(true);
-        right.follow(left);
+//        right.follow(left);
+        right.setInverted(false);
+        left.setInverted(false);
+//        left.getPIDController().setOutputRange(-1.0, 1.0);
 
         elevatorState.encoder = 0;
         elevatorState.bottomLimitTouched = false;
@@ -74,11 +75,13 @@ public class Elevator extends Subsystem {
     }
 
     private synchronized void updateOutputFromState(ElevatorStateMachine.ElevatorState newState) {
-        left.getPIDController().setReference(newState.demand, newState.controlType, 0, newState.feedforward);
-        left.getPIDController().setOutputRange(newState.minimumOutput, newState.maximumOutput);
+        left.set(newState.demand);
+        right.set(-newState.demand);
+//        left.getPIDController().setOutputRange(newState.minimumOutput, newState.maximumOutput);
+
     }
 
-    private synchronized ElevatorStateMachine.ElevatorState getUpdatedElevatorState(){
+    private synchronized ElevatorStateMachine.ElevatorState getUpdatedElevatorState() {
         elevatorState.isCargoInHold = false;
         elevatorState.bottomLimitTouched = false;
         elevatorState.encoder = left.getEncoder().getPosition();
@@ -88,6 +91,26 @@ public class Elevator extends Subsystem {
     @Override
     public void outputTelemetry() {
         ELEVATOR_SHUFFLEBOARD.putString("Control Type", elevatorState.controlType.toString());
+//        byte[] leftSerialNo = left.getSerialNumber();
+//        StringBuilder leftSerial = new StringBuilder();
+//        for (byte b : leftSerialNo) {
+//            leftSerial.append(b);
+//        }
+//
+//        byte[] rightSerialNo = right.getSerialNumber();
+//        StringBuilder rightSerial = new StringBuilder();
+//        for (byte b : rightSerialNo) {
+//            rightSerial.append(b);
+//        }
+//
+//        ELEVATOR_SHUFFLEBOARD.putString("Left Firmware", left.getFirmwareString());
+//        ELEVATOR_SHUFFLEBOARD.putString("Right Firmware", right.getFirmwareString());
+//        ELEVATOR_SHUFFLEBOARD.putNumber("Right Firmware No", right.getFirmwareVersion());
+//        ELEVATOR_SHUFFLEBOARD.putNumber("Left Firmware No", left.getFirmwareVersion());
+//        ELEVATOR_SHUFFLEBOARD.putString("Left Serial No.", leftSerial.toString());
+//        ELEVATOR_SHUFFLEBOARD.putString("Right Serial No.", rightSerial.toString());
+//        ELEVATOR_SHUFFLEBOARD.putNumber("Left Device Id", left.getDeviceId());
+//        ELEVATOR_SHUFFLEBOARD.putNumber("Right Device Id", right.getDeviceId());
         ELEVATOR_SHUFFLEBOARD.putNumber("Demand", elevatorState.demand);
         ELEVATOR_SHUFFLEBOARD.putNumber("FeedForward", elevatorState.feedforward);
         ELEVATOR_SHUFFLEBOARD.putBoolean("Cargo In Hold", elevatorState.isCargoInHold);

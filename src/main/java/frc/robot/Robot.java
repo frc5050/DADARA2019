@@ -9,9 +9,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.inputs.GameController;
 import frc.loops.Looper;
 import frc.states.CargoState;
 import frc.subsystem.*;
+import frc.subsystem.Jacks.JackLiftState;
 
 import java.util.Arrays;
 
@@ -27,17 +29,19 @@ public class Robot extends TimedRobot {
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
             Cargo.getInstance(),
-            Elevator.getInstance(),
-            HatchMechanism.getInstance()
+//            Elevator.getInstance(),
+            Hatch2.getInstance(),
+            Jacks.getInstance()
     ));
     //    private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
     private Looper enabledLooper = new Looper();
     private Looper disabledLooper = new Looper();
     private GameController gameController = GameController.getInstance();
     private Drive drive = Drive.getInstance();
-    private Cargo cargo = Cargo.getInstance();
-    private Elevator elevator = Elevator.getInstance();
-    private HatchMechanism hatch = HatchMechanism.getInstance();
+        private Cargo cargo = Cargo.getInstance();
+//    private Elevator elevator = Elevator.getInstance();
+    private Hatch2 hatch = Hatch2.getInstance();
+    private Jacks jacks = Jacks.getInstance();
 
 //    private SubsystemTest subsystemTest;
 
@@ -67,13 +71,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-//        enabledLooper.stop();
-//        disabledLooper.start();
+        enabledLooper.stop();
+        disabledLooper.start();
     }
 
     @Override
-    public void disabledPeriodic(){
-
+    public void disabledPeriodic() {
+//        hatch.outputTelemetry();
     }
 
     @Override
@@ -96,10 +100,17 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drive.setOpenLoop(gameController.getDriveSignal());
-        hatch.setOpenLoop(gameController.hatchManual());
-
+        if(gameController.useHatchOpenLoop()) {
+            hatch.setOpenLoop(gameController.hatchManual());
+        } else {
+            hatch.setPosition(gameController.hatchManual());
+        }
         if (gameController.cargoIntake()) {
             cargo.setDesiredState(CargoState.IntakeState.INTAKE);
+        } else if(gameController.cargoIntakeLeft()){
+            cargo.setDesiredState(CargoState.IntakeState.INTAKE_LEFT);
+        } else if(gameController.cargoIntakeRight()){
+            cargo.setDesiredState(CargoState.IntakeState.INTAKE_RIGHT);
         } else if (gameController.cargoOuttakeLeft()) {
             cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_LEFT);
         } else if (gameController.cargoOuttakeRight()) {
@@ -110,12 +121,60 @@ public class Robot extends TimedRobot {
             cargo.setDesiredState(CargoState.IntakeState.STOPPED);
         }
 
+        if (!gameController.liftJack()) {
+            boolean useGyroCorrection = false;
+            boolean boostedRearHold = false;
+            JackLiftState left, right, front;
+
+            if (gameController.retractLeftJack()) {
+                left = JackLiftState.RETRACT;
+            } else if (gameController.extendLeftJack()) {
+                left = JackLiftState.LIFT;
+            } else {
+                left = JackLiftState.NEUTRAL;
+            }
+
+            if (gameController.retractRightJack()) {
+                right = JackLiftState.RETRACT;
+            } else if (gameController.extendRightJack()) {
+                right = JackLiftState.LIFT;
+            } else {
+                right = JackLiftState.NEUTRAL;
+            }
+
+            if (gameController.retractFrontJack()) {
+                front = JackLiftState.RETRACT;
+                left = JackLiftState.HOLD;
+                right = JackLiftState.HOLD;
+                useGyroCorrection = true;
+                boostedRearHold = true;
+            } else if (gameController.extendFrontJack()) {
+                // TODO switch this to retract
+                front = JackLiftState.LIFT;
+                left = JackLiftState.HOLD;
+                right = JackLiftState.HOLD;
+                useGyroCorrection = true;
+                boostedRearHold = false;
+            } else {
+                front = JackLiftState.NEUTRAL;
+            }
+
+            if (gameController.holdAll()) {
+                front = JackLiftState.HOLD;
+                left = JackLiftState.HOLD;
+                right = JackLiftState.HOLD;
+                useGyroCorrection = true;
+            }
+
+            jacks.jackMod(front, left, right, useGyroCorrection, boostedRearHold);
+            jacks.runWheels(gameController.runJackWheels());
+        } else {
+            jacks.automaticSyncLiftBasic();
+        }
 
 //        elevator.setOpenLoop(gameController.elevateManual());
 
-//        if (gameController.liftJack()) {
-//            jacks.automaticSyncLiftBasic();
-//        }
+        subsystemManager.outputTelemetry();
     }
 
     // TODO add more tests
@@ -169,7 +228,7 @@ public class Robot extends TimedRobot {
 //        CARGO_TEST("Cargo Automated Test"),
 //        HATCH_MECHANISM_TEST("Hatch Automated Test"),
 //        ELEVATOR_TEST("Elevator Automated Test"),
-//        JACKS_TEST("Jacks Test"),
+//        JACKS_TEST("Test"),
 //        ROBOT_STATE_TEST("Robot State Test");
 //
 //

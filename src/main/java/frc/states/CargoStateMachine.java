@@ -14,7 +14,7 @@ public class CargoStateMachine {
 
     public synchronized CargoState onUpdate(CargoState currentState) {
         // If ball is in hold, don't allow running the intake any more
-        if (currentState.ballInHold && desiredIntakeState == CargoState.IntakeState.INTAKE) {
+        if (currentState.ballInHold && desiredIntakeState.getStopOnSensor()) {
             systemState.intakeState = CargoState.IntakeState.STOPPED;
         } else {
             systemState.intakeState = desiredIntakeState;
@@ -33,32 +33,44 @@ public class CargoStateMachine {
         switch (systemState.intakeState) {
             case INTAKE:
                 systemState.rearMotorOutput = 0.0;
-                systemState.rightMotorOutput = DEFAULT_INTAKE_POWER;
                 systemState.leftMotorOutput = DEFAULT_INTAKE_POWER;
+                systemState.rightMotorOutput = DEFAULT_INTAKE_POWER;
                 systemState.intakeOutput = DEFAULT_INTAKE_POWER;
+                break;
+            case INTAKE_LEFT:
+                systemState.rearMotorOutput = -DEFAULT_OUTTAKE_POWER;
+                systemState.leftMotorOutput = 0.0;
+                systemState.rightMotorOutput = -DEFAULT_OUTTAKE_POWER;
+                systemState.intakeOutput = 0.0;
+                break;
+            case INTAKE_RIGHT:
+                systemState.rearMotorOutput = DEFAULT_OUTTAKE_POWER;
+                systemState.leftMotorOutput = -DEFAULT_OUTTAKE_POWER;
+                systemState.rightMotorOutput = 0.0;
+                systemState.intakeOutput = 0.0;
                 break;
             case OUTTAKE_FRONT:
                 systemState.rearMotorOutput = 0.0;
-                systemState.rightMotorOutput = -DEFAULT_OUTTAKE_POWER;
                 systemState.leftMotorOutput = -DEFAULT_OUTTAKE_POWER;
+                systemState.rightMotorOutput = -DEFAULT_OUTTAKE_POWER;
                 systemState.intakeOutput = -DEFAULT_OUTTAKE_POWER;
                 break;
             case OUTTAKE_LEFT:
                 systemState.rearMotorOutput = DEFAULT_OUTTAKE_POWER;
-                systemState.rightMotorOutput = DEFAULT_OUTTAKE_POWER;
                 systemState.leftMotorOutput = DEFAULT_OUTTAKE_POWER;
+                systemState.rightMotorOutput = DEFAULT_OUTTAKE_POWER;
                 systemState.intakeOutput = 0.0;
                 break;
             case OUTTAKE_RIGHT:
                 systemState.rearMotorOutput = -DEFAULT_OUTTAKE_POWER;
-                systemState.rightMotorOutput = DEFAULT_OUTTAKE_POWER;
                 systemState.leftMotorOutput = DEFAULT_OUTTAKE_POWER;
+                systemState.rightMotorOutput = DEFAULT_OUTTAKE_POWER;
                 systemState.intakeOutput = 0.0;
                 break;
             case STOPPED:
                 systemState.rearMotorOutput = 0.0;
-                systemState.rightMotorOutput = 0.0;
                 systemState.leftMotorOutput = 0.0;
+                systemState.rightMotorOutput = 0.0;
                 systemState.intakeOutput = 0.0;
                 break;
         }

@@ -1,6 +1,5 @@
-package frc.robot;
+package frc.inputs;
 
-import frc.inputs.*;
 import frc.utils.Constants;
 import frc.utils.DriveSignal;
 
@@ -73,8 +72,13 @@ public class GameController implements GameHid {
     }
 
     @Override
-    public DriveSignal runWheels() {
-        return driverHid.runWheels();
+    public DriveSignal runJackWheels() {
+        return driverHid.runJackWheels();
+    }
+
+    @Override
+    public boolean holdAll() {
+        return driverHid.holdAll();
     }
 
 
@@ -100,6 +104,16 @@ public class GameController implements GameHid {
     @Override
     public boolean cargoOuttakeLeft() {
         return operatorHid.cargoOuttakeLeft();
+    }
+
+    @Override
+    public boolean cargoIntakeRight() {
+        return operatorHid.cargoIntakeRight();
+    }
+
+    @Override
+    public boolean cargoIntakeLeft() {
+        return operatorHid.cargoIntakeLeft();
     }
 
     @Override
@@ -140,6 +154,11 @@ public class GameController implements GameHid {
     @Override
     public double hatchManual() {
         return operatorHid.hatchManual();
+    }
+
+    @Override
+    public boolean useHatchOpenLoop() {
+        return operatorHid.useHatchOpenLoop();
     }
 
     @Override

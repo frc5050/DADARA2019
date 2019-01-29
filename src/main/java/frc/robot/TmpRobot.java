@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.inputs.GameController;
 import frc.loops.Looper;
 import frc.subsystem.*;
 

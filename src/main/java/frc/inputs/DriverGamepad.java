@@ -64,7 +64,12 @@ public class DriverGamepad implements DriverHid {
     }
 
     @Override
-    public DriveSignal runWheels() {
+    public DriveSignal runJackWheels() {
         return null;
+    }
+
+    @Override
+    public boolean holdAll() {
+        return false;
     }
 }
