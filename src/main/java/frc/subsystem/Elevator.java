@@ -79,13 +79,8 @@ public class Elevator extends Subsystem {
 //        left.getPIDController().setOutputRange(newState.minimumOutput, newState.maximumOutput);
 
     }
-<<<<<<< HEAD
 
-    private synchronized ElevatorStateMachine.ElevatorState getUpdatedElevatorState() {
-=======
-// References the elevator state machine to update the elevator state
     private synchronized ElevatorStateMachine.ElevatorState getUpdatedElevatorState(){
->>>>>>> 3db683f9b1e01e85553f3384a7b0309db424d70b
         elevatorState.isCargoInHold = false;
         elevatorState.bottomLimitTouched = false;
         elevatorState.encoder = left.getEncoder().getPosition();

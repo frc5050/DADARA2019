@@ -6,6 +6,7 @@ import frc.utils.Constants;
 import frc.utils.DriveSignal;
 
 import static frc.utils.Constants.JACKS_SHUFFLEBOARD;
+
 // Creates subsystem variables and initializes motors
 public class Jacks extends Subsystem {
 
@@ -37,6 +38,7 @@ public class Jacks extends Subsystem {
         // TODO test the wheel inversion
         rightRearWheel.setInverted(true);
     }
+
     // Creates an instance only if there is no existing instance to avoid conflicts
     public static Jacks getInstance() {
         if (instance == null) {
@@ -44,6 +46,7 @@ public class Jacks extends Subsystem {
         }
         return instance;
     }
+
     // Outputs to shuffleboard
     @Override
     public void outputTelemetry() {
@@ -69,6 +72,7 @@ public class Jacks extends Subsystem {
     public synchronized void stop() {
         periodicIo = new PeriodicIO();
     }
+
     // Creates outputs to motors/wheels
     @Override
     public synchronized void writePeriodicOutputs() {
@@ -104,11 +108,11 @@ public class Jacks extends Subsystem {
         periodicIo.leftRearJackOutput = left.getMultiplier() * LEFT_REAR_LIFT_MULTIPLIER;
         periodicIo.rightRearJackOutput = right.getMultiplier() * RIGHT_REAR_LIFT_MULTIPLIER;
 
-        if(useGyroCorrection){
+        if (useGyroCorrection) {
             gyroCorrect();
         }
 
-        if(boostedRearHold){
+        if (boostedRearHold) {
             periodicIo.leftRearJackOutput *= 1.8;
             periodicIo.rightRearJackOutput *= 1.8;
         }
@@ -118,25 +122,14 @@ public class Jacks extends Subsystem {
         periodicIo.leftRearWheelOutput = driveSignal.getLeftOutput();
         periodicIo.rightRearWheelOutput = driveSignal.getRightOutput();
     }
-<<<<<<< HEAD
 
-    private synchronized void gyroCorrect(){
-
-        // Rear + roll
-        // Front - roll
-
-        // Right + pitch
-        // Left - pitch
-
-        // If the roll is positive, the robot is tipping forwards so we should add power to front and subtract from rear
-        // If the pitch is positive, the robot is tipping to the left so we should add to the left and subtract from the front
-=======
+    // If the roll is positive, the robot is tipping forwards so we should add power to front and subtract from rear
+    // If the pitch is positive, the robot is tipping to the left so we should add to the left and subtract from the front
     // Process for automatically using the lifts at the same time to climb lvl 3
-    public synchronized void automaticSyncLiftBasic() {
+    public synchronized void gyroCorrect() {
         // TODO confirm that
         //  roll + = robot rear coming up
         //  pitch + = right side coming up
->>>>>>> 3db683f9b1e01e85553f3384a7b0309db424d70b
         final double pitchCorrectionKp = 0.05; // %vbus per degree
         final double rollCorrectionKp = 0.05; // %vbus per degree
         final double pitchCorrectionOutput = pitchCorrectionKp * periodicIo.pitch;
@@ -156,6 +149,7 @@ public class Jacks extends Subsystem {
         liftAll();
         gyroCorrect();
     }
+
     // Lists the possible states the jacks move to
     public enum JackLiftState {
         LIFT(-1.0),
