@@ -7,7 +7,7 @@ import frc.loops.LooperInterface;
 import frc.states.ElevatorStateMachine;
 
 import static frc.utils.Constants.*;
-
+// Sets variables and creates a statemachine to track the positioning
 public class Elevator extends Subsystem {
     private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushed;
     private static Elevator instance;
@@ -15,7 +15,7 @@ public class Elevator extends Subsystem {
     private final CANSparkMax right;
     private ElevatorStateMachine elevatorStateMachine = new ElevatorStateMachine();
     private ElevatorStateMachine.ElevatorState elevatorState = new ElevatorStateMachine.ElevatorState();
-
+    // Initializes motors and controllers
     private Elevator() {
         left = new CANSparkMax(LEFT_LIFT_NEO, MOTOR_TYPE);
         right = new CANSparkMax(RIGHT_LIFT_NEO, MOTOR_TYPE);
@@ -30,22 +30,21 @@ public class Elevator extends Subsystem {
         elevatorState.bottomLimitTouched = false;
         elevatorState.isCargoInHold = false;
     }
-
+    // Creates new instance but only if there is not one already made
     public static Elevator getInstance() {
         if (instance == null) {
             instance = new Elevator();
         }
         return instance;
     }
-
+    // Sets open loop for Manuel control
     public synchronized void setOpenLoop(double power) {
         elevatorStateMachine.setOpenLoop(power);
     }
-
     public synchronized void setPosition(ElevatorStateMachine.ElevatorPosition position) {
         elevatorStateMachine.setPosition(position);
     }
-
+    // Creates a new loop, for stopping or starting
     @Override
     public void registerEnabledLoops(LooperInterface enabledLooper) {
         Loop loop = new Loop() {
@@ -80,14 +79,19 @@ public class Elevator extends Subsystem {
 //        left.getPIDController().setOutputRange(newState.minimumOutput, newState.maximumOutput);
 
     }
+<<<<<<< HEAD
 
     private synchronized ElevatorStateMachine.ElevatorState getUpdatedElevatorState() {
+=======
+// References the elevator state machine to update the elevator state
+    private synchronized ElevatorStateMachine.ElevatorState getUpdatedElevatorState(){
+>>>>>>> 3db683f9b1e01e85553f3384a7b0309db424d70b
         elevatorState.isCargoInHold = false;
         elevatorState.bottomLimitTouched = false;
         elevatorState.encoder = left.getEncoder().getPosition();
         return elevatorState;
     }
-
+// Outputs values to shuffleboard
     @Override
     public void outputTelemetry() {
         ELEVATOR_SHUFFLEBOARD.putString("Control Type", elevatorState.controlType.toString());

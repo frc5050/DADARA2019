@@ -6,7 +6,7 @@ import frc.utils.Constants;
 import frc.utils.DriveSignal;
 
 import static frc.utils.Constants.JACKS_SHUFFLEBOARD;
-
+// Creates subsystem variables and initializes motors
 public class Jacks extends Subsystem {
 
     // TODO(Lucas) use pidf + navx to control ratios while maximizing speed
@@ -37,14 +37,14 @@ public class Jacks extends Subsystem {
         // TODO test the wheel inversion
         rightRearWheel.setInverted(true);
     }
-
+    // Creates an instance only if there is no existing instance to avoid conflicts
     public static Jacks getInstance() {
         if (instance == null) {
             instance = new Jacks();
         }
         return instance;
     }
-
+    // Outputs to shuffleboard
     @Override
     public void outputTelemetry() {
         JACKS_SHUFFLEBOARD.putNumber("Pitch", periodicIo.pitch);
@@ -69,7 +69,7 @@ public class Jacks extends Subsystem {
     public synchronized void stop() {
         periodicIo = new PeriodicIO();
     }
-
+    // Creates outputs to motors/wheels
     @Override
     public synchronized void writePeriodicOutputs() {
         leftRearWheel.set(ControlMode.PercentOutput, periodicIo.leftRearWheelOutput);
@@ -118,6 +118,7 @@ public class Jacks extends Subsystem {
         periodicIo.leftRearWheelOutput = driveSignal.getLeftOutput();
         periodicIo.rightRearWheelOutput = driveSignal.getRightOutput();
     }
+<<<<<<< HEAD
 
     private synchronized void gyroCorrect(){
 
@@ -129,6 +130,13 @@ public class Jacks extends Subsystem {
 
         // If the roll is positive, the robot is tipping forwards so we should add power to front and subtract from rear
         // If the pitch is positive, the robot is tipping to the left so we should add to the left and subtract from the front
+=======
+    // Process for automatically using the lifts at the same time to climb lvl 3
+    public synchronized void automaticSyncLiftBasic() {
+        // TODO confirm that
+        //  roll + = robot rear coming up
+        //  pitch + = right side coming up
+>>>>>>> 3db683f9b1e01e85553f3384a7b0309db424d70b
         final double pitchCorrectionKp = 0.05; // %vbus per degree
         final double rollCorrectionKp = 0.05; // %vbus per degree
         final double pitchCorrectionOutput = pitchCorrectionKp * periodicIo.pitch;
@@ -148,7 +156,7 @@ public class Jacks extends Subsystem {
         liftAll();
         gyroCorrect();
     }
-
+    // Lists the possible states the jacks move to
     public enum JackLiftState {
         LIFT(-1.0),
         RETRACT(1.0),

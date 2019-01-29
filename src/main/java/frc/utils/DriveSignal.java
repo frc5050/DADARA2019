@@ -1,5 +1,5 @@
 package frc.utils;
-
+// Sets the values/variables for the drive signal to motors
 public class DriveSignal {
     public static final DriveSignal NEUTRAL = new DriveSignal(0, 0, false);
     public static final DriveSignal BRAKE = new DriveSignal(0, 0, true);
