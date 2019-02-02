@@ -99,11 +99,12 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drive.setOpenLoop(gameController.getDriveSignal());
-        if(gameController.useHatchOpenLoop()) {
-            hatch.setOpenLoop(gameController.hatchManual());
-        } else {
-            hatch.setPosition(gameController.hatchManual());
-        }
+      hatch.setOpenLoop(gameController.hatchManual());
+//      if(gameController.useHatchOpenLoop()) {
+//          hatch.setOpenLoop(gameController.hatchManual());
+//        } else {
+//            hatch.setPosition(gameController.hatchManual());
+//        }
         if (gameController.cargoIntake()) {
             cargo.setDesiredState(CargoState.IntakeState.INTAKE);
         } else if(gameController.cargoIntakeLeft()){
