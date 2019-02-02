@@ -87,11 +87,19 @@ public class OperatorGamepad implements OperatorHid {
         return operatorGamepad.getBumper(Hand.kLeft);
     }
 
+  /**
+   * Mid hatch position is set to the right trigger if it is greater than the trigger threshold.
+   * @return
+   */
     @Override
     public boolean setElevatorPositionMidHatch() {
         return operatorGamepad.getTriggerAxis(Hand.kRight) > TRIGGER_THRESHOLD;
     }
 
+  /**
+   * Sets the highHatch position to the left trigger if it is greater than the trigger threshold.
+   * @return
+   */
     @Override
     public boolean setElevatorPositionHighHatch() {
         return operatorGamepad.getTriggerAxis(Hand.kLeft) > TRIGGER_THRESHOLD;
@@ -117,5 +125,15 @@ public class OperatorGamepad implements OperatorHid {
         return operatorGamepad.getXButton();
     }
 
+    @Override
+    public double intakeTilt(){
+      double rightTrigger = operatorGamepad.getTriggerAxis(Hand.kRight);
+      if (rightTrigger > 0.03){
+        return rightTrigger;
+      } else {
+        return -operatorGamepad.getTriggerAxis(Hand.kLeft);
+      }
+
+    }
 
 }

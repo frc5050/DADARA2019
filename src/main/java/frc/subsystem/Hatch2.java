@@ -13,8 +13,7 @@ import frc.states.HatchStateMachine;
 
 import static frc.states.HatchStateMachine.PEAK_FORWARD_OUTPUT_STANDARD;
 import static frc.states.HatchStateMachine.PEAK_REVERSE_OUTPUT_STANDARD;
-import static frc.utils.Constants.HATCH;
-import static frc.utils.Constants.HATCH_SHUFFLEBOARD;
+import static frc.utils.Constants.*;
 
 public class Hatch2 extends Subsystem {
     private static final int SETTINGS_TIMEOUT = 30;

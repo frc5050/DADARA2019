@@ -29,7 +29,11 @@ public class Robot extends TimedRobot {
     private final SendableChooser<String> testChooser = new SendableChooser<>();
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
+<<<<<<< HEAD
             Cargo.getInstance(), 
+=======
+            Cargo.getInstance(),
+>>>>>>> 597574cc8063c4442d30ca66b0f19694697e4987
             Elevator.getInstance(),
             Hatch2.getInstance(),
             Jacks.getInstance()
@@ -40,11 +44,14 @@ public class Robot extends TimedRobot {
     private GameController gameController = GameController.getInstance();
     private Drive drive = Drive.getInstance();
         private Cargo cargo = Cargo.getInstance();
-//    private Elevator elevator = Elevator.getInstance();
+    private Elevator elevator = Elevator.getInstance();
     private Hatch2 hatch = Hatch2.getInstance();
     private Jacks jacks = Jacks.getInstance();
+<<<<<<< HEAD
     private Elevator elevator = Elevator.getInstance();
 
+=======
+>>>>>>> 597574cc8063c4442d30ca66b0f19694697e4987
 //    private SubsystemTest subsystemTest;
 
     @Override
@@ -102,12 +109,21 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drive.setOpenLoop(gameController.getDriveSignal());
+<<<<<<< HEAD
         elevator.setOpenLoop(gameController.elevateManual());
         if(gameController.useHatchOpenLoop()) {
             hatch.setOpenLoop(gameController.hatchManual());
         } else {
             hatch.setPosition(gameController.hatchManual());
         }
+=======
+      hatch.setOpenLoop(gameController.hatchManual());
+//      if(gameController.useHatchOpenLoop()) {
+//          hatch.setOpenLoop(gameController.hatchManual());
+//        } else {
+//            hatch.setPosition(gameController.hatchManual());
+//        }
+>>>>>>> 597574cc8063c4442d30ca66b0f19694697e4987
         if (gameController.cargoIntake()) {
             cargo.setDesiredState(CargoState.IntakeState.INTAKE);
         } else if(gameController.cargoIntakeLeft()){
@@ -123,6 +139,8 @@ public class Robot extends TimedRobot {
         } else {
             cargo.setDesiredState(CargoState.IntakeState.STOPPED);
         }
+
+        cargo.intakeTilt(gameController.intakeTilt());
 
         if (!gameController.liftJack()) {
             boolean useGyroCorrection = false;
@@ -176,7 +194,7 @@ public class Robot extends TimedRobot {
         }
         
 
-//        elevator.setOpenLoop(gameController.elevateManual());
+        elevator.setOpenLoop(gameController.elevateManual());
 
         subsystemManager.outputTelemetry();
     }

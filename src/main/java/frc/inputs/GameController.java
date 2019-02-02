@@ -8,6 +8,7 @@ public class GameController implements GameHid {
     private final DriverHid driverHid;
     private final OperatorHid operatorHid;
 
+
     private GameController() {
         if (Constants.USE_JOYSTICK_FOR_DRIVING) {
             driverHid = DriverJoystick.getInstance();
@@ -16,6 +17,7 @@ public class GameController implements GameHid {
         }
         operatorHid = OperatorGamepad.getInstance();
     }
+
 
     public static GameController getInstance() {
         if (instance == null) {
@@ -116,7 +118,12 @@ public class GameController implements GameHid {
         return operatorHid.cargoIntakeLeft();
     }
 
-    @Override
+  @Override
+  public double intakeTilt() {
+    return operatorHid.intakeTilt();
+  }
+
+  @Override
     public boolean setElevatorPositionLowCargo() {
         return operatorHid.setElevatorPositionLowCargo();
     }

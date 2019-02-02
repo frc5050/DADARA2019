@@ -1,5 +1,6 @@
 package frc.subsystem;
 
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import frc.loops.Loop;
@@ -18,6 +19,7 @@ public class Elevator extends Subsystem {
     // Initializes motors and controllers
     private Elevator() {
         left = new CANSparkMax(LEFT_LIFT_NEO, MOTOR_TYPE);
+        CANPIDController canpidController = left.getPIDController();
         right = new CANSparkMax(RIGHT_LIFT_NEO, MOTOR_TYPE);
         left.setIdleMode(CANSparkMax.IdleMode.kBrake);
         right.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -39,7 +41,7 @@ public class Elevator extends Subsystem {
     }
     // Sets open loop for Manuel control
     public synchronized void setOpenLoop(double power) {
-        elevatorStateMachine.setOpenLoop(power);
+        elevatorStateMachine.setOpenLoop(-power);
     }
     public synchronized void setPosition(ElevatorStateMachine.ElevatorPosition position) {
         elevatorStateMachine.setPosition(position);

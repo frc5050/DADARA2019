@@ -8,9 +8,12 @@ public class CargoStateMachine {
     private CargoState systemState = new CargoState();
     private CargoState.IntakeState desiredIntakeState = CargoState.IntakeState.STOPPED;
 
-    public synchronized void setDesiredState(CargoState.IntakeState intakeState) {
+
+  public synchronized void setDesiredState(CargoState.IntakeState intakeState) {
         desiredIntakeState = intakeState;
     }
+
+
 
     public synchronized CargoState onUpdate(CargoState currentState) {
         // If ball is in hold, don't allow running the intake any more
@@ -28,6 +31,7 @@ public class CargoStateMachine {
 
         return systemState;
     }
+
 
     private synchronized void handleSystemStateUpdate() {
         switch (systemState.intakeState) {
