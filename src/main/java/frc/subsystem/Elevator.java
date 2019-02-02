@@ -9,7 +9,7 @@ import frc.states.ElevatorStateMachine;
 import static frc.utils.Constants.*;
 // Sets variables and creates a statemachine to track the positioning
 public class Elevator extends Subsystem {
-    private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushed;
+    private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushless;
     private static Elevator instance;
     private final CANSparkMax left;
     private final CANSparkMax right;

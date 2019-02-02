@@ -14,6 +14,7 @@ import frc.loops.Looper;
 import frc.states.CargoState;
 import frc.subsystem.*;
 import frc.subsystem.Jacks.JackLiftState;
+import frc.subsystem.Elevator;
 
 import java.util.Arrays;
 
@@ -28,8 +29,8 @@ public class Robot extends TimedRobot {
     private final SendableChooser<String> testChooser = new SendableChooser<>();
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
-            Cargo.getInstance(),
-//            Elevator.getInstance(),
+            Cargo.getInstance(), 
+            Elevator.getInstance(),
             Hatch2.getInstance(),
             Jacks.getInstance()
     ));
@@ -42,6 +43,7 @@ public class Robot extends TimedRobot {
 //    private Elevator elevator = Elevator.getInstance();
     private Hatch2 hatch = Hatch2.getInstance();
     private Jacks jacks = Jacks.getInstance();
+    private Elevator elevator = Elevator.getInstance();
 
 //    private SubsystemTest subsystemTest;
 
@@ -100,6 +102,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drive.setOpenLoop(gameController.getDriveSignal());
+        elevator.setOpenLoop(gameController.elevateManual());
         if(gameController.useHatchOpenLoop()) {
             hatch.setOpenLoop(gameController.hatchManual());
         } else {
@@ -171,6 +174,7 @@ public class Robot extends TimedRobot {
         } else {
             jacks.automaticSyncLiftBasic();
         }
+        
 
 //        elevator.setOpenLoop(gameController.elevateManual());
 
