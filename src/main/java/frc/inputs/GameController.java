@@ -118,7 +118,12 @@ public class GameController implements GameHid {
         return operatorHid.cargoIntakeLeft();
     }
 
-    @Override
+  @Override
+  public double intakeTilt() {
+    return operatorHid.intakeTilt();
+  }
+
+  @Override
     public boolean setElevatorPositionLowCargo() {
         return operatorHid.setElevatorPositionLowCargo();
     }

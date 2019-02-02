@@ -125,5 +125,15 @@ public class OperatorGamepad implements OperatorHid {
         return operatorGamepad.getXButton();
     }
 
+    @Override
+    public double intakeTilt(){
+      double rightTrigger = operatorGamepad.getTriggerAxis(Hand.kRight);
+      if (rightTrigger > 0.03){
+        return rightTrigger;
+      } else {
+        return -operatorGamepad.getTriggerAxis(Hand.kLeft);
+      }
+
+    }
 
 }

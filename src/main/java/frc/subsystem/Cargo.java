@@ -21,6 +21,7 @@ public class Cargo extends Subsystem {
     private final WPI_TalonSRX leftRear;
     private final DigitalInput cargoSensor = new DigitalInput(Constants.CARGO_SENSOR);
     private final WPI_TalonSRX intake;
+    private final WPI_TalonSRX oudo;
 
     private CargoState currentState = new CargoState();
     private CargoStateMachine cargoStateMachine = new CargoStateMachine();
@@ -31,6 +32,7 @@ public class Cargo extends Subsystem {
         rightRear = new WPI_TalonSRX(Constants.CARGO_LEFT);
         leftRear = new WPI_TalonSRX(Constants.CARGO_RIGHT);
         intake = new WPI_TalonSRX(Constants.INTAKE);
+        oudo = new WPI_TalonSRX(Constants.OUDO);
 
         centerSide.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
         rightRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
@@ -107,6 +109,10 @@ public class Cargo extends Subsystem {
         currentState.ballInHold = !cargoSensor.get();
         return currentState;
     }
+
+    public void intakeTilt(double power){
+      oudo.set(power);
+  }
 
     private synchronized void updateOutputFromState(CargoState state) {
         centerSide.set(ControlMode.PercentOutput, state.rearMotorOutput);

@@ -23,6 +23,8 @@ public interface OperatorHid {
 
     boolean cargoIntakeLeft();
 
+    double intakeTilt();
+
     // Elevator
     boolean setElevatorPositionLowCargo();
 

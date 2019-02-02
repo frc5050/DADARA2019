@@ -42,7 +42,6 @@ public class Robot extends TimedRobot {
 //    private Elevator elevator = Elevator.getInstance();
     private Hatch2 hatch = Hatch2.getInstance();
     private Jacks jacks = Jacks.getInstance();
-
 //    private SubsystemTest subsystemTest;
 
     @Override
@@ -120,6 +119,8 @@ public class Robot extends TimedRobot {
         } else {
             cargo.setDesiredState(CargoState.IntakeState.STOPPED);
         }
+
+        cargo.intakeTilt(gameController.intakeTilt());
 
         if (!gameController.liftJack()) {
             boolean useGyroCorrection = false;

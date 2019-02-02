@@ -7,6 +7,7 @@ public class Constants {
     public static final int RIGHT_DRIVE_1 = 2; // SRX
     public static final int RIGHT_DRIVE_2 = 3; // SPX
     public static final int HATCH = 12; // SRX
+    public static final int OUDO = 13; // SRX
     // Intakes Cargo, both
     public static final int INTAKE = 1; // SRX
     public static final int FRONT_JACK_LIFT = 11; // SRX
