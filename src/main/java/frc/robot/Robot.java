@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
             Cargo.getInstance(),
-//            Elevator.getInstance(),
+            Elevator.getInstance(),
             Hatch2.getInstance(),
             Jacks.getInstance()
     ));
@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
     private GameController gameController = GameController.getInstance();
     private Drive drive = Drive.getInstance();
         private Cargo cargo = Cargo.getInstance();
-//    private Elevator elevator = Elevator.getInstance();
+    private Elevator elevator = Elevator.getInstance();
     private Hatch2 hatch = Hatch2.getInstance();
     private Jacks jacks = Jacks.getInstance();
 //    private SubsystemTest subsystemTest;
@@ -174,7 +174,7 @@ public class Robot extends TimedRobot {
             jacks.automaticSyncLiftBasic();
         }
 
-//        elevator.setOpenLoop(gameController.elevateManual());
+        elevator.setOpenLoop(gameController.elevateManual());
 
         subsystemManager.outputTelemetry();
     }
