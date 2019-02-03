@@ -13,7 +13,8 @@ import frc.states.HatchStateMachine;
 
 import static frc.states.HatchStateMachine.PEAK_FORWARD_OUTPUT_STANDARD;
 import static frc.states.HatchStateMachine.PEAK_REVERSE_OUTPUT_STANDARD;
-import static frc.utils.Constants.*;
+import static frc.utils.Constants.HATCH;
+import static frc.utils.Constants.HATCH_SHUFFLEBOARD;
 
 public class Hatch2 extends Subsystem {
     private static final int SETTINGS_TIMEOUT = 30;
@@ -22,6 +23,7 @@ public class Hatch2 extends Subsystem {
     private static Hatch2 instance;
     private final WPI_TalonSRX hatch;
     private final DigitalInput upperLimitSwitch;
+    boolean writeOutput = false;
     private HatchStateMachine hatchStateMachine = new HatchStateMachine(Timer.getFPGATimestamp());
     private HatchState hatchState = new HatchState();
     private HatchState outputState = new HatchState();
@@ -73,7 +75,9 @@ public class Hatch2 extends Subsystem {
             @Override
             public void onLoop(double timestamp) {
                 synchronized (Hatch2.this) {
-                    outputState = hatchStateMachine.update(hatchState, timestamp);
+                    HatchState newOutputState = hatchStateMachine.update(hatchState, timestamp);
+                    writeOutput = outputState.controlMode != newOutputState.controlMode || Math.abs(outputState.demand - newOutputState.demand) > EPSILON;
+                    outputState = newOutputState;
                 }
             }
 
@@ -118,7 +122,9 @@ public class Hatch2 extends Subsystem {
             hatchState.peakOutputForward = outputState.peakOutputForward;
             hatch.configPeakOutputForward(outputState.peakOutputForward, SETTINGS_TIMEOUT);
         }
-        hatch.set(outputState.controlMode, outputState.demand);
+//        if (writeOutput) {
+            hatch.set(outputState.controlMode, outputState.demand);
+//        }
     }
 
     @Override

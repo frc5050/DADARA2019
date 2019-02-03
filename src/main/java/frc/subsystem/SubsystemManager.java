@@ -2,6 +2,7 @@ package frc.subsystem;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.loops.Loop;
 import frc.loops.Looper;
 import frc.loops.LooperInterface;
@@ -20,7 +21,7 @@ public class SubsystemManager implements LooperInterface {
         this.subsystems = subsystems;
         lastTimestamps = new double[subsystems.size()];
         double timestamp = Timer.getFPGATimestamp();
-        for(int i = 0; i < lastTimestamps.length; i++){
+        for (int i = 0; i < lastTimestamps.length; i++) {
             lastTimestamps[i] = timestamp;
         }
     }
@@ -71,13 +72,19 @@ public class SubsystemManager implements LooperInterface {
         @Override
         public void onLoop(double timestamp) {
             for (Subsystem subsystem : subsystems) {
+                double start = Timer.getFPGATimestamp();
                 subsystem.readPeriodicInputs();
+                SmartDashboard.putNumber(subsystem.getClass().toString() + " readPeriodicDt", Timer.getFPGATimestamp() - start);
             }
             for (Loop loop : loops) {
+                double start = Timer.getFPGATimestamp();
                 loop.onLoop(timestamp);
+                SmartDashboard.putNumber(loop.getClass().toString() + " loops", Timer.getFPGATimestamp() - start);
             }
             for (Subsystem subsystem : subsystems) {
+                double start = Timer.getFPGATimestamp();
                 subsystem.writePeriodicOutputs();
+                SmartDashboard.putNumber(subsystem.getClass().toString() + " writePeriodicDt", Timer.getFPGATimestamp() - start);
             }
         }
 
@@ -99,7 +106,9 @@ public class SubsystemManager implements LooperInterface {
         @Override
         public void onLoop(double timestamp) {
             for (Subsystem subsystem : subsystems) {
+                double start = Timer.getFPGATimestamp();
                 subsystem.readPeriodicInputs();
+                SmartDashboard.putNumber(subsystem.getClass().toString() + " readPeriodicDt", Timer.getFPGATimestamp() - start);
             }
             for (Subsystem subsystem : subsystems) {
                 subsystem.writePeriodicOutputs();

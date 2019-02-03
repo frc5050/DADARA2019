@@ -86,7 +86,7 @@ public class Drive extends Subsystem {
 
         navX = new AHRS(SPI.Port.kMXP);
 
-        initGainsOnShuffleBoard();
+//        initGainsOnShuffleBoard();
     }
 // Creates an instance of drive. If there is already an instance, do nothing so it doesn't conflict
     public static Drive getInstance() {
@@ -167,19 +167,19 @@ public class Drive extends Subsystem {
     // Puts values on the Dashboard (Shuffleboard)
     @Override
     public void outputTelemetry() {
-        DRIVE_SHUFFLEBOARD.putNumber("Left Drive Distance (m)", periodicIo.leftDistance);
-        DRIVE_SHUFFLEBOARD.putNumber("Right Drive Distance (m)", periodicIo.rightDistance);
-        DRIVE_SHUFFLEBOARD.putNumber("Left Drive Ticks", periodicIo.leftPositionTicks);
-        DRIVE_SHUFFLEBOARD.putNumber("Right Drive Ticks", periodicIo.rightPositionTicks);
+//        DRIVE_SHUFFLEBOARD.putNumber("Left Drive Distance (m)", periodicIo.leftDistance);
+//        DRIVE_SHUFFLEBOARD.putNumber("Right Drive Distance (m)", periodicIo.rightDistance);
+//        DRIVE_SHUFFLEBOARD.putNumber("Left Drive Ticks", periodicIo.leftPositionTicks);
+//        DRIVE_SHUFFLEBOARD.putNumber("Right Drive Ticks", periodicIo.rightPositionTicks);
         DRIVE_SHUFFLEBOARD.putNumber("Left Demand", periodicIo.leftDemand);
         DRIVE_SHUFFLEBOARD.putNumber("Right Demand", periodicIo.rightDemand);
         DRIVE_SHUFFLEBOARD.putNumber("Left Feed Forward", periodicIo.leftFeedForward);
         DRIVE_SHUFFLEBOARD.putNumber("Right Feed Forward", periodicIo.rightFeedForward);
-        DRIVE_SHUFFLEBOARD.putNumber("Left Velocity Ticks Per 100 ms", periodicIo.leftVelocityTicksPer100ms);
-        DRIVE_SHUFFLEBOARD.putNumber("Right Velocity Ticks Per 100 ms", periodicIo.rightVelocityTicksPer100ms);
-        DRIVE_SHUFFLEBOARD.putNumber("Right Velocity", periodicIo.rightVelocity);
-        DRIVE_SHUFFLEBOARD.putNumber("Left Velocity", periodicIo.leftVelocity);
-        DRIVE_SHUFFLEBOARD.putNumber("Gyro Heading", periodicIo.gyroHeading);
+//        DRIVE_SHUFFLEBOARD.putNumber("Left Velocity Ticks Per 100 ms", periodicIo.leftVelocityTicksPer100ms);
+//        DRIVE_SHUFFLEBOARD.putNumber("Right Velocity Ticks Per 100 ms", periodicIo.rightVelocityTicksPer100ms);
+//        DRIVE_SHUFFLEBOARD.putNumber("Right Velocity", periodicIo.rightVelocity);
+//        DRIVE_SHUFFLEBOARD.putNumber("Left Velocity", periodicIo.leftVelocity);
+//        DRIVE_SHUFFLEBOARD.putNumber("Gyro Heading", periodicIo.gyroHeading);
         DRIVE_SHUFFLEBOARD.putNumber("Yaw", periodicIo.yaw);
         DRIVE_SHUFFLEBOARD.putNumber("Roll", periodicIo.roll);
         DRIVE_SHUFFLEBOARD.putNumber("Pitch", periodicIo.pitch);
@@ -259,24 +259,24 @@ public class Drive extends Subsystem {
     // Reads the inputs from the sensors, and sets variables
     @Override
     public void readPeriodicInputs() {
-        double prevLeftTicks = periodicIo.leftPositionTicks;
-        double prevRightTicks = periodicIo.rightPositionTicks;
-        periodicIo.leftPositionTicks = leftMaster.getSelectedSensorPosition(0);
-        periodicIo.rightPositionTicks = rightMaster.getSelectedSensorPosition(0);
-        periodicIo.leftVelocityTicksPer100ms = leftMaster.getSelectedSensorVelocity(0);
-        periodicIo.rightVelocityTicksPer100ms = rightMaster.getSelectedSensorVelocity(0);
-        periodicIo.leftVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.leftVelocityTicksPer100ms);
-        periodicIo.rightVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.rightVelocityTicksPer100ms);
+//        double prevLeftTicks = periodicIo.leftPositionTicks;
+//        double prevRightTicks = periodicIo.rightPositionTicks;
+//        periodicIo.leftPositionTicks = leftMaster.getSelectedSensorPosition(0);
+//        periodicIo.rightPositionTicks = rightMaster.getSelectedSensorPosition(0);
+//        periodicIo.leftVelocityTicksPer100ms = leftMaster.getSelectedSensorVelocity(0);
+//        periodicIo.rightVelocityTicksPer100ms = rightMaster.getSelectedSensorVelocity(0);
+//        periodicIo.leftVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.leftVelocityTicksPer100ms);
+//        periodicIo.rightVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.rightVelocityTicksPer100ms);
         periodicIo.yaw = navX.getYaw();
         periodicIo.roll = navX.getRoll();
         periodicIo.pitch = navX.getPitch();
-        periodicIo.gyroHeading = handleGyroInput(periodicIo.yaw, gyroOffset);
+//        periodicIo.gyroHeading = handleGyroInput(periodicIo.yaw, gyroOffset);
 
-        double deltaLeftTicks = ((periodicIo.leftPositionTicks - prevLeftTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
-        periodicIo.leftDistance += deltaLeftTicks * DRIVE_WHEEL_DIAMETER;
+//        double deltaLeftTicks = ((periodicIo.leftPositionTicks - prevLeftTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
+//        periodicIo.leftDistance += deltaLeftTicks * DRIVE_WHEEL_DIAMETER;
 
-        double deltaRightTicks = ((periodicIo.rightPositionTicks - prevRightTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
-        periodicIo.rightDistance += deltaRightTicks * DRIVE_WHEEL_DIAMETER;
+//        double deltaRightTicks = ((periodicIo.rightPositionTicks - prevRightTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
+//        periodicIo.rightDistance += deltaRightTicks * DRIVE_WHEEL_DIAMETER;
 
 
 //        // TODO remove this once we tune the gains properly
@@ -296,22 +296,22 @@ public class Drive extends Subsystem {
 //            reloadGains();
 //        }
     }
+//
+//    // TODO remove this once we tune the gains properly
+//    private synchronized void reloadGains() {
+//        final int longTimeout = 100; // ms
+//        reloadGains(leftMaster, periodicIo.kP, periodicIo.kI, periodicIo.kD, periodicIo.kF, (int) periodicIo.kIz, longTimeout);
+//        reloadGains(rightMaster, periodicIo.kP, periodicIo.kI, periodicIo.kD, periodicIo.kF, (int) periodicIo.kIz, longTimeout);
+//    }
 
-    // TODO remove this once we tune the gains properly
-    private synchronized void reloadGains() {
-        final int longTimeout = 100; // ms
-        reloadGains(leftMaster, periodicIo.kP, periodicIo.kI, periodicIo.kD, periodicIo.kF, (int) periodicIo.kIz, longTimeout);
-        reloadGains(rightMaster, periodicIo.kP, periodicIo.kI, periodicIo.kD, periodicIo.kF, (int) periodicIo.kIz, longTimeout);
-    }
-
-    // TODO remove this once we tune the gains properly
-    private void initGainsOnShuffleBoard() {
-        DRIVE_SHUFFLEBOARD.putNumber("kP", 1.0);
-        DRIVE_SHUFFLEBOARD.putNumber("kI", 0.0);
-        DRIVE_SHUFFLEBOARD.putNumber("kD", 0.0);
-        DRIVE_SHUFFLEBOARD.putNumber("kF", 0.0);
-        DRIVE_SHUFFLEBOARD.putNumber("kIz", 0.0);
-    }
+//    // TODO remove this once we tune the gains properly
+//    private void initGainsOnShuffleBoard() {
+//        DRIVE_SHUFFLEBOARD.putNumber("kP", 1.0);
+//        DRIVE_SHUFFLEBOARD.putNumber("kI", 0.0);
+//        DRIVE_SHUFFLEBOARD.putNumber("kD", 0.0);
+//        DRIVE_SHUFFLEBOARD.putNumber("kF", 0.0);
+//        DRIVE_SHUFFLEBOARD.putNumber("kIz", 0.0);
+//    }
     // Sets the velocity the motors should follow while path following
     public synchronized void setVelocity(DriveSignal velocities, DriveSignal feedForwards) {
         if (state != DriveState.PATH_FOLLOWING) {
@@ -348,24 +348,24 @@ public class Drive extends Subsystem {
     // All the periodic values
     private static class PeriodicIO {
         // Input
-        double leftPositionTicks;
-        double rightPositionTicks;
-        double leftVelocityTicksPer100ms;
-        double rightVelocityTicksPer100ms;
-        double leftVelocity;
-        double rightVelocity;
-        double gyroHeading;
-        double leftDistance;
-        double rightDistance;
+//        double leftPositionTicks;
+//        double rightPositionTicks;
+//        double leftVelocityTicksPer100ms;
+//        double rightVelocityTicksPer100ms;
+//        double leftVelocity;
+//        double rightVelocity;
+//        double gyroHeading;
+//        double leftDistance;
+//        double rightDistance;
         double yaw;
         double roll;
         double pitch;
 
-        double kP;
-        double kI;
-        double kD;
-        double kF;
-        double kIz;
+//        double kP;
+//        double kI;
+//        double kD;
+//        double kF;
+//        double kIz;
 
         // Output
         double leftDemand;

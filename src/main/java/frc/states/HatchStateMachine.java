@@ -40,8 +40,8 @@ public class HatchStateMachine {
     public synchronized void setPosition(double joystickPower) {
 //        zeroDesired();
         this.joystickPower = joystickPower;
-        this.desiredEncoderPosition = (int) ((RANGE * joystickPower * 0.5) + MIDPOINT);
-        this.desiredControlState = MOTION_MAGIC;
+//        this.desiredEncoderPosition = (int) ((RANGE * joystickPower * 0.5) + MIDPOINT);
+//        this.desiredControlState = MOTION_MAGIC;
         // TODO filter
 //        this.desiredEncoderPosition = desiredEncoderPosition;
     }
@@ -53,10 +53,10 @@ public class HatchStateMachine {
         this.desiredOpenLoopPower = joystickPower;
     }
 
-    public synchronized void zero() {
-        systemState.hasZeroed = false;
-        this.desiredControlState = ZEROING;
-    }
+//    public synchronized void zero() {
+//        systemState.hasZeroed = false;
+//        this.desiredControlState = ZEROING;
+//    }
 
     public synchronized HatchState update(HatchState currentState, double timestamp) {
         if (!systemState.hasHadHardwareFault && currentState.outputCurrent > HARDWARE_FAULT_AMPERAGE_MAXIMUM) {

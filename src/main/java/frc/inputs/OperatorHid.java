@@ -11,6 +11,8 @@ package frc.inputs;
  */
 public interface OperatorHid {
     // Cargo
+    void update();
+
     boolean cargoIntake();
 
     boolean cargoOuttakeFront();
@@ -31,8 +33,6 @@ public interface OperatorHid {
     boolean setElevatorPositionMidCargo();
 
     boolean setElevatorPositionHighCargo();
-
-    boolean setElevatorPositionGroundHatch();
 
     boolean setElevatorPositionLowHatch();
 
