@@ -23,6 +23,7 @@ public class Cargo extends Subsystem {
     private final WPI_TalonSRX intake;
     private final WPI_TalonSRX oudo;
 
+
     private CargoState currentState = new CargoState();
     private CargoStateMachine cargoStateMachine = new CargoStateMachine();
 
@@ -34,15 +35,20 @@ public class Cargo extends Subsystem {
         intake = new WPI_TalonSRX(Constants.INTAKE);
         oudo = new WPI_TalonSRX(Constants.OUDO);
 
-        centerSide.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
-        rightRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
-        leftRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
-        intake.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
-
-        centerSide.enableVoltageCompensation(true);
-        rightRear.enableVoltageCompensation(true);
-        leftRear.enableVoltageCompensation(true);
-        intake.enableVoltageCompensation(true);
+//        centerSide.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
+//        rightRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
+//        leftRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
+//        intake.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
+//
+//        centerSide.enableVoltageCompensation(true);
+//        rightRear.enableVoltageCompensation(true);
+//        leftRear.enableVoltageCompensation(true);
+//        intake.enableVoltageCompensation(true);
+//
+        centerSide.enableVoltageCompensation(false);
+        rightRear.enableVoltageCompensation(false);
+        leftRear.enableVoltageCompensation(false);
+        intake.enableVoltageCompensation(false);
 
         rightRear.setInverted(true);
     }
@@ -118,7 +124,7 @@ public class Cargo extends Subsystem {
         centerSide.set(ControlMode.PercentOutput, state.rearMotorOutput);
         rightRear.set(ControlMode.PercentOutput, state.rightMotorOutput);
         leftRear.set(ControlMode.PercentOutput, state.leftMotorOutput);
-        intake.set(ControlMode.PercentOutput, state.intakeOutput);
+        intake.set(ControlMode.PercentOutput, state.intakeOutput * 0.7);
         currentState = state;
     }
 }

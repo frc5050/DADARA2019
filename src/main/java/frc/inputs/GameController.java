@@ -33,13 +33,11 @@ public class GameController implements GameHid {
 
     @Override
     public DriveSignal getDriveSignal() {
-        // TODO(Raina)
         return driverHid.getDriveSignal();
     }
 
     @Override
     public boolean liftJack() {
-        // TODO(Raina)
         return driverHid.liftJack();
     }
 
@@ -89,6 +87,11 @@ public class GameController implements GameHid {
     //
 
     @Override
+    public void update() {
+        operatorHid.update();
+    }
+
+    @Override
     public boolean cargoIntake() {
         return operatorHid.cargoIntake();
     }
@@ -136,11 +139,6 @@ public class GameController implements GameHid {
     @Override
     public boolean setElevatorPositionHighCargo() {
         return operatorHid.setElevatorPositionHighCargo();
-    }
-
-    @Override
-    public boolean setElevatorPositionGroundHatch() {
-        return operatorHid.setElevatorPositionGroundHatch();
     }
 
     @Override

@@ -8,13 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.inputs.GameController;
 import frc.loops.Looper;
 import frc.states.CargoState;
 import frc.subsystem.*;
 import frc.subsystem.Jacks.JackLiftState;
-import frc.subsystem.Elevator;
 
 import java.util.Arrays;
 
@@ -26,32 +24,28 @@ import java.util.Arrays;
  * project.
  */
 public class Robot extends TimedRobot {
-    private final SendableChooser<String> testChooser = new SendableChooser<>();
+    //    private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
+    //    private final SendableChooser<String> testChooser = new SendableChooser<>();
+
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
-<<<<<<< HEAD
-            Cargo.getInstance(), 
-=======
             Cargo.getInstance(),
->>>>>>> 597574cc8063c4442d30ca66b0f19694697e4987
-            Elevator.getInstance(),
+            Elevator2.getInstance(),
             Hatch2.getInstance(),
             Jacks.getInstance()
     ));
-    //    private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
+
     private Looper enabledLooper = new Looper();
     private Looper disabledLooper = new Looper();
+
     private GameController gameController = GameController.getInstance();
+
     private Drive drive = Drive.getInstance();
-        private Cargo cargo = Cargo.getInstance();
-    private Elevator elevator = Elevator.getInstance();
+    private Cargo cargo = Cargo.getInstance();
+    private Elevator2 elevator = Elevator2.getInstance();
     private Hatch2 hatch = Hatch2.getInstance();
     private Jacks jacks = Jacks.getInstance();
-<<<<<<< HEAD
-    private Elevator elevator = Elevator.getInstance();
 
-=======
->>>>>>> 597574cc8063c4442d30ca66b0f19694697e4987
 //    private SubsystemTest subsystemTest;
 
     @Override
@@ -86,7 +80,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-//        hatch.outputTelemetry();
+
     }
 
     @Override
@@ -109,26 +103,12 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drive.setOpenLoop(gameController.getDriveSignal());
-<<<<<<< HEAD
-        elevator.setOpenLoop(gameController.elevateManual());
-        if(gameController.useHatchOpenLoop()) {
-            hatch.setOpenLoop(gameController.hatchManual());
-        } else {
-            hatch.setPosition(gameController.hatchManual());
-        }
-=======
-      hatch.setOpenLoop(gameController.hatchManual());
-//      if(gameController.useHatchOpenLoop()) {
-//          hatch.setOpenLoop(gameController.hatchManual());
-//        } else {
-//            hatch.setPosition(gameController.hatchManual());
-//        }
->>>>>>> 597574cc8063c4442d30ca66b0f19694697e4987
+        hatch.setOpenLoop(gameController.hatchManual());
         if (gameController.cargoIntake()) {
             cargo.setDesiredState(CargoState.IntakeState.INTAKE);
-        } else if(gameController.cargoIntakeLeft()){
+        } else if (gameController.cargoIntakeLeft()) {
             cargo.setDesiredState(CargoState.IntakeState.INTAKE_LEFT);
-        } else if(gameController.cargoIntakeRight()){
+        } else if (gameController.cargoIntakeRight()) {
             cargo.setDesiredState(CargoState.IntakeState.INTAKE_RIGHT);
         } else if (gameController.cargoOuttakeLeft()) {
             cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_LEFT);
@@ -170,7 +150,6 @@ public class Robot extends TimedRobot {
                 useGyroCorrection = true;
                 boostedRearHold = true;
             } else if (gameController.extendFrontJack()) {
-                // TODO switch this to retract
                 front = JackLiftState.LIFT;
                 left = JackLiftState.HOLD;
                 right = JackLiftState.HOLD;
@@ -192,11 +171,26 @@ public class Robot extends TimedRobot {
         } else {
             jacks.automaticSyncLiftBasic();
         }
-        
 
-        elevator.setOpenLoop(gameController.elevateManual());
+        gameController.update();
+        if (gameController.setElevatorPositionLowHatch()) {
+            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_LOW);
+        } else if (gameController.setElevatorPositionMidHatch()) {
+            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_MID);
+        } else if (gameController.setElevatorPositionHighHatch()) {
+            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_HIGH);
+        } else if (gameController.setElevatorPositionLowCargo()) {
+            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_LOW);
+        } else if (gameController.setElevatorPositionMidCargo()) {
+            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_MID);
+        } else if (gameController.setElevatorPositionHighCargo()) {
+            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_HIGH);
+        } else {
+            elevator.manualMovement(gameController.elevateManual());
+        }
 
-        subsystemManager.outputTelemetry();
+        hatch.outputTelemetry();
+        elevator.outputTelemetry();
     }
 
     // TODO add more tests
