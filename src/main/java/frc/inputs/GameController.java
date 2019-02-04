@@ -103,12 +103,12 @@ public class GameController implements GameHid {
 
     @Override
     public boolean cargoOuttakeRight() {
-        return operatorHid.cargoOuttakeRight();
+        return driverHid.cargoOuttakeRight();
     }
 
     @Override
     public boolean cargoOuttakeLeft() {
-        return operatorHid.cargoOuttakeLeft();
+        return driverHid.cargoOuttakeLeft();
     }
 
     @Override

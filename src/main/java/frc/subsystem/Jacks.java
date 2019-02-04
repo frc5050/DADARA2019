@@ -21,7 +21,6 @@ public class Jacks extends Subsystem {
     private final WPI_TalonSRX leftRearJack;
     private final WPI_TalonSRX rightRearJack;
     private final WPI_TalonSRX frontJack;
-    private RobotState robotState = RobotState.getInstance();
     private PeriodicIO periodicIo = new PeriodicIO();
     private Drive drive = Drive.getInstance();
 

@@ -56,9 +56,10 @@ public class OperatorGamepad implements OperatorHid {
         } else if (pov == POV_DPAD_LOWER_LEFT) {
             lastDpadState = lastDpadState == LastDpadState.LEFT ? LastDpadState.LEFT : (lastDpadState == LastDpadState.DOWN ? LastDpadState.DOWN : LastDpadState.NONE);
         }
+        // XOR
         useCargoHeights = useCargoHeights ^ operatorGamepad.getXButtonPressed();
 
-        if (operatorGamepad.getStickButton(Hand.kLeft)) {
+        if (operatorGamepad.getStickButton(Hand.kRight)) {
             elevatorHeight = ElevatorHeight.NONE;
         } else if (operatorGamepad.getAButtonPressed()) {
             elevatorHeight = ElevatorHeight.LOW;
@@ -81,19 +82,19 @@ public class OperatorGamepad implements OperatorHid {
         return lastDpadState == LastDpadState.UP;
     }
 
-    @Override
-    public boolean cargoOuttakeRight() {
-//        int pov = operatorGamepad.getPOV();
-//        return (pov == POV_DPAD_RIGHT) || (pov == POV_DPAD_LOWER_RIGHT || (pov == POV_DPAD_UPPER_RIGHT));
-        return lastDpadState == LastDpadState.RIGHT;
-    }
-
-    @Override
-    public boolean cargoOuttakeLeft() {
-//        int pov = operatorGamepad.getPOV();
-//        return (pov == POV_DPAD_LEFT) || (pov == POV_DPAD_LOWER_LEFT || (pov == POV_DPAD_UPPER_LEFT));
-        return lastDpadState == LastDpadState.LEFT;
-    }
+//    @Override
+//    public boolean cargoOuttakeRight() {
+////        int pov = operatorGamepad.getPOV();
+////        return (pov == POV_DPAD_RIGHT) || (pov == POV_DPAD_LOWER_RIGHT || (pov == POV_DPAD_UPPER_RIGHT));
+//        return lastDpadState == LastDpadState.RIGHT;
+//    }
+//
+//    @Override
+//    public boolean cargoOuttakeLeft() {
+////        int pov = operatorGamepad.getPOV();
+////        return (pov == POV_DPAD_LEFT) || (pov == POV_DPAD_LOWER_LEFT || (pov == POV_DPAD_UPPER_LEFT));
+//        return lastDpadState == LastDpadState.LEFT;
+//    }
 
     private boolean invertLeftRight() {
         return operatorGamepad.getRawButton(8);
@@ -101,12 +102,17 @@ public class OperatorGamepad implements OperatorHid {
 
     @Override
     public boolean cargoIntakeRight() {
-        return cargoOuttakeRight() && invertLeftRight();
+        int pov = operatorGamepad.getPOV();
+        return (((pov == POV_DPAD_RIGHT) || (pov == POV_DPAD_LOWER_RIGHT || (pov == POV_DPAD_UPPER_RIGHT))) && operatorGamepad.getRawButton(8)) && invertLeftRight();
+//        return cargoOuttakeRight() && invertLeftRight();
     }
 
     @Override
     public boolean cargoIntakeLeft() {
-        return cargoOuttakeLeft() && invertLeftRight();
+        int pov = operatorGamepad.getPOV();
+        return ((pov == POV_DPAD_LEFT) || (pov == POV_DPAD_LOWER_LEFT || (pov == POV_DPAD_UPPER_LEFT))) && invertLeftRight();
+
+//        return cargoOuttakeLeft() && invertLeftRight();
     }
 
     @Override

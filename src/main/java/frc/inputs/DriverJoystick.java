@@ -43,7 +43,8 @@ public class DriverJoystick implements DriverHid {
 
     @Override
     public boolean extendFrontJack() {
-        return driverJoystick.getRawButton(6);
+//        return driverJoystick.getRawButton(6);
+        return false;
     }
 
     @Override
@@ -73,12 +74,23 @@ public class DriverJoystick implements DriverHid {
 
     @Override
     public DriveSignal runJackWheels() {
-        double speed = driverJoystick.getRawAxis(3);
-        return new DriveSignal(speed, speed);
+        return DriveSignal.NEUTRAL;
+//        double speed = driverJoystick.getRawAxis(3);
+//        return new DriveSignal(speed, speed);
     }
 
     @Override
     public boolean holdAll() {
         return driverJoystick.getRawButton(11);
+    }
+
+    @Override
+    public boolean cargoOuttakeRight() {
+        return driverJoystick.getRawButton(6);
+    }
+
+    @Override
+    public boolean cargoOuttakeLeft() {
+        return driverJoystick.getRawButton(5);
     }
 }

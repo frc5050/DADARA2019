@@ -75,9 +75,7 @@ public class Hatch2 extends Subsystem {
             @Override
             public void onLoop(double timestamp) {
                 synchronized (Hatch2.this) {
-                    HatchState newOutputState = hatchStateMachine.update(hatchState, timestamp);
-                    writeOutput = outputState.controlMode != newOutputState.controlMode || Math.abs(outputState.demand - newOutputState.demand) > EPSILON;
-                    outputState = newOutputState;
+                    outputState = hatchStateMachine.update(hatchState, timestamp);
                 }
             }
 
@@ -122,9 +120,7 @@ public class Hatch2 extends Subsystem {
             hatchState.peakOutputForward = outputState.peakOutputForward;
             hatch.configPeakOutputForward(outputState.peakOutputForward, SETTINGS_TIMEOUT);
         }
-//        if (writeOutput) {
-            hatch.set(outputState.controlMode, outputState.demand);
-//        }
+        hatch.set(outputState.controlMode, outputState.demand);
     }
 
     @Override
