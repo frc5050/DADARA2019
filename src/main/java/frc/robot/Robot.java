@@ -188,9 +188,6 @@ public class Robot extends TimedRobot {
         } else {
             elevator.manualMovement(gameController.elevateManual());
         }
-
-        hatch.outputTelemetry();
-        elevator.outputTelemetry();
     }
 
     // TODO add more tests

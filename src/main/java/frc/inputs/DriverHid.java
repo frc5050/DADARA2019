@@ -17,11 +17,22 @@ public interface DriverHid {
     boolean liftJack();
 
     boolean extendFrontJack();
+
     boolean retractFrontJack();
+
     boolean extendLeftJack();
+
     boolean retractLeftJack();
+
     boolean extendRightJack();
+
     boolean retractRightJack();
+
     DriveSignal runJackWheels();
+
     boolean holdAll();
+
+    boolean cargoOuttakeRight();
+
+    boolean cargoOuttakeLeft();
 }

@@ -23,7 +23,7 @@ public class DriverGamepad implements DriverHid {
 
     @Override
     public DriveSignal getDriveSignal() {
-        return new DriveSignal(gamepad.getY(GenericHID.Hand.kLeft), gamepad.getY(GenericHID.Hand.kRight));
+        return new DriveSignal(-gamepad.getY(GenericHID.Hand.kLeft), -gamepad.getY(GenericHID.Hand.kRight));
     }
 
     @Override
@@ -65,11 +65,21 @@ public class DriverGamepad implements DriverHid {
 
     @Override
     public DriveSignal runJackWheels() {
-        return null;
+        return DriveSignal.NEUTRAL;
     }
 
     @Override
     public boolean holdAll() {
         return false;
+    }
+
+    @Override
+    public boolean cargoOuttakeRight() {
+        return gamepad.getBumper(GenericHID.Hand.kRight);
+    }
+
+    @Override
+    public boolean cargoOuttakeLeft() {
+        return gamepad.getBumper(GenericHID.Hand.kLeft);
     }
 }

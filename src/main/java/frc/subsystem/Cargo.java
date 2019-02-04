@@ -10,6 +10,7 @@ import frc.states.CargoStateMachine;
 import frc.utils.Constants;
 
 import static frc.utils.Constants.CARGO_SHUFFLEBOARD;
+
 // Creates variables for the cargo subsystem and initializes motors
 public class Cargo extends Subsystem {
     private static final double MAXIMUM_VOLTAGE = 12.0;
@@ -25,6 +26,7 @@ public class Cargo extends Subsystem {
 
     private CargoState currentState = new CargoState();
     private CargoStateMachine cargoStateMachine = new CargoStateMachine();
+    private double intakeTiltPower = 0.0;
 
     private Cargo() {
         // TODO test voltage compensation
@@ -32,8 +34,9 @@ public class Cargo extends Subsystem {
         rightRear = new WPI_TalonSRX(Constants.CARGO_LEFT);
         leftRear = new WPI_TalonSRX(Constants.CARGO_RIGHT);
         intake = new WPI_TalonSRX(Constants.INTAKE);
-        oudo = new WPI_TalonSRX(Constants.OUDO);
 
+        oudo = new WPI_TalonSRX(Constants.OUDO);
+        intake.setInverted(true);
 //        centerSide.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
 //        rightRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
 //        leftRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
@@ -51,6 +54,7 @@ public class Cargo extends Subsystem {
 
         rightRear.setInverted(true);
     }
+
     // Creates new cargo instance but not if there is an existing one, to avoid conflicts.
     public synchronized static Cargo getInstance() {
         if (instance == null) {
@@ -62,6 +66,7 @@ public class Cargo extends Subsystem {
     public synchronized void setDesiredState(CargoState.IntakeState intakeState) {
         cargoStateMachine.setDesiredState(intakeState);
     }
+
     // Outputs values to shuffleboard
     @Override
     public void outputTelemetry() {
@@ -71,12 +76,19 @@ public class Cargo extends Subsystem {
         CARGO_SHUFFLEBOARD.putNumber("Right Output", currentState.leftMotorOutput);
         CARGO_SHUFFLEBOARD.putNumber("Intake Output", currentState.intakeOutput);
         CARGO_SHUFFLEBOARD.putBoolean("Cargo In Hold", currentState.ballInHold);
+        CARGO_SHUFFLEBOARD.putNumber("Left Rear Current", leftRear.getOutputCurrent());
+        CARGO_SHUFFLEBOARD.putNumber("Right Rear Current", rightRear.getOutputCurrent());
+        CARGO_SHUFFLEBOARD.putNumber("Center Side Current", centerSide.getOutputCurrent());
+        CARGO_SHUFFLEBOARD.putNumber("Intake (Wheels) Current", intake.getOutputCurrent());
+        CARGO_SHUFFLEBOARD.putNumber("Intake (Tilt) Current", oudo.getOutputCurrent());
     }
+
     // Stops the wheels' motors
     @Override
     public synchronized void stop() {
         setDesiredState(CargoState.IntakeState.STOPPED);
     }
+
     // Sets the modes that the loop uses to function
     @Override
     public void registerEnabledLoops(LooperInterface enabledLooper) {
@@ -105,6 +117,7 @@ public class Cargo extends Subsystem {
 
         enabledLooper.registerLoop(loop);
     }
+
     // Used with IR sensor to stop when cargo is in hold
     public synchronized boolean cargoInHold() {
         return currentState.ballInHold;
@@ -115,15 +128,16 @@ public class Cargo extends Subsystem {
         return currentState;
     }
 
-    public void intakeTilt(double power){
-      oudo.set(power);
-  }
+    public void intakeTilt(double power) {
+        intakeTiltPower = power;
+    }
 
     private synchronized void updateOutputFromState(CargoState state) {
         centerSide.set(ControlMode.PercentOutput, state.rearMotorOutput);
         rightRear.set(ControlMode.PercentOutput, state.rightMotorOutput);
         leftRear.set(ControlMode.PercentOutput, state.leftMotorOutput);
-        intake.set(ControlMode.PercentOutput, state.intakeOutput * 0.7);
+        intake.set(ControlMode.PercentOutput, state.intakeOutput);
+        oudo.set(ControlMode.PercentOutput, intakeTiltPower);
         currentState = state;
     }
 }

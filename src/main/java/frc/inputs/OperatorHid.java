@@ -17,10 +17,6 @@ public interface OperatorHid {
 
     boolean cargoOuttakeFront();
 
-    boolean cargoOuttakeRight();
-
-    boolean cargoOuttakeLeft();
-
     boolean cargoIntakeRight();
 
     boolean cargoIntakeLeft();

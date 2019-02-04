@@ -56,7 +56,7 @@ public class CargoStateMachine {
             case OUTTAKE_FRONT:
                 systemState.rearMotorOutput = 0.0;
                 systemState.leftMotorOutput = -DEFAULT_OUTTAKE_POWER;
-                systemState.rightMotorOutput = -DEFAULT_OUTTAKE_POWER;
+                systemState.rightMotorOutput = systemState.ballInHold ? -DEFAULT_OUTTAKE_POWER : DEFAULT_OUTTAKE_POWER;
                 systemState.intakeOutput = -DEFAULT_OUTTAKE_POWER;
                 break;
             case OUTTAKE_LEFT:
