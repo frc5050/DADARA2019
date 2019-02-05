@@ -26,6 +26,7 @@ public class Cargo extends Subsystem {
     private final WPI_TalonSRX intake;
     private final WPI_TalonSRX oudo;
 
+
     private CargoState currentState = new CargoState();
     private CargoStateMachine cargoStateMachine = new CargoStateMachine();
     private double intakeTiltPower = 0.0;

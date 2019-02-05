@@ -33,13 +33,11 @@ public class GameController implements GameHid {
 
     @Override
     public DriveSignal getDriveSignal() {
-        // TODO(Raina)
         return driverHid.getDriveSignal();
     }
 
     @Override
     public boolean liftJack() {
-        // TODO(Raina)
         return driverHid.liftJack();
     }
 
