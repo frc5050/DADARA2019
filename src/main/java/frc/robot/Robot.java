@@ -29,10 +29,10 @@ public class Robot extends TimedRobot {
 
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
-            Cargo.getInstance()
+            Cargo.getInstance(),
 //            Elevator2.getInstance(),
 //            Hatch2.getInstance(),
-//            BlackJack.getInstance()
+            BlackJack.getInstance()
     ));
 
     private Looper enabledLooper = new Looper();
@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
 //    private Elevator2 elevator = Elevator2.getInstance();
 //    private Hatch2 hatch = Hatch2.getInstance();
 //    private Jacks jacks = Jacks.getInstance();
-//    private BlackJack jacks = BlackJack.getInstance();
+    private BlackJack jacks = BlackJack.getInstance();
 //    private Vision vision = Vision.getInstance();
 //    private SubsystemTest subsystemTest;
 
@@ -123,13 +123,13 @@ public class Robot extends TimedRobot {
 //
 //        cargo.intakeTilt(gameController.intakeTilt());
 
-//        if(gameController.liftJack()){
-//            jacks.lift();
-//        } else if(gameController.retractFrontJack()) {
-//            jacks.retract();
-//        } else {
-//            jacks.setOpenLoop(0.0);
-//        }
+        if(gameController.liftJack()){
+            jacks.lift();
+        } else if(gameController.retractFrontJack()) {
+            jacks.retract();
+        } else {
+            jacks.setOpenLoop(0.0);
+        }
 
 
 //        if (!gameController.liftJack()) {
@@ -202,7 +202,7 @@ public class Robot extends TimedRobot {
 //        }
 
 //        hatch.outputTelemetry();
-//        jacks.outputTelemetry();
+        jacks.outputTelemetry();
     }
 
     // TODO add more tests

@@ -24,24 +24,27 @@ public class Cargo extends Subsystem {
     private final WPI_TalonSRX leftRear;
     private final DigitalInput cargoSensor = new DigitalInput(Constants.CARGO_SENSOR);
     private final WPI_TalonSRX intake;
-    private final WPI_TalonSRX oudo;
+    private final WPI_TalonSRX intakeTilt;
 
 
     private CargoState currentState = new CargoState();
     private CargoStateMachine cargoStateMachine = new CargoStateMachine();
     private double intakeTiltPower = 0.0;
 
+    /**
+     * Constructor.
+     */
     private Cargo() {
-        // TODO test voltage compensation
         centerSide = new WPI_TalonSRX(Constants.CARGO_CENTER);
         rightRear = new WPI_TalonSRX(Constants.CARGO_LEFT);
         leftRear = new WPI_TalonSRX(Constants.CARGO_RIGHT);
         intake = new WPI_TalonSRX(Constants.INTAKE);
 
-        oudo = new WPI_TalonSRX(Constants.OUDO);
-        oudo.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-        oudo.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+        intakeTilt = new WPI_TalonSRX(Constants.INTAKE_TILT);
+        intakeTilt.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+        intakeTilt.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
         intake.setInverted(true);
+        // TODO test voltage compensation
 //        centerSide.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
 //        rightRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
 //        leftRear.configVoltageCompSaturation(MAXIMUM_VOLTAGE, Constants.CAN_TIMEOUT_MS);
@@ -60,7 +63,13 @@ public class Cargo extends Subsystem {
         rightRear.setInverted(true);
     }
 
-    // Creates new cargo instance but not if there is an existing one, to avoid conflicts.
+    /**
+     * Returns a static instance of the {@link Cargo} subsystem. If none has been created yet, the instance is created.
+     * This enables multiple other subsystems and any other classes to use this class without having to pass an instance
+     * or take the risk of trying to instantiate multiple instances of this class, which would result in errors.
+     *
+     * @return a static instance of the {@link Cargo} subsystem.
+     */
     public synchronized static Cargo getInstance() {
         if (instance == null) {
             instance = new Cargo();
@@ -85,16 +94,17 @@ public class Cargo extends Subsystem {
         CARGO_SHUFFLEBOARD.putNumber("Right Rear Current", rightRear.getOutputCurrent());
         CARGO_SHUFFLEBOARD.putNumber("Center Side Current", centerSide.getOutputCurrent());
         CARGO_SHUFFLEBOARD.putNumber("Intake (Wheels) Current", intake.getOutputCurrent());
-        CARGO_SHUFFLEBOARD.putNumber("Intake (Tilt) Current", oudo.getOutputCurrent());
+        CARGO_SHUFFLEBOARD.putNumber("Intake (Tilt) Current", intakeTilt.getOutputCurrent());
     }
 
-    // Stops the wheels' motors
+    /**
+     * Stops the cargo system, sets all motors in this subsystem to zero output.
+     */
     @Override
     public synchronized void stop() {
         setDesiredState(CargoState.IntakeState.STOPPED);
     }
 
-    // Sets the modes that the loop uses to function
     @Override
     public void registerEnabledLoops(LooperInterface enabledLooper) {
         Loop loop = new Loop() {
@@ -106,8 +116,7 @@ public class Cargo extends Subsystem {
             @Override
             public void onLoop(double timestamp) {
                 synchronized (Cargo.this) {
-                    CargoState newState = cargoStateMachine.onUpdate(getCargoState());
-                    updateOutputFromState(newState);
+                    currentState = cargoStateMachine.onUpdate(currentState);
                 }
             }
 
@@ -123,26 +132,30 @@ public class Cargo extends Subsystem {
         enabledLooper.registerLoop(loop);
     }
 
-    // Used with IR sensor to stop when cargo is in hold
+    /**
+     * Returns true when there is a cargo in the holding area.
+     *
+     * @return true if there is a cargo in the holding area, false if there is not.
+     */
     public synchronized boolean cargoInHold() {
         return currentState.ballInHold;
     }
 
-    private synchronized CargoState getCargoState() {
+    @Override
+    public synchronized void readPeriodicInputs() {
         currentState.ballInHold = !cargoSensor.get();
-        return currentState;
+    }
+
+    @Override
+    public synchronized void writePeriodicOutputs() {
+        centerSide.set(ControlMode.PercentOutput, currentState.rearMotorOutput);
+        rightRear.set(ControlMode.PercentOutput, currentState.rightMotorOutput);
+        leftRear.set(ControlMode.PercentOutput, currentState.leftMotorOutput);
+        intake.set(ControlMode.PercentOutput, currentState.intakeOutput);
+        intakeTilt.set(ControlMode.PercentOutput, intakeTiltPower);
     }
 
     public void intakeTilt(double power) {
         intakeTiltPower = power;
-    }
-
-    private synchronized void updateOutputFromState(CargoState state) {
-        centerSide.set(ControlMode.PercentOutput, state.rearMotorOutput);
-        rightRear.set(ControlMode.PercentOutput, state.rightMotorOutput);
-        leftRear.set(ControlMode.PercentOutput, state.leftMotorOutput);
-        intake.set(ControlMode.PercentOutput, state.intakeOutput);
-        oudo.set(ControlMode.PercentOutput, intakeTiltPower);
-        currentState = state;
     }
 }

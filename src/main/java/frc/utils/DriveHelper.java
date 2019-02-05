@@ -3,8 +3,8 @@ package frc.utils;
 // TODO we can do better than this for conversions, this does not exactly produce smooth driving results, just simple ones
 public class DriveHelper {
     // TODO experimentally determine these? Make them zero?
-    private static double TANK_DEFAULT_DEADBAND = 0.05;
-    private static double ARCADE_DEFAULT_DEADBAND = 0.05;
+    private static double TANK_DEFAULT_DEADBAND = 0.02;
+    private static double ARCADE_DEFAULT_DEADBAND = 0.02;
 
     private DriveHelper() {
 

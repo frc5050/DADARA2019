@@ -23,7 +23,6 @@ public class Hatch2 extends Subsystem {
     private static Hatch2 instance;
     private final WPI_TalonSRX hatch;
     private final DigitalInput upperLimitSwitch;
-    boolean writeOutput = false;
     private HatchStateMachine hatchStateMachine = new HatchStateMachine(Timer.getFPGATimestamp());
     private HatchState hatchState = new HatchState();
     private HatchState outputState = new HatchState();
