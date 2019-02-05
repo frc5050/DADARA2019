@@ -29,10 +29,10 @@ public class Robot extends TimedRobot {
 
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
-            Cargo.getInstance(),
-            Elevator2.getInstance(),
-            Hatch2.getInstance(),
-            Jacks.getInstance()
+            Cargo.getInstance()
+//            Elevator2.getInstance(),
+//            Hatch2.getInstance(),
+//            BlackJack.getInstance()
     ));
 
     private Looper enabledLooper = new Looper();
@@ -42,10 +42,11 @@ public class Robot extends TimedRobot {
 
     private Drive drive = Drive.getInstance();
     private Cargo cargo = Cargo.getInstance();
-    private Elevator2 elevator = Elevator2.getInstance();
-    private Hatch2 hatch = Hatch2.getInstance();
-    private Jacks jacks = Jacks.getInstance();
-
+//    private Elevator2 elevator = Elevator2.getInstance();
+//    private Hatch2 hatch = Hatch2.getInstance();
+//    private Jacks jacks = Jacks.getInstance();
+//    private BlackJack jacks = BlackJack.getInstance();
+//    private Vision vision = Vision.getInstance();
 //    private SubsystemTest subsystemTest;
 
     @Override
@@ -103,7 +104,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drive.setOpenLoop(gameController.getDriveSignal());
-        hatch.setOpenLoop(gameController.hatchManual());
+//        hatch.setOpenLoop(gameController.hatchManual());
         if (gameController.cargoIntake()) {
             cargo.setDesiredState(CargoState.IntakeState.INTAKE);
         } else if (gameController.cargoIntakeLeft()) {
@@ -119,75 +120,89 @@ public class Robot extends TimedRobot {
         } else {
             cargo.setDesiredState(CargoState.IntakeState.STOPPED);
         }
+//
+//        cargo.intakeTilt(gameController.intakeTilt());
 
-        cargo.intakeTilt(gameController.intakeTilt());
+//        if(gameController.liftJack()){
+//            jacks.lift();
+//        } else if(gameController.retractFrontJack()) {
+//            jacks.retract();
+//        } else {
+//            jacks.setOpenLoop(0.0);
+//        }
 
-        if (!gameController.liftJack()) {
-            boolean useGyroCorrection = false;
-            boolean boostedRearHold = false;
-            JackLiftState left, right, front;
 
-            if (gameController.retractLeftJack()) {
-                left = JackLiftState.RETRACT;
-            } else if (gameController.extendLeftJack()) {
-                left = JackLiftState.LIFT;
-            } else {
-                left = JackLiftState.NEUTRAL;
-            }
+//        if (!gameController.liftJack()) {
+//            boolean useGyroCorrection = false;
+//            boolean boostedRearHold = false;
+//            JackLiftState left, right, front;
+//
+//            if (gameController.retractLeftJack()) {
+//                left = JackLiftState.RETRACT;
+//            } else if (gameController.extendLeftJack()) {
+//                left = JackLiftState.LIFT;
+//            } else {
+//                left = JackLiftState.NEUTRAL;
+//            }
+//
+//            if (gameController.retractRightJack()) {
+//                right = JackLiftState.RETRACT;
+//            } else if (gameController.extendRightJack()) {
+//                right = JackLiftState.LIFT;
+//            } else {
+//                right = JackLiftState.NEUTRAL;
+//            }
+//
+//            if (gameController.retractFrontJack()) {
+//                front = JackLiftState.RETRACT;
+//                left = JackLiftState.HOLD;
+//                right = JackLiftState.HOLD;
+//                useGyroCorrection = true;
+//                boostedRearHold = true;
+//            } else if (gameController.extendFrontJack()) {
+//                front = JackLiftState.LIFT;
+//                left = JackLiftState.HOLD;
+//                right = JackLiftState.HOLD;
+//                useGyroCorrection = true;
+//                boostedRearHold = false;
+//            } else {
+//                front = JackLiftState.NEUTRAL;
+//            }
+//
+//            if (gameController.holdAll()) {
+//                front = JackLiftState.HOLD;
+//                left = JackLiftState.HOLD;
+//                right = JackLiftState.HOLD;
+//                useGyroCorrection = true;
+//            }
+//
+//            jacks.jackMod(front, left, right, useGyroCorrection, boostedRearHold);
+//            jacks.runWheels(gameController.runJackWheels());
+//        } else {
+//            jacks.automaticSyncLiftBasic();
+//        }
 
-            if (gameController.retractRightJack()) {
-                right = JackLiftState.RETRACT;
-            } else if (gameController.extendRightJack()) {
-                right = JackLiftState.LIFT;
-            } else {
-                right = JackLiftState.NEUTRAL;
-            }
 
-            if (gameController.retractFrontJack()) {
-                front = JackLiftState.RETRACT;
-                left = JackLiftState.HOLD;
-                right = JackLiftState.HOLD;
-                useGyroCorrection = true;
-                boostedRearHold = true;
-            } else if (gameController.extendFrontJack()) {
-                front = JackLiftState.LIFT;
-                left = JackLiftState.HOLD;
-                right = JackLiftState.HOLD;
-                useGyroCorrection = true;
-                boostedRearHold = false;
-            } else {
-                front = JackLiftState.NEUTRAL;
-            }
 
-            if (gameController.holdAll()) {
-                front = JackLiftState.HOLD;
-                left = JackLiftState.HOLD;
-                right = JackLiftState.HOLD;
-                useGyroCorrection = true;
-            }
+//        gameController.update();
+//        if (gameController.setElevatorPositionLowHatch()) {
+//            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_LOW);
+//        } else if (gameController.setElevatorPositionMidHatch()) {
+//            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_MID);
+//        } else if (gameController.setElevatorPositionHighHatch()) {
+//            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_HIGH);
+//        } else if (gameController.setElevatorPositionLowCargo()) {
+//            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_LOW);
+//        } else if (gameController.setElevatorPositionMidCargo()) {
+//            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_MID);
+//        } else if (gameController.setElevatorPositionHighCargo()) {
+//            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_HIGH);
+//        } else {
+//            elevator.manualMovement(gameController.elevateManual());
+//        }
 
-            jacks.jackMod(front, left, right, useGyroCorrection, boostedRearHold);
-            jacks.runWheels(gameController.runJackWheels());
-        } else {
-            jacks.automaticSyncLiftBasic();
-        }
-
-        gameController.update();
-        if (gameController.setElevatorPositionLowHatch()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_LOW);
-        } else if (gameController.setElevatorPositionMidHatch()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_MID);
-        } else if (gameController.setElevatorPositionHighHatch()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_HIGH);
-        } else if (gameController.setElevatorPositionLowCargo()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_LOW);
-        } else if (gameController.setElevatorPositionMidCargo()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_MID);
-        } else if (gameController.setElevatorPositionHighCargo()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_HIGH);
-        } else {
-            elevator.manualMovement(gameController.elevateManual());
-        }
+//        hatch.outputTelemetry();
+//        jacks.outputTelemetry();
     }
 
     // TODO add more tests

@@ -1,6 +1,7 @@
 package frc.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.utils.Constants;
 import frc.utils.DriveSignal;
@@ -36,7 +37,28 @@ public class Jacks extends Subsystem {
         frontJack.setInverted(false);
         // TODO test the wheel inversion
         rightRearWheel.setInverted(true);
+
+        configureTalon(leftRearJack, true, false, 1.0);
+        configureTalon(rightRearJack, false, false, 1.0);
+        configureTalon(frontJack, false, false, 1.3);
     }
+
+    private void configureTalon(WPI_TalonSRX talon, boolean inverted, boolean sensorPhase, double kp){
+        talon.setSelectedSensorPosition(0, 0, 30);
+        talon.setInverted(inverted);
+        talon.setSensorPhase(sensorPhase);
+        talon.config_kP(0, kp, 30);
+        talon.config_kI(0, 0, 30);
+        talon.config_kD(0, 0, 30);
+        talon.config_kF(0, 0, 30);
+        talon.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 10);
+        talon.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10);
+        talon.configPeakOutputForward(1.0);
+        talon.configPeakOutputReverse(-1.0);
+        talon.configMotionCruiseVelocity(2000);
+        talon.configMotionAcceleration(200);
+    }
+
 
     // Creates an instance only if there is no existing instance to avoid conflicts
     public static Jacks getInstance() {

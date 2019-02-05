@@ -40,7 +40,7 @@ public class DriverGamepad implements DriverHid {
 
     @Override
     public boolean retractFrontJack() {
-        return false;
+        return gamepad.getBButton();
     }
 
     @Override

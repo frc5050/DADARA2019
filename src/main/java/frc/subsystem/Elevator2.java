@@ -14,7 +14,7 @@ public class Elevator2 extends Subsystem {
     private static final double TOTAL_DELTA_HEIGHT = UPPER_DIST_FROM_GROUND - BOTTOM_DIST_FROM_GROUND;
     private static final double TOTAL_DELTA_VOLTAGE = UPPER_POT_VALUE - LOWER_POT_VALUE;
     private static final double TOTAL_DELTA_ENCODER_VALUE = -181.22; // revolutions (top - bottom)
-    private static final double HOLD_FEEDFORWARD = -0.06;
+    private static final double HOLD_FEEDFORWARD = -0.035;
     private static final double DESIRED_TOLERANCE_METERS = 0.125 * 0.0254;
     private static final double DESIRED_SPEED_AT_TOLERANCE_POINT = 0.3;
     private static final double KP_CUSTOM_PID = DESIRED_SPEED_AT_TOLERANCE_POINT / DESIRED_TOLERANCE_METERS;
