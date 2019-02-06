@@ -50,7 +50,7 @@ public class DriverGamepad implements DriverHid {
 
     @Override
     public boolean retractLeftJack() {
-        return false;
+        return gamepad.getXButton();
     }
 
     @Override
@@ -65,7 +65,8 @@ public class DriverGamepad implements DriverHid {
 
     @Override
     public DriveSignal runJackWheels() {
-        return DriveSignal.NEUTRAL;
+        double power = gamepad.getBumper(GenericHID.Hand.kRight) ? 0.8 : (gamepad.getBumper(GenericHID.Hand.kLeft) ? -0.8 : 0.0);
+        return new DriveSignal(power, power, true);
     }
 
     @Override

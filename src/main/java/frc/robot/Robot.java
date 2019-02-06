@@ -14,6 +14,7 @@ import frc.states.CargoState;
 import frc.subsystem.*;
 import frc.subsystem.Jacks.JackLiftState;
 
+import javax.management.monitor.GaugeMonitor;
 import java.util.Arrays;
 
 /**
@@ -29,7 +30,7 @@ public class Robot extends TimedRobot {
 
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
-            Cargo.getInstance(),
+//            Cargo.getInstance(),
 //            Elevator2.getInstance(),
 //            Hatch2.getInstance(),
             BlackJack.getInstance()
@@ -41,7 +42,7 @@ public class Robot extends TimedRobot {
     private GameController gameController = GameController.getInstance();
 
     private Drive drive = Drive.getInstance();
-    private Cargo cargo = Cargo.getInstance();
+//    private Cargo cargo = Cargo.getInstance();
 //    private Elevator2 elevator = Elevator2.getInstance();
 //    private Hatch2 hatch = Hatch2.getInstance();
 //    private Jacks jacks = Jacks.getInstance();
@@ -105,21 +106,21 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         drive.setOpenLoop(gameController.getDriveSignal());
 //        hatch.setOpenLoop(gameController.hatchManual());
-        if (gameController.cargoIntake()) {
-            cargo.setDesiredState(CargoState.IntakeState.INTAKE);
-        } else if (gameController.cargoIntakeLeft()) {
-            cargo.setDesiredState(CargoState.IntakeState.INTAKE_LEFT);
-        } else if (gameController.cargoIntakeRight()) {
-            cargo.setDesiredState(CargoState.IntakeState.INTAKE_RIGHT);
-        } else if (gameController.cargoOuttakeLeft()) {
-            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_LEFT);
-        } else if (gameController.cargoOuttakeRight()) {
-            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_RIGHT);
-        } else if (gameController.cargoOuttakeFront()) {
-            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_FRONT);
-        } else {
-            cargo.setDesiredState(CargoState.IntakeState.STOPPED);
-        }
+//        if (gameController.cargoIntake()) {
+//            cargo.setDesiredState(CargoState.IntakeState.INTAKE);
+//        } else if (gameController.cargoIntakeLeft()) {
+//            cargo.setDesiredState(CargoState.IntakeState.INTAKE_LEFT);
+//        } else if (gameController.cargoIntakeRight()) {
+//            cargo.setDesiredState(CargoState.IntakeState.INTAKE_RIGHT);
+//        } else if (gameController.cargoOuttakeLeft()) {
+//            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_LEFT);
+//        } else if (gameController.cargoOuttakeRight()) {
+//            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_RIGHT);
+//        } else if (gameController.cargoOuttakeFront()) {
+//            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_FRONT);
+//        } else {
+//            cargo.setDesiredState(CargoState.IntakeState.STOPPED);
+//        }
 //
 //        cargo.intakeTilt(gameController.intakeTilt());
 
@@ -127,8 +128,14 @@ public class Robot extends TimedRobot {
             jacks.lift();
         } else if(gameController.retractFrontJack()) {
             jacks.retract();
+        } else if(gameController.retractLeftJack()){
+            jacks.hab3Climb();
         } else {
             jacks.setOpenLoop(0.0);
+        }
+
+        if(!gameController.retractLeftJack()) {
+            jacks.setWheels(gameController.runJackWheels());
         }
 
 
