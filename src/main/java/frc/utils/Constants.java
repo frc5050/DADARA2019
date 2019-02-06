@@ -16,8 +16,7 @@ public class Constants {
     public static final int LEFT_REAR_JACK_LIFT = 4; // SRX
     public static final int RIGHT_REAR_JACK_WHEEL = 6; // SRX
     public static final int LEFT_REAR_JACK_WHEEL = 5; // SRX
-    public static final int LEFT_LIFT_NEO = 14; // MAX
-    public static final int RIGHT_LIFT_NEO = 13; // MAX
+    public static final int ELEVATOR_NEO = 13; // MAX TODO remove
     public static final int CARGO_CENTER = 10; // SRX
     public static final int CARGO_LEFT = 9; // SRX
     public static final int CARGO_RIGHT = 8; // SRX
@@ -26,7 +25,11 @@ public class Constants {
     public static final boolean USE_GAMEPAD_FOR_OPERATING = true;
     public static final int DRIVER_JOYSTICK_PORT = 0;
 
-    // HID ports
+    // TODO DEPRECATED
+    public static final int LEFT_LIFT_NEO = 14; // MAX
+    public static final int RIGHT_LIFT_NEO = 13; // MAX TODO remove
+
+  // HID ports
     public static final int DRIVER_GAMEPAD_PORT = 0;
     // TODO make these not collide
     public static final int OPERATOR_GAMEPAD_PORT = 1;

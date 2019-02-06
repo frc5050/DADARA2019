@@ -4,6 +4,7 @@ import com.revrobotics.*;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 
+import static frc.utils.Constants.ELEVATOR_NEO;
 import static frc.utils.Constants.ELEVATOR_SHUFFLEBOARD;
 
 public class Elevator2 extends Subsystem {
@@ -50,7 +51,7 @@ public class Elevator2 extends Subsystem {
         ELEVATOR_SHUFFLEBOARD.putNumber("REVOLUTIONS_PER_METER", REVOLUTIONS_PER_METER);
         bottomLimit = new DigitalInput(2);
 //        pot = new AnalogInput(0);
-        motor = new CANSparkMax(13, CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor = new CANSparkMax(ELEVATOR_NEO, CANSparkMaxLowLevel.MotorType.kBrushless);
         encoder = new CANEncoder(motor);
         controller = motor.getPIDController();
         controller.setFF(HOLD_FEEDFORWARD);
