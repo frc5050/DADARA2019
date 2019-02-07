@@ -17,7 +17,7 @@ public class DriveTest implements SubsystemTest {
         drive.setOpenLoop(DriveSignal.NEUTRAL);
     }
 
-    private void neutralizeDriveTrain() {
+    private void neutralizeDriveBase() {
         drive.setOpenLoop(DriveSignal.NEUTRAL);
     }
 
@@ -31,7 +31,7 @@ public class DriveTest implements SubsystemTest {
             initializedState = false;
             state = nextState;
         } else if (goalTimestamp <= timestamp) {
-            neutralizeDriveTrain();
+            neutralizeDriveBase();
         }
     }
 
@@ -63,7 +63,7 @@ public class DriveTest implements SubsystemTest {
                 handleLoop(timestamp, DriveTestState.END_DISABLED);
                 break;
             case END_DISABLED:
-                neutralizeDriveTrain();
+                neutralizeDriveBase();
                 break;
         }
         drive.writePeriodicOutputs();

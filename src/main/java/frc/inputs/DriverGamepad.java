@@ -50,7 +50,7 @@ public class DriverGamepad implements DriverHid {
 
     @Override
     public boolean retractLeftJack() {
-        return gamepad.getXButton();
+        return gamepad.getXButtonPressed();
     }
 
     @Override
@@ -60,7 +60,10 @@ public class DriverGamepad implements DriverHid {
 
     @Override
     public boolean retractRightJack() {
-        return false;
+        if(gamepad.getYButtonPressed()){
+            System.out.println("Y button pressed");
+        }
+        return gamepad.getYButtonPressed();
     }
 
     @Override

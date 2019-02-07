@@ -1,4 +1,4 @@
-package frc.subsystem;
+package frc.subsystem.deprecated;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -6,9 +6,11 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import frc.loops.Loop;
 import frc.loops.LooperInterface;
 import frc.states.ElevatorStateMachine;
+import frc.subsystem.Subsystem;
 
 import static frc.utils.Constants.*;
 // Sets variables and creates a statemachine to track the positioning
+@Deprecated
 public class Elevator extends Subsystem {
     private static final CANSparkMaxLowLevel.MotorType MOTOR_TYPE = CANSparkMaxLowLevel.MotorType.kBrushless;
     private static Elevator instance;

@@ -1,7 +1,11 @@
-package frc.subsystem;
+package frc.subsystem.deprecated;
+
+import frc.subsystem.Drive;
+import frc.subsystem.Subsystem;
 
 import static frc.utils.Constants.ROBOT_STATE_SHUFFLEBOARD;
 // Creates subsystem variables and allows for use of instances in other functions
+@Deprecated // we never really used this, it can be easily recreated and actually implemented if desired at later date
 public class RobotState extends Subsystem {
     // TODO actually implement an odometry system. ORB-SLAM/SVO/Simple Wheel odometry might be useful?
     //  adding an extra notifier just for this might be worth it if it proves useful

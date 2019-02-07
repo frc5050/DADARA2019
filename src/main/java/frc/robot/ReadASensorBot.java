@@ -1,29 +1,21 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.*;
-
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.utils.Constants;
 
+@Deprecated
 public class ReadASensorBot extends TimedRobot {
-    private CANSparkMax motor;
-    private CANEncoder encoder;
-    private CANPIDController controller;
-    private Joystick joystick;
-    private AnalogInput pot;
-    private double power = 0.0;
-
     private static final double UPPER_POT_VALUE = 2.25;
     private static final double LOWER_POT_VALUE = 4.35;
     private static final double BOTTOM_DIST_FROM_GROUND = (9.0 + (7.0 / 8.0)) * 0.0254;
     private static final double UPPER_DIST_FROM_GROUND = (74.75) * 0.0254;
-
     private static final double TOTAL_DELTA_HEIGHT = UPPER_DIST_FROM_GROUND - BOTTOM_DIST_FROM_GROUND;
     private static final double TOTAL_DELTA_VOLTAGE = UPPER_POT_VALUE - LOWER_POT_VALUE;
     private static final double TOTAL_DELTA_ENCODER_VALUE = -50.0;
@@ -33,16 +25,30 @@ public class ReadASensorBot extends TimedRobot {
     private static final double KP_CUSTOM_PID = DESIRED_SPEED_AT_TOLERANCE_POINT / DESIRED_TOLERANCE;
     private static final double KV_CUSTOM_PID = 0.01;
     private static final double KP_ENCODER_BASED = (DESIRED_SPEED_AT_TOLERANCE_POINT / DESIRED_TOLERANCE) * (TOTAL_DELTA_ENCODER_VALUE / TOTAL_DELTA_HEIGHT);
+    private static final double SETPOINT_HEIGHT = 51.5 * 0.0254; // meters
+    double voltage = 0.0;
+    double height = 0.0;
+    double encoderPosition = 0.0;
+    double encoderFilteredPosition = 0.0;
+    double temperature = 0.0;
+    private CANSparkMax motor;
+    private CANEncoder encoder;
+    private CANPIDController controller;
+    private Joystick joystick;
+    private AnalogInput pot;
+    private double power = 0.0;
+    private double encoderOffset = 0.0;
+    private double lastError = 0.0;
 
-    private double convertVoltageToHeight(double voltage){
+    private double convertVoltageToHeight(double voltage) {
         return BOTTOM_DIST_FROM_GROUND + ((voltage - LOWER_POT_VALUE) / TOTAL_DELTA_VOLTAGE) * TOTAL_DELTA_HEIGHT;
     }
 
-    private double convertEncoderToHeight(double encoderValue){
+    private double convertEncoderToHeight(double encoderValue) {
         return BOTTOM_DIST_FROM_GROUND + ((encoderValue + encoderOffset) / TOTAL_DELTA_ENCODER_VALUE) * TOTAL_DELTA_HEIGHT;
     }
 
-    private double convertHeightToEncoder(double height){
+    private double convertHeightToEncoder(double height) {
         return ((height - BOTTOM_DIST_FROM_GROUND) / TOTAL_DELTA_HEIGHT) * TOTAL_DELTA_ENCODER_VALUE - encoderOffset;
     }
 
@@ -63,12 +69,6 @@ public class ReadASensorBot extends TimedRobot {
 //        encoder = new CANEncoder(motor);
     }
 
-    double voltage = 0.0;
-    double height = 0.0;
-    double encoderPosition = 0.0;
-    double encoderFilteredPosition = 0.0;
-    double temperature = 0.0;
-
     @Override
     public void robotPeriodic() {
         voltage = pot.getVoltage();
@@ -76,11 +76,11 @@ public class ReadASensorBot extends TimedRobot {
         encoderPosition = encoder.getPosition();
         temperature = motor.getMotorTemperature();
 
-        if(voltage > LOWER_POT_VALUE - 0.01){
+        if (voltage > LOWER_POT_VALUE - 0.01) {
             encoderOffset = -encoderPosition;
         }
 
-        if(temperature > 80.0){
+        if (temperature > 80.0) {
             DriverStation.reportError("ELEVATOR TEMPERATURE TOO HIGH", false);
         }
 
@@ -118,18 +118,14 @@ public class ReadASensorBot extends TimedRobot {
     public void teleopInit() {
     }
 
-
-    private static final double SETPOINT_HEIGHT = 51.5 * 0.0254; // meters
-    private double encoderOffset = 0.0;
-    private double lastError = 0.0;
     @Override
     public void teleopPeriodic() {
         boolean manualOverride = joystick.getRawButton(1);
         boolean holdPosition = joystick.getRawButton(2);
-        if(manualOverride){
+        if (manualOverride) {
             power = -joystick.getRawAxis(1);
             power = (Math.abs(power) < 0.04) ? 0.0 : power;
-        } else if(holdPosition){
+        } else if (holdPosition) {
             power = HOLD_FEEDFORWARD;
         } else {
             double error = SETPOINT_HEIGHT - height;
@@ -138,9 +134,9 @@ public class ReadASensorBot extends TimedRobot {
             lastError = error;
         }
 
-        if(voltage > LOWER_POT_VALUE){
+        if (voltage > LOWER_POT_VALUE) {
             power = power > 0 ? 0 : power;
-        } else if (voltage < UPPER_POT_VALUE){
+        } else if (voltage < UPPER_POT_VALUE) {
             power = power < 0 ? HOLD_FEEDFORWARD : power;
         }
 

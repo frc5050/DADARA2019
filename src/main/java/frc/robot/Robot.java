@@ -12,9 +12,7 @@ import frc.inputs.GameController;
 import frc.loops.Looper;
 import frc.states.CargoState;
 import frc.subsystem.*;
-import frc.subsystem.Jacks.JackLiftState;
 
-import javax.management.monitor.GaugeMonitor;
 import java.util.Arrays;
 
 /**
@@ -30,9 +28,9 @@ public class Robot extends TimedRobot {
 
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
-//            Cargo.getInstance(),
-//            Elevator2.getInstance(),
-//            Hatch2.getInstance(),
+            Cargo.getInstance(),
+            Elevator2.getInstance(),
+            Hatch2.getInstance(),
             BlackJack.getInstance()
     ));
 
@@ -43,8 +41,8 @@ public class Robot extends TimedRobot {
 
     private Drive drive = Drive.getInstance();
 //    private Cargo cargo = Cargo.getInstance();
-//    private Elevator2 elevator = Elevator2.getInstance();
-//    private Hatch2 hatch = Hatch2.getInstance();
+    private Elevator2 elevator = Elevator2.getInstance();
+    private Hatch2 hatch = Hatch2.getInstance();
 //    private Jacks jacks = Jacks.getInstance();
     private BlackJack jacks = BlackJack.getInstance();
 //    private Vision vision = Vision.getInstance();
@@ -105,7 +103,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drive.setOpenLoop(gameController.getDriveSignal());
-//        hatch.setOpenLoop(gameController.hatchManual());
+        hatch.setOpenLoop(gameController.hatchManual());
+//        cargo.intakeTilt(gameController.intakeTilt());
 //        if (gameController.cargoIntake()) {
 //            cargo.setDesiredState(CargoState.IntakeState.INTAKE);
 //        } else if (gameController.cargoIntakeLeft()) {
@@ -121,15 +120,17 @@ public class Robot extends TimedRobot {
 //        } else {
 //            cargo.setDesiredState(CargoState.IntakeState.STOPPED);
 //        }
-//
-//        cargo.intakeTilt(gameController.intakeTilt());
 
         if(gameController.liftJack()){
             jacks.lift();
         } else if(gameController.retractFrontJack()) {
             jacks.retract();
-        } else if(gameController.retractLeftJack()){
-            jacks.hab3Climb();
+        } else if(gameController.retractLeftJack()) {
+//            jacks.habClimb(BlackJack.JackState.HAB3);
+            jacks.setDesiredState(BlackJack.JackSystem.INIT_HAB_CLIMB);
+        } else if(gameController.retractRightJack()){
+//            jacks.zero();
+            jacks.setDesiredState(BlackJack.JackSystem.ZEROING);
         } else {
             jacks.setOpenLoop(0.0);
         }
@@ -191,7 +192,7 @@ public class Robot extends TimedRobot {
 
 
 
-//        gameController.update();
+        gameController.update();
 //        if (gameController.setElevatorPositionLowHatch()) {
 //            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_LOW);
 //        } else if (gameController.setElevatorPositionMidHatch()) {
@@ -205,7 +206,7 @@ public class Robot extends TimedRobot {
 //        } else if (gameController.setElevatorPositionHighCargo()) {
 //            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_HIGH);
 //        } else {
-//            elevator.manualMovement(gameController.elevateManual());
+            elevator.manualMovement(gameController.elevateManual());
 //        }
 
 //        hatch.outputTelemetry();

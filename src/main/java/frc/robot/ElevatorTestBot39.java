@@ -8,6 +8,7 @@ import frc.subsystem.SubsystemManager;
 
 import java.util.Arrays;
 
+@Deprecated
 public class ElevatorTestBot39 extends TimedRobot {
     private Looper enabledLooper = new Looper();
     private Looper disabledLooper = new Looper();

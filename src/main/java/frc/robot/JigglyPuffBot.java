@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.zip.DeflaterInputStream;
 
+@Deprecated
 public class JigglyPuffBot extends TimedRobot {
 
     private DigitalInput dio0 = new DigitalInput(0);

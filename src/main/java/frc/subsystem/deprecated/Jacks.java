@@ -1,14 +1,17 @@
-package frc.subsystem;
+package frc.subsystem.deprecated;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import frc.subsystem.Drive;
+import frc.subsystem.Subsystem;
 import frc.utils.Constants;
 import frc.utils.DriveSignal;
 
 import static frc.utils.Constants.JACKS_SHUFFLEBOARD;
 
 // Creates subsystem variables and initializes motors
+@Deprecated
 public class Jacks extends Subsystem {
 
     // TODO(Lucas) use pidf + navx to control ratios while maximizing speed

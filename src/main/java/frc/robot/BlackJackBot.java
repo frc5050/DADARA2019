@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.subsystem.BlackJack;
 
+@Deprecated
 public class BlackJackBot extends TimedRobot {
     private BlackJack jack = BlackJack.getInstance();
     private Joystick joystick = new Joystick(0);
