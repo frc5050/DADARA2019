@@ -90,11 +90,6 @@ public class Cargo extends Subsystem {
         CARGO_SHUFFLEBOARD.putNumber("Right Output", currentState.leftMotorOutput);
         CARGO_SHUFFLEBOARD.putNumber("Intake Output", currentState.intakeOutput);
         CARGO_SHUFFLEBOARD.putBoolean("Cargo In Hold", currentState.ballInHold);
-        CARGO_SHUFFLEBOARD.putNumber("Left Rear Current", leftRear.getOutputCurrent());
-        CARGO_SHUFFLEBOARD.putNumber("Right Rear Current", rightRear.getOutputCurrent());
-        CARGO_SHUFFLEBOARD.putNumber("Center Side Current", centerSide.getOutputCurrent());
-        CARGO_SHUFFLEBOARD.putNumber("Intake (Wheels) Current", intake.getOutputCurrent());
-        CARGO_SHUFFLEBOARD.putNumber("Intake (Tilt) Current", intakeTilt.getOutputCurrent());
     }
 
     /**

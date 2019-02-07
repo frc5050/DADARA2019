@@ -10,8 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.inputs.GameController;
 import frc.loops.Looper;
-import frc.states.CargoState;
 import frc.subsystem.*;
+import frc.utils.DriveSignal;
 
 import java.util.Arrays;
 
@@ -121,22 +121,23 @@ public class Robot extends TimedRobot {
 //            cargo.setDesiredState(CargoState.IntakeState.STOPPED);
 //        }
 
+
+        if(!gameController.retractLeftJack()) {
+            jacks.setWheels(gameController.runJackWheels());
+        } else {
+            jacks.setWheels(DriveSignal.NEUTRAL);
+        }
+
         if(gameController.liftJack()){
             jacks.lift();
         } else if(gameController.retractFrontJack()) {
             jacks.retract();
         } else if(gameController.retractLeftJack()) {
-//            jacks.habClimb(BlackJack.JackState.HAB3);
-            jacks.setDesiredState(BlackJack.JackSystem.INIT_HAB_CLIMB);
+            jacks.setState(BlackJack.JackSystem.INIT_HAB_CLIMB);
         } else if(gameController.retractRightJack()){
-//            jacks.zero();
-            jacks.setDesiredState(BlackJack.JackSystem.ZEROING);
+            jacks.setState(BlackJack.JackSystem.ZEROING);
         } else {
             jacks.setOpenLoop(0.0);
-        }
-
-        if(!gameController.retractLeftJack()) {
-            jacks.setWheels(gameController.runJackWheels());
         }
 
 
