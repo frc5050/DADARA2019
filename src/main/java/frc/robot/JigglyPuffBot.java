@@ -15,6 +15,7 @@ public class JigglyPuffBot extends TimedRobot {
     private DigitalInput dio1 = new DigitalInput(1);
     private DigitalInput dio2= new DigitalInput(2);
     private DigitalInput dio3 = new DigitalInput(3);
+    private DigitalInput dio4 = new DigitalInput(4);
     private AnalogInput analogInput = new AnalogInput(0);
 
     @Override
@@ -31,6 +32,7 @@ public class JigglyPuffBot extends TimedRobot {
         SmartDashboard.putBoolean("Dio 2", dio2.get());
         SmartDashboard.putBoolean("Dio 1", dio1.get());
         SmartDashboard.putBoolean("Dio 3", dio3.get());
+        SmartDashboard.putBoolean("Dio 4", dio4.get());
     }
 
     @Override

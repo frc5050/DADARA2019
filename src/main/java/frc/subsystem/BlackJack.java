@@ -43,7 +43,7 @@ public class BlackJack extends Subsystem {
     private final PowerDistributionPanel pdp;
     private double finishTimestamp = Timer.getFPGATimestamp();
     private static final double HOLD_REAR_AND_RUN_FORWARD_TIME = 2.0;
-    private static final double HAB_CLIMB_FINISH_DRIVING_TIME = 0.45;
+    private static final double HAB_CLIMB_FINISH_DRIVING_TIME = 0.4;
     private Drive drive = Drive.getInstance();
     private JackSystem state = JackSystem.OPEN_LOOP;
     private PeriodicIO periodicIo = new PeriodicIO();
@@ -53,6 +53,7 @@ public class BlackJack extends Subsystem {
     private boolean leftHasZeroed = false;
     private boolean rightHasZeroed = false;
     private JackSystem desiredState = JackSystem.INIT_HAB_CLIMB;
+    private final DigitalInput rearIrSensor;
 
     /**
      * Constructor.
@@ -66,6 +67,7 @@ public class BlackJack extends Subsystem {
         rightRearWheel = new CheapWpiTalonSrx(Constants.RIGHT_REAR_JACK_WHEEL);
         leftRearWheel.setInverted(true);
         forwardIrSensor = new DigitalInput(3);
+        rearIrSensor = new DigitalInput(4);
         configureTalon(rightRearJack, true, false, 1.0);
         configureTalon(leftRearJack, false, false, 1.0);
         configureTalon(frontJack, true, false, 1.7);
@@ -214,9 +216,10 @@ public class BlackJack extends Subsystem {
                             break;
                         case HAB_CLIMB_HOLD_REAR_AND_RUN_FORWARD:
                             controlJacks(JackState.RETRACT, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
-                            drive.setOpenLoop(RETRACT_FRONT_JACK_DRIVE_BASE);
+                            drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
                             setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
-                            if(timestamp - finishTimestamp >= HOLD_REAR_AND_RUN_FORWARD_TIME/*2.0 @ 30%*/){
+                            if(periodicIo.rearIrDetectsGround){
+//                            if(timestamp - finishTimestamp >= HOLD_REAR_AND_RUN_FORWARD_TIME/*2.0 @ 30%*/){
                                 finishTimestamp = timestamp;
                                 setState(JackSystem.HAB_CLIMB_RETRACT_REAR_JACKS);
                             }
@@ -356,6 +359,7 @@ public class BlackJack extends Subsystem {
     public synchronized void readPeriodicInputs() {
         double time = Timer.getFPGATimestamp();
         periodicIo.frontIrDetectsGround = !forwardIrSensor.get();
+        periodicIo.rearIrDetectsGround = !rearIrSensor.get();
         periodicIo.frontJackEncoder = frontJack.getSelectedSensorPosition(0);
         periodicIo.leftJackEncoder = leftRearJack.getSelectedSensorPosition(0);
         periodicIo.rightJackEncoder = rightRearJack.getSelectedSensorPosition(0);
@@ -439,6 +443,7 @@ public class BlackJack extends Subsystem {
         JACKS_SHUFFLEBOARD.putNumber("Right Jack Wheel Demand", periodicIo.rightWheelDemand);
         JACKS_SHUFFLEBOARD.putNumber("Left Jack Wheel Demand", periodicIo.leftWheelDemand);
         JACKS_SHUFFLEBOARD.putBoolean("Front Ir Sensor", periodicIo.frontIrDetectsGround);
+        JACKS_SHUFFLEBOARD.putBoolean("Rear Ir Sensor", periodicIo.rearIrDetectsGround);
         JACKS_SHUFFLEBOARD.putNumber("Encoder RRJ", periodicIo.rightJackEncoder);
         JACKS_SHUFFLEBOARD.putNumber("Encoder LRF", periodicIo.leftJackEncoder);
         JACKS_SHUFFLEBOARD.putNumber("Encoder FJ", periodicIo.frontJackEncoder);
@@ -515,6 +520,7 @@ public class BlackJack extends Subsystem {
     private static class PeriodicIO {
         // Input
         boolean frontIrDetectsGround = false;
+        boolean rearIrDetectsGround = false;
         double leftJackEncoder;
         double rightJackEncoder;
         double frontJackEncoder;
