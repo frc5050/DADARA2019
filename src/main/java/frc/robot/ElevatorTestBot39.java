@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.inputs.GameController;
 import frc.loops.Looper;
-import frc.subsystem.Elevator2;
+import frc.subsystem.Elevator;
 import frc.subsystem.SubsystemManager;
 
 import java.util.Arrays;
@@ -13,8 +13,8 @@ public class ElevatorTestBot39 extends TimedRobot {
     private Looper enabledLooper = new Looper();
     private Looper disabledLooper = new Looper();
 
-    private SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(Elevator2.getInstance()));
-    private Elevator2 elevator = Elevator2.getInstance();
+    private SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(Elevator.getInstance()));
+    private Elevator elevator = Elevator.getInstance();
     private GameController gameController = GameController.getInstance();
 
     @Override
@@ -59,17 +59,17 @@ public class ElevatorTestBot39 extends TimedRobot {
     public void teleopPeriodic() {
         gameController.update();
         if (gameController.setElevatorPositionLowHatch()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_LOW);
+            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_LOW);
         } else if (gameController.setElevatorPositionMidHatch()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_MID);
+            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_MID);
         } else if (gameController.setElevatorPositionHighHatch()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.HATCH_HIGH);
+            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_HIGH);
         } else if (gameController.setElevatorPositionLowCargo()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_LOW);
+            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_LOW);
         } else if (gameController.setElevatorPositionMidCargo()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_MID);
+            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_MID);
         } else if (gameController.setElevatorPositionHighCargo()) {
-            elevator.pidToPosition(Elevator2.ElevatorPosition.CARGO_HIGH);
+            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_HIGH);
         } else {
             elevator.manualMovement(gameController.elevateManual());
         }

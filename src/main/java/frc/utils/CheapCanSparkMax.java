@@ -12,7 +12,9 @@ public class CheapCanSparkMax extends CANSparkMax {
     /**
      * Constructor.
      *
-     * @param deviceId the device ID of the Spark MAX, as addressed on the CAN network.
+     * @param deviceId  the device ID of the Spark MAX, as addressed on the CAN network.
+     * @param motorType the motor type being controlled by the motor controller, either {@link MotorType#kBrushed} or
+     *                  {@link MotorType#kBrushless}.
      */
     public CheapCanSparkMax(int deviceId, MotorType motorType) {
         super(deviceId, motorType);

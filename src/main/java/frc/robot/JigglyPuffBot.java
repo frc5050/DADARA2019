@@ -2,18 +2,18 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import java.util.zip.DeflaterInputStream;
-
-@Deprecated
+/**
+ * Test robot for just reading sensor inputs and not doing anything else. Should be removed by production, but helpful
+ * for the moment.
+ */
 public class JigglyPuffBot extends TimedRobot {
 
     private DigitalInput dio0 = new DigitalInput(0);
     private DigitalInput dio1 = new DigitalInput(1);
-    private DigitalInput dio2= new DigitalInput(2);
+    private DigitalInput dio2 = new DigitalInput(2);
     private DigitalInput dio3 = new DigitalInput(3);
     private DigitalInput dio4 = new DigitalInput(4);
     private AnalogInput analogInput = new AnalogInput(0);
@@ -40,7 +40,7 @@ public class JigglyPuffBot extends TimedRobot {
     }
 
     @Override
-    public void disabledPeriodic(){
+    public void disabledPeriodic() {
 
     }
 

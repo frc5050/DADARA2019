@@ -17,13 +17,15 @@ public class OperatorGamepad implements OperatorHid {
     private static final int POV_DPAD_LEFT = 270;
     private static final int POV_DPAD_UPPER_LEFT = 315;
     private static final int POV_DPAD_LOWER_LEFT = 225;
-    private static final double TRIGGER_THRESHOLD = .9;
     private static OperatorGamepad instance;
     private final XboxController operatorGamepad;
     private boolean useCargoHeights = false;
     private LastDpadState lastDpadState = LastDpadState.NONE;
     private ElevatorHeight elevatorHeight = ElevatorHeight.NONE;
 
+    /**
+     * Constructor.
+     */
     private OperatorGamepad() {
         operatorGamepad = new XboxController(Constants.OPERATOR_GAMEPAD_PORT);
     }
@@ -35,6 +37,7 @@ public class OperatorGamepad implements OperatorHid {
         return instance;
     }
 
+    @Override
     public void update() {
         int pov = operatorGamepad.getPOV();
         if (pov == -1) {
@@ -72,29 +75,13 @@ public class OperatorGamepad implements OperatorHid {
 
     @Override
     public boolean cargoIntake() {
-//        return operatorGamepad.getPOV() == POV_DPAD_DOWN;
         return lastDpadState == LastDpadState.DOWN;
     }
 
     @Override
     public boolean cargoOuttakeFront() {
-//        return operatorGamepad.getPOV() == POV_DPAD_UP;
         return lastDpadState == LastDpadState.UP;
     }
-
-//    @Override
-//    public boolean cargoOuttakeRight() {
-////        int pov = operatorGamepad.getPOV();
-////        return (pov == POV_DPAD_RIGHT) || (pov == POV_DPAD_LOWER_RIGHT || (pov == POV_DPAD_UPPER_RIGHT));
-//        return lastDpadState == LastDpadState.RIGHT;
-//    }
-//
-//    @Override
-//    public boolean cargoOuttakeLeft() {
-////        int pov = operatorGamepad.getPOV();
-////        return (pov == POV_DPAD_LEFT) || (pov == POV_DPAD_LOWER_LEFT || (pov == POV_DPAD_UPPER_LEFT));
-//        return lastDpadState == LastDpadState.LEFT;
-//    }
 
     private boolean invertLeftRight() {
         return operatorGamepad.getRawButton(8);
@@ -104,15 +91,12 @@ public class OperatorGamepad implements OperatorHid {
     public boolean cargoIntakeRight() {
         int pov = operatorGamepad.getPOV();
         return (((pov == POV_DPAD_RIGHT) || (pov == POV_DPAD_LOWER_RIGHT || (pov == POV_DPAD_UPPER_RIGHT))) && operatorGamepad.getRawButton(8)) && invertLeftRight();
-//        return cargoOuttakeRight() && invertLeftRight();
     }
 
     @Override
     public boolean cargoIntakeLeft() {
         int pov = operatorGamepad.getPOV();
         return ((pov == POV_DPAD_LEFT) || (pov == POV_DPAD_LOWER_LEFT || (pov == POV_DPAD_UPPER_LEFT))) && invertLeftRight();
-
-//        return cargoOuttakeLeft() && invertLeftRight();
     }
 
     @Override
@@ -140,11 +124,6 @@ public class OperatorGamepad implements OperatorHid {
         return elevatorHeight == ElevatorHeight.MID && !useCargoHeights;
     }
 
-    /**
-     * Sets the highHatch position to the left trigger if it is greater than the trigger threshold.
-     *
-     * @return
-     */
     @Override
     public boolean setElevatorPositionHighHatch() {
         return elevatorHeight == ElevatorHeight.HIGH && !useCargoHeights;
@@ -166,7 +145,7 @@ public class OperatorGamepad implements OperatorHid {
     }
 
     @Override
-    public boolean hatchRelease() {
+    public boolean hatchFeederHeight() {
         return operatorGamepad.getXButton();
     }
 
@@ -181,6 +160,15 @@ public class OperatorGamepad implements OperatorHid {
 
     }
 
+    /**
+     * The last recorded value of the DPAD.
+     *
+     * <p>
+     * Since the DPAD will quite often return a 45 degrees bisection between any of the four clickable directions, when
+     * holding one side, jittering in and out of that value can happen, leading to jittering on the motors. By storing
+     * the previously held state as one of the four valid directions, when the DPAD returns one of the 45 degree
+     * bisections, the last state can be used to make an educated guess as to what is actually being held.
+     */
     enum LastDpadState {
         UP,
         DOWN,
@@ -189,6 +177,10 @@ public class OperatorGamepad implements OperatorHid {
         NONE
     }
 
+    /**
+     * The different elevator heights. Used in combination with knowledge of whether to go to cargo or hatch heights to
+     * return valid values for which height to set the elevator to.
+     */
     enum ElevatorHeight {
         NONE,
         LOW,

@@ -37,43 +37,33 @@ public class GameController implements GameHid {
     }
 
     @Override
-    public boolean liftJack() {
-        return driverHid.liftJack();
+    public boolean liftAllJacks() {
+        return driverHid.liftAllJacks();
     }
 
     @Override
-    public boolean extendFrontJack() {
-        return driverHid.extendFrontJack();
+    public boolean retractAllJacks() {
+        return driverHid.retractAllJacks();
     }
 
     @Override
-    public boolean retractFrontJack() {
-        return driverHid.retractFrontJack();
-    }
-
-    @Override
-    public boolean extendLeftJack() {
-        return driverHid.extendLeftJack();
-    }
-
-    @Override
-    public boolean retractLeftJack() {
-        boolean rlj = driverHid.retractLeftJack();
-        if(rlj){
+    public boolean initializeHabClimbing() {
+        boolean rlj = driverHid.initializeHabClimbing();
+        if (rlj) {
             System.out.println("RLJ: " + rlj);
         }
         return rlj;
     }
 
     @Override
-    public boolean extendRightJack() {
-        return driverHid.extendRightJack();
+    public boolean manualJackWheelOverride() {
+        return driverHid.manualJackWheelOverride();
     }
 
     @Override
-    public boolean retractRightJack() {
-        boolean rrj = driverHid.retractRightJack();
-        if(rrj){
+    public boolean zeroJacks() {
+        boolean rrj = driverHid.zeroJacks();
+        if (rrj) {
             System.out.println("RRJ: " + rrj);
         }
         return rrj;
@@ -83,12 +73,6 @@ public class GameController implements GameHid {
     public DriveSignal runJackWheels() {
         return driverHid.runJackWheels();
     }
-
-    @Override
-    public boolean holdAll() {
-        return driverHid.holdAll();
-    }
-
 
     //
     // Operator Controls
@@ -129,12 +113,12 @@ public class GameController implements GameHid {
         return operatorHid.cargoIntakeLeft();
     }
 
-  @Override
-  public double intakeTilt() {
-    return operatorHid.intakeTilt();
-  }
+    @Override
+    public double intakeTilt() {
+        return operatorHid.intakeTilt();
+    }
 
-  @Override
+    @Override
     public boolean setElevatorPositionLowCargo() {
         return operatorHid.setElevatorPositionLowCargo();
     }
@@ -180,7 +164,7 @@ public class GameController implements GameHid {
     }
 
     @Override
-    public boolean hatchRelease() {
-        return operatorHid.hatchRelease();
+    public boolean hatchFeederHeight() {
+        return operatorHid.hatchFeederHeight();
     }
 }

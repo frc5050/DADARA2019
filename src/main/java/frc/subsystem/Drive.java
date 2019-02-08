@@ -14,10 +14,12 @@ import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.modifiers.TankModifier;
 
 import static frc.utils.Constants.*;
+import static frc.utils.UnitConversions.inchesToMeters;
+
 // TODO verify everythign
 // All setup variables for this subsystem
 public class Drive extends Subsystem {
-    private static final double DRIVE_WHEEL_DIAMETER = 6.0 * 0.0254;
+    private static final double DRIVE_WHEEL_DIAMETER = inchesToMeters(6.0);
     private static final int DRIVE_TICKS_PER_ROTATION = 4096;
     private static final double DRIVE_TICKS_PER_ROTATION_DOUBLE = (double) DRIVE_TICKS_PER_ROTATION;
     // TODO remeasure on a bot
@@ -38,7 +40,6 @@ public class Drive extends Subsystem {
     private int lastTrajectoryValue = 0;
     private int trajectoryValues = 0;
     private final Loop loop = new Loop() {
-    // Startup loop, sets brakes to false.
         @Override
         public void onStart(double timestamp) {
             synchronized (Drive.this) {
@@ -46,7 +47,7 @@ public class Drive extends Subsystem {
                 setBrakeMode(false);
             }
         }
-// Looping function for driving, uses Pathfollowing and normal drive mode.
+
         @Override
         public void onLoop(double timestamp) {
             synchronized (Drive.this) {
@@ -67,7 +68,7 @@ public class Drive extends Subsystem {
 
         }
     };
-// Setup for motors and sensors
+
     private Drive() {
         periodicIo = new PeriodicIO();
 
@@ -88,7 +89,8 @@ public class Drive extends Subsystem {
 
 //        initGainsOnShuffleBoard();
     }
-// Creates an instance of drive. If there is already an instance, do nothing so it doesn't conflict
+
+    // Creates an instance of drive. If there is already an instance, do nothing so it doesn't conflict
     public static Drive getInstance() {
         if (instance == null) {
             instance = new Drive();
@@ -101,10 +103,12 @@ public class Drive extends Subsystem {
         // 0 to 360: gyroHeading = (gyroHeading + gyroOffset) % 360.0;
         return (((heading + gyroOffset) - 180.0) % 360.0) - 180.0;
     }
+
     // Determines the velocity of the robot relative to the amount of encoder ticks
     private static double wheelVelocityTicksPer100msToVelocity(double velocityTicksPer100ms) {
         return velocityTicksPer100ms * 10.0 / DRIVE_TICKS_PER_ROTATION_DOUBLE * Math.PI * DRIVE_WHEEL_DIAMETER;
     }
+
     // Configures PID values for the motors
     private static void reloadGains(WPI_TalonSRX talon, double kP, double kI, double kD, double kF, int kIz, int timeout) {
         talon.config_kP(0, kP, timeout);
@@ -127,18 +131,19 @@ public class Drive extends Subsystem {
             DriverStation.reportError("Could not detect " + (left ? "left" : "right") + " drive encoder: " + sensorPresent, false);
         }
         // Configures the Talons with inversions and sensor values
-        // TODO check inversion
         talon.setInverted(!left);
         // TODO check sensor phase
         talon.setSensorPhase(true);
         talon.enableVoltageCompensation(true);
         talon.configVoltageCompSaturation(12.0, CAN_TIMEOUT_MS);
+        // TODO tune this period
         talon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms, CAN_TIMEOUT_MS);
         talon.configVelocityMeasurementWindow(1, CAN_TIMEOUT_MS);
         talon.configClosedloopRamp(DRIVE_VOLTAGE_RAMP_RATE, CAN_TIMEOUT_MS);
         // TODO should this be in a constant?
         talon.configNeutralDeadband(0.04, 0);
     }
+
     // Sets the motors from neutral mode coast to neutral mode brake
     public synchronized void setBrakeMode(boolean brake) {
         if (isBrake != brake) {
@@ -150,6 +155,7 @@ public class Drive extends Subsystem {
             isBrake = brake;
         }
     }
+
     // Changes the mode to joystick input
     public synchronized void setOpenLoop(DriveSignal signal) {
         if (state != DriveState.OPEN_LOOP) {
@@ -164,6 +170,7 @@ public class Drive extends Subsystem {
         periodicIo.leftFeedForward = 0.0;
         periodicIo.rightFeedForward = 0.0;
     }
+
     // Puts values on the Dashboard (Shuffleboard)
     @Override
     public void outputTelemetry() {
@@ -184,6 +191,7 @@ public class Drive extends Subsystem {
         DRIVE_SHUFFLEBOARD.putNumber("Roll", periodicIo.roll);
         DRIVE_SHUFFLEBOARD.putNumber("Pitch", periodicIo.pitch);
     }
+
     // Outputs different values based on whether the robot is in teleop or autonomous
     @Override
     public synchronized void writePeriodicOutputs() {
@@ -195,11 +203,13 @@ public class Drive extends Subsystem {
             rightMaster.set(ControlMode.Velocity, periodicIo.rightDemand, DemandType.ArbitraryFeedForward, periodicIo.rightFeedForward);
         }
     }
+
     // Stops the robot
     @Override
     public void stop() {
         setOpenLoop(DriveSignal.NEUTRAL);
     }
+
     // Creates a trajectory and sets it to the motors, changing the case to Path following
     public synchronized void setTrajectory(Trajectory trajectory) {
         if (trajectory != null) {
@@ -212,6 +222,7 @@ public class Drive extends Subsystem {
             state = DriveState.PATH_FOLLOWING;
         }
     }
+
     // Checks for if the trajectory is completed
     public synchronized boolean isDone() {
         if (trajectory == null || state != DriveState.PATH_FOLLOWING) {
@@ -219,6 +230,7 @@ public class Drive extends Subsystem {
         }
         return trajectoryValues > lastTrajectoryValue;
     }
+
     // Checks for path completion and resets the Path followers for the desired velocity if not.
     public synchronized void updatePathFollower() {
         if (state == DriveState.PATH_FOLLOWING) {
@@ -234,6 +246,7 @@ public class Drive extends Subsystem {
             DriverStation.reportError("Drive is not in path follower mode", false);
         }
     }
+
     // Resets encoders
     public synchronized void resetEncoders() {
         // TODO should this be a constant
@@ -241,6 +254,7 @@ public class Drive extends Subsystem {
         rightMaster.setSelectedSensorPosition(0, 0, 0);
         periodicIo = new PeriodicIO();
     }
+
     // Configures the gyro heading
     public synchronized void setHeading(double heading) {
         gyroOffset = heading - navX.getYaw();
@@ -256,6 +270,7 @@ public class Drive extends Subsystem {
     public void registerEnabledLoops(LooperInterface looper) {
         looper.registerLoop(loop);
     }
+
     // Reads the inputs from the sensors, and sets variables
     @Override
     public void readPeriodicInputs() {
@@ -304,7 +319,7 @@ public class Drive extends Subsystem {
 //        reloadGains(rightMaster, periodicIo.kP, periodicIo.kI, periodicIo.kD, periodicIo.kF, (int) periodicIo.kIz, longTimeout);
 //    }
 
-//    // TODO remove this once we tune the gains properly
+    //    // TODO remove this once we tune the gains properly
 //    private void initGainsOnShuffleBoard() {
 //        DRIVE_SHUFFLEBOARD.putNumber("kP", 1.0);
 //        DRIVE_SHUFFLEBOARD.putNumber("kI", 0.0);
@@ -340,11 +355,13 @@ public class Drive extends Subsystem {
     public synchronized double getRoll() {
         return periodicIo.roll;
     }
+
     // List of possible states/modes
     private enum DriveState {
         OPEN_LOOP,
         PATH_FOLLOWING
     }
+
     // All the periodic values
     private static class PeriodicIO {
         // Input

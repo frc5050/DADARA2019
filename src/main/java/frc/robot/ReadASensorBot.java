@@ -10,22 +10,29 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static frc.utils.UnitConversions.inchesToMeters;
+import static frc.utils.UnitConversions.metersToInches;
+
+/**
+ * Was a test bot for the elevator. Should be removed soon, once everything is working in
+ * {@link frc.subsystem.Elevator}.
+ */
 @Deprecated
 public class ReadASensorBot extends TimedRobot {
     private static final double UPPER_POT_VALUE = 2.25;
     private static final double LOWER_POT_VALUE = 4.35;
-    private static final double BOTTOM_DIST_FROM_GROUND = (9.0 + (7.0 / 8.0)) * 0.0254;
-    private static final double UPPER_DIST_FROM_GROUND = (74.75) * 0.0254;
+    private static final double BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (7.0 / 8.0));
+    private static final double UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
     private static final double TOTAL_DELTA_HEIGHT = UPPER_DIST_FROM_GROUND - BOTTOM_DIST_FROM_GROUND;
     private static final double TOTAL_DELTA_VOLTAGE = UPPER_POT_VALUE - LOWER_POT_VALUE;
     private static final double TOTAL_DELTA_ENCODER_VALUE = -50.0;
     private static final double HOLD_FEEDFORWARD = -0.06;
-    private static final double DESIRED_TOLERANCE = 0.25 * 0.0254;
+    private static final double DESIRED_TOLERANCE = inchesToMeters(0.25);
     private static final double DESIRED_SPEED_AT_TOLERANCE_POINT = 0.03;
     private static final double KP_CUSTOM_PID = DESIRED_SPEED_AT_TOLERANCE_POINT / DESIRED_TOLERANCE;
     private static final double KV_CUSTOM_PID = 0.01;
     private static final double KP_ENCODER_BASED = (DESIRED_SPEED_AT_TOLERANCE_POINT / DESIRED_TOLERANCE) * (TOTAL_DELTA_ENCODER_VALUE / TOTAL_DELTA_HEIGHT);
-    private static final double SETPOINT_HEIGHT = 51.5 * 0.0254; // meters
+    private static final double SETPOINT_HEIGHT = inchesToMeters(51.5); // meters
     double voltage = 0.0;
     double height = 0.0;
     double encoderPosition = 0.0;
@@ -87,7 +94,7 @@ public class ReadASensorBot extends TimedRobot {
         encoderFilteredPosition = encoderPosition + encoderOffset;
         SmartDashboard.putNumber("Pot", voltage);
         SmartDashboard.putNumber("Height", height);
-        SmartDashboard.putNumber("Height (inches)", height * (1.0 / 0.0254));
+        SmartDashboard.putNumber("Height (inches)", metersToInches(height));
         SmartDashboard.putNumber("Encoder (Raw)", encoderPosition);
         SmartDashboard.putNumber("Encoder (Filtered)", encoderFilteredPosition);
         SmartDashboard.putNumber("Encoder at 1.0 meters", convertHeightToEncoder(1.0));

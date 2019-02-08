@@ -2,7 +2,9 @@
   <dictionary name="nova">
     <words>
       <w>deadband</w>
-      <w>drivebase</w>
+      <w>deadbands</w>
+      <w>drivebases</w>
+      <w>jittering</w>
     </words>
   </dictionary>
 </component>

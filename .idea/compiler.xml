@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="DeepSpace2019tmppp.main" target="11" />
+      <module name="DeepSpace2019tmppp.test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

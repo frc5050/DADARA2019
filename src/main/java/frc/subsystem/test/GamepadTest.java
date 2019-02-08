@@ -20,7 +20,7 @@ public class GamepadTest implements SubsystemTest {
         ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Front", gameController.cargoOuttakeFront());
         ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Left", gameController.cargoOuttakeLeft());
         ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Right", gameController.cargoOuttakeRight());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Lift Jack", gameController.liftJack());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Lift Jack", gameController.liftAllJacks());
         ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Low Cargo", gameController.setElevatorPositionLowCargo());
         ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Mid Cargo", gameController.setElevatorPositionMidCargo());
         ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position High Cargo", gameController.setElevatorPositionHighCargo());
@@ -28,6 +28,6 @@ public class GamepadTest implements SubsystemTest {
         ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Mid Hatch", gameController.setElevatorPositionMidHatch());
         ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position High Hatch", gameController.setElevatorPositionHighHatch());
         ROBOT_MAIN_SHUFFLEBOARD.putNumber("Hatch Manual", gameController.hatchManual());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Hatch Release", gameController.hatchRelease());
+        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Hatch Feeder Height", gameController.hatchFeederHeight());
     }
 }

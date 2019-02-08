@@ -14,6 +14,7 @@ import static frc.utils.Constants.HATCH_SHUFFLEBOARD;
 // TODO pretty much this whole thing
 //  invert whatever needs to be inverted
 //  setup sensors &|| closed loop control for this
+@Deprecated
 public class HatchMechanism extends Subsystem {
     private static final double HATCH_SPEED_MULTIPLIER = 0.5;
     private static final double ENCODER_COUNTS_PER_REVOLUTION = 1024.0;

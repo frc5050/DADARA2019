@@ -1,43 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="4" />
+    <option name="CUSTOM_SCOPE_NAME" value="Project Files" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3ff20bb-63d0-4209-b7c9-c6a86f93f097" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/Elevator2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java" afterDir="false" />
+    <list default="true" id="40f6da60-8376-4188-ba11-e007f90fc10f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/nova.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/nova.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/inputs/DriverGamepad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/inputs/DriverGamepad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/inputs/DriverHid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/inputs/DriverHid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/inputs/DriverJoystick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/inputs/DriverJoystick.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/inputs/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/inputs/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorGamepad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorGamepad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorHid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorHid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/BlackJackBot.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/JigglyPuffBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/JigglyPuffBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/ReadASensorBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/ReadASensorBot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/BlackJack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/BlackJack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/states/ElevatorStateMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/states/ElevatorStateMachine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/BlackJack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/Jacks.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/Cargo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/Cargo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/Jacks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/Jacks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/Drive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/Drive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/HatchMechanism.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/HatchMechanism.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/Subsystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/Subsystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/deprecated/Elevator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/deprecated/Jacks.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/deprecated/RobotState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/test/GamepadTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/test/GamepadTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/utils/BrakeMode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/utils/CheapCanSparkMax.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/utils/CheapCanSparkMax.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/utils/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/utils/DriveHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/utils/DriveHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/utils/UnitConversions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/utils/UnitConversions.java" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
+    <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand />
-    <select />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -47,274 +59,100 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/ReadASensorBot.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="28" column="59" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
-=======
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/GameController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="39" column="31" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="31" />
-              <folding>
-                <element signature="e#794#795#0" expanded="true" />
-                <element signature="e#843#844#0" expanded="true" />
-                <element signature="e#933#934#0" expanded="true" />
-=======
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/DriverJoystick.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="39" column="27" lean-forward="true" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
-              <folding>
-                <element signature="e#1923#1924#0" expanded="true" />
-                <element signature="e#1977#1978#0" expanded="true" />
-                <element signature="e#2057#2058#0" expanded="true" />
-                <element signature="e#2085#2086#0" expanded="true" />
-                <element signature="e#2140#2141#0" expanded="true" />
-                <element signature="e#2168#2169#0" expanded="true" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-              </folding>
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator2.java">
-=======
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Elevator2.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-=======
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/OperatorGamepad.java">
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="8" column="42" lean-forward="true" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Vision.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-=======
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-=======
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="190" column="4" selection-start-line="190" selection-start-column="4" selection-end-line="190" selection-end-column="4" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/OperatorHid.java">
-          <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-            <state relative-caret-position="408">
-              <caret line="24" selection-start-line="24" selection-end-line="24" />
-=======
-            <state relative-caret-position="238">
-              <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/BlackJack.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="63" column="31" lean-forward="true" selection-start-line="63" selection-start-column="31" selection-end-line="63" selection-end-column="31" />
-=======
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/OperatorGamepad.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="445">
-              <caret line="133" column="16" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="16" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-=======
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/GameHid.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.revrobotics.frc/SparkMax-java/1.0.27/891cdcbe2d7e45894bf8cbfda924aad14b184546/SparkMax-java-1.0.27.jar!/com/revrobotics/CANSparkMaxLowLevel.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="27" column="54" selection-start-line="27" selection-start-column="54" selection-end-line="27" selection-end-column="54" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1785">
-              <caret line="171" column="26" selection-start-line="171" selection-start-column="26" selection-end-line="171" selection-end-column="26" />
-=======
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/DriverHid.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="28" column="31" lean-forward="true" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/states/ElevatorStateMachine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-=======
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/GameController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="453">
-              <caret line="35" column="22" lean-forward="true" selection-start-line="35" selection-start-column="22" selection-end-line="35" selection-end-column="22" />
-              <folding>
-                <element signature="e#1033#1034#0" expanded="true" />
-                <element signature="e#1083#1084#0" expanded="true" />
-                <element signature="e#1138#1139#0" expanded="true" />
-                <element signature="e#1189#1190#0" expanded="true" />
-                <element signature="e#1242#1243#0" expanded="true" />
-                <element signature="e#1291#1292#0" expanded="true" />
-                <element signature="e#1345#1346#0" expanded="true" />
-                <element signature="e#1395#1396#0" expanded="true" />
-                <element signature="e#1449#1450#0" expanded="true" />
-                <element signature="e#1499#1500#0" expanded="true" />
-                <element signature="e#1554#1555#0" expanded="true" />
-                <element signature="e#1605#1606#0" expanded="true" />
-                <element signature="e#1661#1662#0" expanded="true" />
-                <element signature="e#1709#1710#0" expanded="true" />
-                <element signature="e#1755#1756#0" expanded="true" />
-                <element signature="e#1797#1798#0" expanded="true" />
-                <element signature="e#1880#1881#0" expanded="true" />
-                <element signature="e#1916#1917#0" expanded="true" />
-                <element signature="e#1966#1967#0" expanded="true" />
-                <element signature="e#2014#2015#0" expanded="true" />
-                <element signature="e#2070#2071#0" expanded="true" />
-                <element signature="e#2124#2125#0" expanded="true" />
-                <element signature="e#2180#2181#0" expanded="true" />
-                <element signature="e#2232#2233#0" expanded="true" />
-              </folding>
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Hatch2.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
-=======
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/Constants.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="34" column="45" lean-forward="true" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/DriverGamepad.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="41" column="35" selection-start-line="41" selection-start-column="19" selection-end-line="41" selection-end-column="35" />
-              <folding>
-                <element signature="e#802#803#0" expanded="true" />
-                <element signature="e#845#846#0" expanded="true" />
-                <element signature="e#912#913#0" expanded="true" />
-                <element signature="e#940#941#0" expanded="true" />
-                <element signature="e#995#996#0" expanded="true" />
-                <element signature="e#1023#1024#0" expanded="true" />
-                <element signature="e#1407#1408#0" expanded="true" />
-                <element signature="e#1449#1450#0" expanded="true" />
-              </folding>
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Cargo.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="24" selection-start-line="24" selection-end-line="24" />
-=======
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="23" column="6" lean-forward="true" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
-              <folding>
-                <element signature="e#1036#1037#0" expanded="true" />
-                <element signature="e#1084#1085#0" expanded="true" />
-              </folding>
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Jacks.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="31" column="35" lean-forward="true" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
+            <state relative-caret-position="564">
+              <caret line="131" column="89" selection-start-line="131" selection-start-column="89" selection-end-line="131" selection-end-column="89" />
+              <folding>
+                <element signature="e#14095#14096#0" expanded="true" />
+                <element signature="e#14139#14140#0" expanded="true" />
+                <element signature="e#14187#14188#0" expanded="true" />
+                <element signature="e#14238#14239#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/package-info.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="205" column="5" lean-forward="true" selection-start-line="205" selection-start-column="5" selection-end-line="205" selection-end-column="5" />
+            <state relative-caret-position="34">
+              <caret line="2" selection-start-line="2" selection-end-line="2" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/package-info.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="3" selection-start-column="3" selection-end-column="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/states/package-info.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="43" selection-start-line="1" selection-start-column="43" selection-end-line="1" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/package-info.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="94" selection-start-line="1" selection-start-column="94" selection-end-line="1" selection-end-column="94" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/loops/package-info.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/package-info.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="18" lean-forward="true" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/test/package-info.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="3" lean-forward="true" selection-start-column="3" selection-end-column="3" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Cargo.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/test/SubsystemTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="40" column="65" selection-start-line="40" selection-start-column="62" selection-end-line="40" selection-end-column="65" />
+            <state relative-caret-position="17">
+              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/test/GamepadTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -330,65 +168,41 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-      <find>/**</find>
-      <find>slot</find>
-      <find>ope</find>
-=======
-      <find>outputTelemetry</find>
-      <find>DESIRED_SPEED_AT_TOLERANCE_POINT</find>
-      <find>DESIRED_TOLERANCE</find>
-      <find>PERCENT_AT_3_INCHES</find>
-      <find>setD</find>
-      <find>KP</find>
-      <find>intake</find>
-      <find>int</find>
-      <find>cargoInHold</find>
-      <find>ballInHold</find>
-      <find>cargoSensor</find>
-      <find>CARGO_SENSOR</find>
-      <find>DigitalInput(</find>
-      <find>state =</find>
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-      <find>hatchManual</find>
-      <find>updateOutputFromState</find>
-      <find>intakeTilt</find>
-      <find>set</find>
-      <find>ElevatorHeight</find>
-      <find>getRawButton</find>
-      <find>arcadeToDriveSignal</find>
-      <find>DriveSigna</find>
-      <find>outputTelem</find>
-      <find>return nul</find>
-      <find>USE_JOYSTICK_FOR_DRIVING</find>
+      <find>lift</find>
+      <find>HatchMechanism</find>
+      <find>TODO</find>
+      <find>EPSIL</find>
+      <find>EPSILON_SMALL</find>
+      <find>getLeftOutput</find>
+      <find>applyDeadband</find>
+      <find>copySign</find>
+      <find>Assert.</find>
+      <find>tankToDrive</find>
       <find>DriverGamepad</find>
-      <find>DRIVER_GAMEPAD_PORT</find>
-      <find>new DriveSig</find>
-      <find>getDrive</find>
-<<<<<<< HEAD
-      <find>Hatch2</find>
-      <find>limit</find>
-      <find>limitHit</find>
-      <find>hatchState</find>
-      <find>rightRearJack</find>
-      <find>outputTelemetry</find>
-      <find>outputState</find>
-      <find>BlackJack</find>
-      <find>feed</find>
-      <find>teleopPeri</find>
-      <find>FRONT_JACK_LIFT</find>
-      <find>LEFT_REAR_JACK_LIFT</find>
-      <find>RIGHT_REAR_JACK_LIFT</find>
-      <find>acc</find>
-      <find>teleopPeriodic</find>
-=======
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
+      <find>Di</find>
+      <find>generate</find>
+      <find>OldEleva</find>
+      <find>extendFrontJack</find>
+      <find>extendLeftJack</find>
+      <find>extendRight</find>
+      <find>whether</find>
+      <find>setState</find>
+      <find>\{@link Jacks\}</find>
+      <find>\{@link DriveSignal\}</find>
+      <find>holdAll</find>
+      <find>trigger</find>
+      <find>\&lt;p</find>
+      <find>ElevatorHeight</find>
+      <find>hatchRelease</find>
+      <find>hatchFeederHeight</find>
+      <find>drivebase</find>
+      <find>DeepSpace</find>
     </findStrings>
     <replaceStrings>
-      <replace>talon</replace>
+      <replace>EPSILON_SMALL_DOUBLES</replace>
+      <replace>getRightOutput</replace>
+      <replace>\{@link frc\.subsystem\.Jacks\}</replace>
+      <replace>\{@link frc\.utils\.DriveSignal\}</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -397,203 +211,99 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/test/java/frc/states/ElevatorStateMachineTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/GameController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/states/ElevatorStateMachine.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/test/IntakeDeploy.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/IntakeDeploy.java" />
-<<<<<<< HEAD
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Hatch2.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/utils/Constants.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorGamepad.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorHid.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/GameController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Cargo.java" />
-=======
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/ReadASensorBot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/SubsystemManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Drive.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/Elevator2.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/states/HatchStateMachine.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/JigglyPuffBot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/states/CargoStateMachine.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorHid.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/DriverHid.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorGamepad.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/GameController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/DriverJoystick.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/utils/Constants.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Hatch2.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Jacks.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/DriverGamepad.java" />
-<<<<<<< HEAD
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator2.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Vision.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/BlackJack.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Cargo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/utils/BrakeMode.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/HatchMechanism.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/utils/UnitConversions.java" />
+        <option value="$PROJECT_DIR$/src/test/java/frc/utils/DriveSignal.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/utils/Constants.java" />
+        <option value="$PROJECT_DIR$/src/test/java/frc/utils/UnitConversionsTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/frc/utils/DriveSignalTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/frc/utils/DriveHelperTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/utils/DriveHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" />
-=======
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
+        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Jacks.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/utils/CheapCanSparkMax.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/DriverGamepad.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/DriverJoystick.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/DriverHid.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorHid.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/GameController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorGamepad.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/test/GamepadTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/JigglyPuffBot.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/ReadASensorBot.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Drive.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Subsystem.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/package-info.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/utils/package-info.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/states/package-info.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/inputs/package-info.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/loops/package-info.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/package-info.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/test/package-info.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-7" />
+    <option name="x" value="946" />
     <option name="width" value="974" />
-    <option name="height" value="1087" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-<<<<<<< HEAD
-    <panes />
-=======
     <panes>
-<<<<<<< HEAD
+      <pane id="PackagesPane" />
       <pane id="Scope" />
-=======
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-<<<<<<< HEAD
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepSpace2019tmppp" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepSpace2019tmppp" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-=======
               <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace2019tmppp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace2019tmppp" type="462c0819:PsiDirectoryNode" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
+              <item name="DeepSpace2019tmppp" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-<<<<<<< HEAD
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepSpace2019tmppp" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-=======
               <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace2019tmppp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace2019tmppp" type="462c0819:PsiDirectoryNode" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="frc" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-<<<<<<< HEAD
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-=======
-              <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace2019tmppp" type="462c0819:PsiDirectoryNode" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="frc" type="462c0819:PsiDirectoryNode" />
-              <item name="inputs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-<<<<<<< HEAD
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="DeepSpace2019tmppp" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="frc" type="462c0819:PsiDirectoryNode" />
-              <item name="loops" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-=======
               <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace2019tmppp" type="462c0819:PsiDirectoryNode" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="frc" type="462c0819:PsiDirectoryNode" />
-              <item name="inputs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-<<<<<<< HEAD
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-=======
-              <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace2019tmppp" type="462c0819:PsiDirectoryNode" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="frc" type="462c0819:PsiDirectoryNode" />
-              <item name="robot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-<<<<<<< HEAD
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-=======
-              <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace2019tmppp" type="462c0819:PsiDirectoryNode" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="frc" type="462c0819:PsiDirectoryNode" />
-              <item name="subsystem" type="462c0819:PsiDirectoryNode" />
-            </path>
-<<<<<<< HEAD
-            <path>
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="DeepSpace2019tmppp" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="frc" type="462c0819:PsiDirectoryNode" />
               <item name="subsystem" type="462c0819:PsiDirectoryNode" />
-              <item name="deprecated" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="DeepSpace2019tmppp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepSpace2019tmppp" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
@@ -601,74 +311,27 @@
               <item name="subsystem" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="frc" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DeepSpacePleaseWorkk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpacePleaseWorkk" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="states" type="462c0819:PsiDirectoryNode" />
-            </path>
-=======
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-<<<<<<< HEAD
-=======
-      <pane id="Scope" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
     </panes>
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-<<<<<<< HEAD
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549329383463" />
-=======
-<<<<<<< HEAD
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549148778321" />
-=======
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549236432743" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-    <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549663546467" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="frc.subsystem" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\DeepSpace2019tmppp\src\main\java\frc\subsystem\test" />
+      <recent name="D:\projects\DeepSpace2019tmppp\src\main\java\frc\robot" />
+      <recent name="D:\projects\DeepSpace2019tmppp\src\main\java\frc\loops" />
+      <recent name="D:\projects\DeepSpace2019tmppp\src\main\java\frc\inputs" />
+      <recent name="D:\projects\DeepSpace2019tmppp\src\main\java\frc\states" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -683,90 +346,150 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="DeepSpacePleaseWorkk [deploy]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="deploy" />
-          </list>
-        </option>
-        <option name="vmOptions" value="" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
-      <method v="2" />
+  <component name="RunManager" selected="JUnit.DriveHelperTest.tankToDriveSignal">
+    <configuration name="DriveHelperTest.tankToDriveSignal" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DeepSpace2019tmppp.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="frc.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="frc.utils" />
+      <option name="MAIN_CLASS_NAME" value="frc.utils.DriveHelperTest" />
+      <option name="METHOD_NAME" value="tankToDriveSignal" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
+    <configuration name="DriveHelperTest.timingTempTODO" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DeepSpace2019tmppp.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="frc.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="frc.utils" />
+      <option name="MAIN_CLASS_NAME" value="frc.utils.DriveHelperTest" />
+      <option name="METHOD_NAME" value="timingTempTODO" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DriveSignalTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DeepSpace2019tmppp.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="frc.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="frc.utils" />
+      <option name="MAIN_CLASS_NAME" value="frc.utils.DriveSignalTest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DriveSignalTest.getLeftOutput" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DeepSpace2019tmppp.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="frc.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="frc.utils" />
+      <option name="MAIN_CLASS_NAME" value="frc.utils.DriveSignalTest" />
+      <option name="METHOD_NAME" value="getLeftOutput" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UnitConversionsTest.secondsToMinutes" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DeepSpace2019tmppp.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="frc.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="frc.utils" />
+      <option name="MAIN_CLASS_NAME" value="frc.utils.UnitConversionsTest" />
+      <option name="METHOD_NAME" value="secondsToMinutes" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.DriveHelperTest.tankToDriveSignal" />
+        <item itemvalue="JUnit.DriveHelperTest.timingTempTODO" />
+        <item itemvalue="JUnit.DriveSignalTest" />
+        <item itemvalue="JUnit.DriveSignalTest.getLeftOutput" />
+        <item itemvalue="JUnit.UnitConversionsTest.secondsToMinutes" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f3ff20bb-63d0-4209-b7c9-c6a86f93f097" name="Default Changelist" comment="" />
-      <created>1548512577597</created>
+      <changelist id="40f6da60-8376-4188-ba11-e007f90fc10f" name="Default Changelist" comment="" />
+      <created>1549607296245</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1548512577597</updated>
-      <workItem from="1548512583467" duration="14208000" />
-      <workItem from="1548801915931" duration="6207000" />
-      <workItem from="1549059594570" duration="11000" />
-      <workItem from="1549060076329" duration="3252000" />
-<<<<<<< HEAD
-      <workItem from="1549116774279" duration="14937000" />
-      <workItem from="1549155211410" duration="1408000" />
-      <workItem from="1549234173982" duration="649000" />
-      <workItem from="1549320399117" duration="255000" />
-=======
-      <workItem from="1549116774279" duration="9895000" />
-      <workItem from="1549217658325" duration="17331000" />
-<<<<<<< HEAD
-      <workItem from="1549320019731" duration="9022000" />
-=======
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
+      <updated>1549607296245</updated>
+      <workItem from="1549607299556" duration="4944000" />
+      <workItem from="1549624632544" duration="12535000" />
     </task>
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-<<<<<<< HEAD
-    <option name="totallyTimeSpent" value="71839000" />
-=======
-<<<<<<< HEAD
-    <option name="totallyTimeSpent" value="40927000" />
-=======
-    <option name="totallyTimeSpent" value="62817000" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
+  <component name="TestHistory">
+    <history-entry file="DriveHelperTest_timingTempTODO - 2019.02.08 at 15h 03m 20s.xml">
+      <configuration name="DriveHelperTest.timingTempTODO" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DriveHelperTest_timingTempTODO - 2019.02.08 at 15h 03m 47s.xml">
+      <configuration name="DriveHelperTest.timingTempTODO" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DriveHelperTest_timingTempTODO - 2019.02.08 at 15h 05m 08s.xml">
+      <configuration name="DriveHelperTest.timingTempTODO" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DriveHelperTest_timingTempTODO - 2019.02.08 at 15h 05m 14s.xml">
+      <configuration name="DriveHelperTest.timingTempTODO" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DriveHelperTest_timingTempTODO - 2019.02.08 at 15h 07m 16s.xml">
+      <configuration name="DriveHelperTest.timingTempTODO" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DriveHelperTest_timingTempTODO - 2019.02.08 at 15h 07m 21s.xml">
+      <configuration name="DriveHelperTest.timingTempTODO" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DriveHelperTest_tankToDriveSignal - 2019.02.08 at 15h 10m 25s.xml">
+      <configuration name="DriveHelperTest.tankToDriveSignal" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DriveHelperTest_tankToDriveSignal - 2019.02.08 at 15h 13m 21s.xml">
+      <configuration name="DriveHelperTest.tankToDriveSignal" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DriveHelperTest_tankToDriveSignal - 2019.02.08 at 15h 15m 46s.xml">
+      <configuration name="DriveHelperTest.tankToDriveSignal" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DriveHelperTest_tankToDriveSignal - 2019.02.08 at 15h 18m 48s.xml">
+      <configuration name="DriveHelperTest.tankToDriveSignal" configurationId="JUnit" />
+    </history-entry>
   </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="17479000" />
   </component>
   <component name="ToolWindowManager">
-<<<<<<< HEAD
-    <frame x="-7" y="0" width="974" height="1087" extended-state="0" />
-=======
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="946" y="0" width="974" height="1080" extended-state="0" />
     <editor active="true" />
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
     <layout>
-<<<<<<< HEAD
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27249357" />
-=======
-      <window_info content_ui="combo" id="Project" order="0" weight="0.54485774" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.46389496" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -774,665 +497,436 @@
       <window_info id="UI Designer" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32914045" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.6967809" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32917964" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3347413" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3293011" />
-      <window_info anchor="bottom" id="Build" order="7" weight="0.3293011" />
-<<<<<<< HEAD
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.2798742" />
-=======
-<<<<<<< HEAD
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.1827957" />
-=======
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.7559709" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Build" order="7" weight="0.32917964" />
+      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.3284055" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.32914045" />
-      <window_info anchor="bottom" id="Messages" order="13" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.32917964" />
+      <window_info anchor="bottom" id="Database Changes" order="12" />
+      <window_info anchor="bottom" id="Version Control" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.019280206" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Maven" order="3" />
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="right" id="Database" order="6" weight="0.32995737" />
-      <window_info anchor="right" id="Gradle" order="7" />
+      <window_info anchor="right" id="Gradle" order="6" />
+      <window_info anchor="right" id="Database" order="7" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info anchor="right" id="Theme Preview" order="9" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Designer" order="0" />
-      <window_info id="Image Layers" order="1" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="UI Designer" order="3" />
-      <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.25" />
-      <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Build" order="0" weight="0.3293011" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.3844086" />
-      <window_info anchor="bottom" id="Docker" order="2" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" order="4" />
-      <window_info anchor="bottom" id="Version Control" order="5" />
-      <window_info anchor="bottom" id="Message" order="6" />
-      <window_info anchor="bottom" id="Find" order="7" />
-      <window_info anchor="bottom" id="Run" order="8" />
-      <window_info anchor="bottom" id="Debug" order="9" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="12" weight="0.3293011" />
-      <window_info anchor="right" id="Maven" order="0" />
-      <window_info anchor="right" id="Palette" order="1" />
-      <window_info anchor="right" id="Capture Analysis" order="2" />
-      <window_info anchor="right" id="Gradle" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" id="Palette&#9;" order="5" />
-      <window_info anchor="right" id="Theme Preview" order="6" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="7" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="8" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="9" weight="0.25" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="Vcs.Log.History.Properties">
-    <option name="COLUMN_ORDER">
-      <list>
-        <option value="0" />
-        <option value="2" />
-        <option value="3" />
-        <option value="1" />
-      </list>
-    </option>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/main.iml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/reports/tests/test/index.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/deprecated/NuElevator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/BrakeMode.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/deprecated/Elevator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="61" column="4" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="4" />
+        <state relative-caret-position="85">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/frc/states/ElevatorStateMachineTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/deprecated/Jacks.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-161">
-          <caret line="82" column="43" selection-start-line="82" selection-start-column="43" selection-end-line="82" selection-end-column="43" />
+        <state relative-caret-position="102">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/GameController.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/states/CargoState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding>
-            <element signature="e#652#653#0" expanded="true" />
-            <element signature="e#708#709#0" expanded="true" />
-            <element signature="e#751#752#0" expanded="true" />
-            <element signature="e#794#795#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/test/IntakeDeploy.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/IntakeDeploy.java" />
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/Constants.java">
-=======
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/states/ElevatorStateMachine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="46" column="32" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
-          <folding>
-            <element signature="e#4176#4177#0" expanded="true" />
-            <element signature="e#4220#4221#0" expanded="true" />
-            <element signature="e#5065#5066#0" expanded="true" />
-            <element signature="e#5099#5100#0" expanded="true" />
-            <element signature="e#5132#5133#0" expanded="true" />
-            <element signature="e#5159#5160#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/HatchMechanism.java">
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-255">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Drive.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="89" column="5" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/states/HatchStateMachine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="12" column="64" lean-forward="true" selection-start-line="12" selection-start-column="64" selection-end-line="12" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-<<<<<<< HEAD
-=======
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Jacks.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="50" column="31" selection-start-line="50" selection-start-column="16" selection-end-line="50" selection-end-column="31" />
-          <folding>
-            <element signature="e#3230#3231#0" expanded="true" />
-            <element signature="e#3275#3276#0" expanded="true" />
-            <element signature="e#4726#4727#0" expanded="true" />
-            <element signature="e#4790#4791#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="27" column="34" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/BlackJack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="601">
-          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
-        </state>
-      </provider>
-    </entry>
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/SubsystemManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="68" column="13" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/TmpElev.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Hatch2.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Vision.java">
       <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-        <state relative-caret-position="629">
-          <caret line="46" column="51" selection-start-line="46" selection-start-column="51" selection-end-line="46" selection-end-column="51" />
+        <state relative-caret-position="323">
+          <caret line="19" column="1" lean-forward="true" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.revrobotics.frc/SparkMax-java/1.0.27/891cdcbe2d7e45894bf8cbfda924aad14b184546/SparkMax-java-1.0.27.jar!/com/revrobotics/CANPIDController.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.revrobotics.frc/SparkMax-java/1.0.27/891cdcbe2d7e45894bf8cbfda924aad14b184546/SparkMax-java-1.0.27.jar!/com/revrobotics/CANSparkMax.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1751">
-          <caret line="133" column="24" selection-start-line="133" selection-start-column="24" selection-end-line="133" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/GameController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="39" column="31" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="31" />
-          <folding>
-            <element signature="e#794#795#0" expanded="true" />
-            <element signature="e#843#844#0" expanded="true" />
-            <element signature="e#933#934#0" expanded="true" />
-=======
-        <state relative-caret-position="340">
-          <caret line="27" column="32" lean-forward="true" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/NothingnessBot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="601">
-          <caret line="50" lean-forward="true" selection-start-line="4" selection-start-column="27" selection-end-line="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/JigglyPuffBot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="4" column="59" lean-forward="true" selection-start-line="4" selection-start-column="59" selection-end-line="4" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-<<<<<<< HEAD
-=======
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Cargo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="103" column="45" lean-forward="true" selection-start-line="103" selection-start-column="45" selection-end-line="103" selection-end-column="45" />
-          <folding>
-            <element signature="e#5101#5102#0" expanded="true" />
-            <element signature="e#5140#5141#0" expanded="true" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
-          </folding>
-        </state>
-      </provider>
-    </entry>
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Elevator2.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/SubsystemManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/states/ElevatorStateMachine.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/ShuffleboardWriter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Hatch2.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/HatchMechanism.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
-=======
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/states/CargoStateMachine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="62" column="68" lean-forward="true" selection-start-line="62" selection-start-column="68" selection-end-line="62" selection-end-column="68" />
+        <state relative-caret-position="153">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/DriverJoystick.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/UnitConversions.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="39" column="27" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/OperatorGamepad.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1411">
-          <caret line="87" column="7" selection-start-line="87" selection-start-column="7" selection-end-line="87" selection-end-column="7" />
+        <state relative-caret-position="411">
+          <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4200#4201#0" expanded="true" />
-            <element signature="e#4254#4255#0" expanded="true" />
+            <element signature="e#382#383#0" expanded="true" />
+            <element signature="e#420#421#0" expanded="true" />
+            <element signature="e#984#985#0" expanded="true" />
+            <element signature="e#808#809#0" expanded="true" />
+            <element signature="e#846#847#0" expanded="true" />
+            <element signature="e#907#908#0" expanded="true" />
+            <element signature="e#944#945#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/OperatorHid.java">
+    <entry file="jrt://C:/Users/Public/frc2019/jdk!/java.base/java/lang/Math.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
+        <state relative-caret-position="146">
+          <caret line="524" selection-start-line="524" selection-end-line="524" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="31" lean-forward="true" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/frc/utils/DriveSignalTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/frc/utils/UnitConversionsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="564">
+          <caret line="64" column="32" lean-forward="true" selection-start-line="64" selection-start-column="32" selection-end-line="64" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/frc/utils/DriveHelperTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="26" column="88" selection-start-line="26" selection-start-column="88" selection-end-line="26" selection-end-column="88" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/CheapCanPidController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/GameHid.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
+          <caret line="12" column="6" selection-start-line="12" selection-end-line="12" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/DriverHid.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/DriveHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-        <state relative-caret-position="476">
-          <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+        <state relative-caret-position="306">
+          <caret line="18" column="17" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Hatch2.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/DriveSignal.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="125" column="13" lean-forward="true" selection-start-line="125" selection-start-column="13" selection-end-line="125" selection-end-column="13" />
-=======
-<<<<<<< HEAD
-        <state relative-caret-position="255">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-=======
-        <state relative-caret-position="17">
-          <caret line="87" column="7" lean-forward="true" selection-start-line="87" selection-start-column="7" selection-end-line="87" selection-end-column="7" />
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5284#5285#0" expanded="true" />
-            <element signature="e#5316#5317#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
+        <state relative-caret-position="459">
+          <caret line="65" column="50" lean-forward="true" selection-start-line="65" selection-start-column="50" selection-end-line="65" selection-end-column="50" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/DriverGamepad.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="41" column="35" selection-start-line="41" selection-start-column="19" selection-end-line="41" selection-end-column="35" />
+        <state relative-caret-position="326">
+          <caret line="74" selection-start-line="74" selection-end-line="74" />
           <folding>
-            <element signature="e#802#803#0" expanded="true" />
-            <element signature="e#845#846#0" expanded="true" />
-            <element signature="e#912#913#0" expanded="true" />
-            <element signature="e#940#941#0" expanded="true" />
-            <element signature="e#995#996#0" expanded="true" />
-            <element signature="e#1023#1024#0" expanded="true" />
-            <element signature="e#1407#1408#0" expanded="true" />
-            <element signature="e#1449#1450#0" expanded="true" />
+            <element signature="e#474#475#0" expanded="true" />
+            <element signature="e#539#540#0" expanded="true" />
+            <element signature="e#1100#1101#0" expanded="true" />
+            <element signature="e#1143#1144#0" expanded="true" />
+            <element signature="e#1293#1294#0" expanded="true" />
+            <element signature="e#1336#1337#0" expanded="true" />
+            <element signature="e#1561#1562#0" expanded="true" />
+            <element signature="e#1608#1609#0" expanded="true" />
+            <element signature="e#2383#2384#0" expanded="true" />
+            <element signature="e#2447#2448#0" expanded="true" />
+            <element signature="e#2502#2503#0" expanded="true" />
+            <element signature="e#2565#2566#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Vision.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/DriverJoystick.java">
       <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-        <state relative-caret-position="306">
-          <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-=======
-        <state relative-caret-position="17">
-          <caret line="190" column="4" selection-start-line="190" selection-start-column="4" selection-end-line="190" selection-end-column="4" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
+        <state relative-caret-position="470">
+          <caret line="62" column="5" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/ReadASensorBot.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
       <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
+        <state relative-caret-position="564">
+          <caret line="165" lean-forward="true" selection-start-line="165" selection-end-line="165" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/DriverHid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/CheapCanSparkMax.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
-          <caret line="28" column="59" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
-=======
-<<<<<<< HEAD
-        <state relative-caret-position="408">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/OperatorGamepad.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/OperatorHid.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="445">
-          <caret line="133" column="16" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-=======
-        <state relative-caret-position="238">
-          <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="8" column="42" lean-forward="true" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Jacks.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="31" column="35" lean-forward="true" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
+        <state relative-caret-position="516">
+          <caret line="142" column="12" lean-forward="true" selection-start-line="142" selection-start-column="12" selection-end-line="142" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="453">
-          <caret line="35" column="22" lean-forward="true" selection-start-line="35" selection-start-column="22" selection-end-line="35" selection-end-column="22" />
+        <state relative-caret-position="462">
+          <caret line="167" column="44" selection-start-line="167" selection-start-column="44" selection-end-line="167" selection-end-column="44" />
           <folding>
-            <element signature="e#1033#1034#0" expanded="true" />
-            <element signature="e#1083#1084#0" expanded="true" />
-            <element signature="e#1138#1139#0" expanded="true" />
-            <element signature="e#1189#1190#0" expanded="true" />
-            <element signature="e#1242#1243#0" expanded="true" />
-            <element signature="e#1291#1292#0" expanded="true" />
-            <element signature="e#1345#1346#0" expanded="true" />
-            <element signature="e#1395#1396#0" expanded="true" />
-            <element signature="e#1449#1450#0" expanded="true" />
-            <element signature="e#1499#1500#0" expanded="true" />
-            <element signature="e#1554#1555#0" expanded="true" />
-            <element signature="e#1605#1606#0" expanded="true" />
-            <element signature="e#1661#1662#0" expanded="true" />
-            <element signature="e#1709#1710#0" expanded="true" />
-            <element signature="e#1755#1756#0" expanded="true" />
-            <element signature="e#1797#1798#0" expanded="true" />
-            <element signature="e#1880#1881#0" expanded="true" />
-            <element signature="e#1916#1917#0" expanded="true" />
-            <element signature="e#1966#1967#0" expanded="true" />
-            <element signature="e#2014#2015#0" expanded="true" />
-            <element signature="e#2070#2071#0" expanded="true" />
-            <element signature="e#2124#2125#0" expanded="true" />
-            <element signature="e#2180#2181#0" expanded="true" />
-<<<<<<< HEAD
-            <element signature="e#2232#2233#0" expanded="true" />
-=======
-            <element signature="e#2234#2235#0" expanded="true" />
-            <element signature="e#2289#2290#0" expanded="true" />
-            <element signature="e#2340#2341#0" expanded="true" />
-            <element signature="e#2397#2398#0" expanded="true" />
-            <element signature="e#2450#2451#0" expanded="true" />
-            <element signature="e#2504#2505#0" expanded="true" />
-            <element signature="e#2556#2557#0" expanded="true" />
-            <element signature="e#2600#2601#0" expanded="true" />
-            <element signature="e#2641#2642#0" expanded="true" />
-            <element signature="e#2705#2706#0" expanded="true" />
-            <element signature="e#2769#2770#0" expanded="true" />
-            <element signature="e#2835#2836#0" expanded="true" />
-            <element signature="e#2899#2900#0" expanded="true" />
-            <element signature="e#2966#2967#0" expanded="true" />
-            <element signature="e#3031#3032#0" expanded="true" />
-            <element signature="e#3097#3098#0" expanded="true" />
-            <element signature="e#3161#3162#0" expanded="true" />
-            <element signature="e#3227#3228#0" expanded="true" />
-            <element signature="e#3291#3292#0" expanded="true" />
-            <element signature="e#3358#3359#0" expanded="true" />
-            <element signature="e#3423#3424#0" expanded="true" />
-            <element signature="e#3472#3473#0" expanded="true" />
-            <element signature="e#3520#3521#0" expanded="true" />
-            <element signature="e#3575#3576#0" expanded="true" />
-            <element signature="e#3628#3629#0" expanded="true" />
-            <element signature="e#3679#3680#0" expanded="true" />
-            <element signature="e#3729#3730#0" expanded="true" />
-            <element signature="e#3780#3781#0" expanded="true" />
-            <element signature="e#3829#3830#0" expanded="true" />
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
+            <element signature="e#1099#1100#0" expanded="true" />
+            <element signature="e#1149#1150#0" expanded="true" />
+            <element signature="e#1384#1385#0" expanded="true" />
+            <element signature="e#1683#1684#0" expanded="true" />
+            <element signature="e#1801#1802#0" expanded="true" />
+            <element signature="e#1899#1900#0" expanded="true" />
+            <element signature="e#2009#2010#0" expanded="true" />
+            <element signature="e#2117#2118#0" expanded="true" />
+            <element signature="e#2223#2224#0" expanded="true" />
+            <element signature="e#2331#2332#0" expanded="true" />
+            <element signature="e#2437#2438#0" expanded="true" />
+            <element signature="e#2532#2533#0" expanded="true" />
+            <element signature="e#2662#2663#0" expanded="true" />
+            <element signature="e#2792#2793#0" expanded="true" />
+            <element signature="e#2924#2925#0" expanded="true" />
+            <element signature="e#3054#3055#0" expanded="true" />
+            <element signature="e#3184#3185#0" expanded="true" />
+            <element signature="e#3316#3317#0" expanded="true" />
+            <element signature="e#3413#3414#0" expanded="true" />
+            <element signature="e#3521#3522#0" expanded="true" />
+            <element signature="e#3622#3623#0" expanded="true" />
+            <element signature="e#3732#3733#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Main.java">
-=======
-<<<<<<< HEAD
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.revrobotics.frc/SparkMax-java/1.0.27/891cdcbe2d7e45894bf8cbfda924aad14b184546/SparkMax-java-1.0.27.jar!/com/revrobotics/CANSparkMaxLowLevel.class">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/OperatorGamepad.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="27" column="54" selection-start-line="27" selection-start-column="54" selection-end-line="27" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1785">
-          <caret line="171" column="26" selection-start-line="171" selection-start-column="26" selection-end-line="171" selection-end-column="26" />
-=======
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/Constants.java">
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="23" column="6" lean-forward="true" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
+        <state relative-caret-position="199">
+          <caret line="147" column="36" selection-start-line="147" selection-start-column="36" selection-end-line="147" selection-end-column="36" />
           <folding>
-            <element signature="e#1036#1037#0" expanded="true" />
-            <element signature="e#1084#1085#0" expanded="true" />
+            <element signature="e#1048#1049#0" expanded="true" />
+            <element signature="e#1133#1134#0" expanded="true" />
+            <element signature="e#3280#3281#0" expanded="true" />
+            <element signature="e#3338#3339#0" expanded="true" />
+            <element signature="e#3394#3395#0" expanded="true" />
+            <element signature="e#3450#3451#0" expanded="true" />
+            <element signature="e#3491#3492#0" expanded="true" />
+            <element signature="e#3545#3546#0" expanded="true" />
+            <element signature="e#4112#4113#0" expanded="true" />
+            <element signature="e#4190#4191#0" expanded="true" />
+            <element signature="e#4256#4257#0" expanded="true" />
+            <element signature="e#4334#4335#0" expanded="true" />
+            <element signature="e#4401#4402#0" expanded="true" />
+            <element signature="e#4480#4481#0" expanded="true" />
+            <element signature="e#4546#4547#0" expanded="true" />
+            <element signature="e#4625#4626#0" expanded="true" />
+            <element signature="e#4691#4692#0" expanded="true" />
+            <element signature="e#4770#4771#0" expanded="true" />
+            <element signature="e#4837#4838#0" expanded="true" />
+            <element signature="e#4917#4918#0" expanded="true" />
+            <element signature="e#4966#4967#0" expanded="true" />
+            <element signature="e#5022#5023#0" expanded="true" />
+            <element signature="e#5077#5078#0" expanded="true" />
+            <element signature="e#5131#5132#0" expanded="true" />
+            <element signature="e#5182#5183#0" expanded="true" />
+            <element signature="e#5239#5240#0" expanded="true" />
+            <element signature="e#5290#5291#0" expanded="true" />
+            <element signature="e#5341#5342#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/BlackJack.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/BlackJackBot.java">
       <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-        <state relative-caret-position="336">
-          <caret line="63" column="31" lean-forward="true" selection-start-line="63" selection-start-column="31" selection-end-line="63" selection-end-column="31" />
+        <state relative-caret-position="564">
+          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/JigglyPuffBot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="205" column="5" lean-forward="true" selection-start-line="205" selection-start-column="5" selection-end-line="205" selection-end-column="5" />
+        <state relative-caret-position="221">
+          <caret line="29" column="26" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Cargo.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="40" column="65" selection-start-line="40" selection-start-column="62" selection-end-line="40" selection-end-column="65" />
-=======
-        <state relative-caret-position="62">
-          <caret line="25" column="70" selection-start-line="25" selection-start-column="70" selection-end-line="25" selection-end-column="70" />
+        <state relative-caret-position="258">
+          <caret line="66" column="27" selection-start-line="66" selection-start-column="27" selection-end-line="66" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/ReadASensorBot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="17" column="3" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Drive.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="138" column="32" selection-start-line="138" selection-start-column="32" selection-end-line="138" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="68" column="11" selection-start-line="68" selection-start-column="11" selection-end-line="68" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Subsystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Jacks.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="564">
+          <caret line="131" column="89" selection-start-line="131" selection-start-column="89" selection-end-line="131" selection-end-column="89" />
           <folding>
-            <element signature="e#1405#1406#0" expanded="true" />
-            <element signature="e#1432#1433#0" expanded="true" />
-            <element signature="e#1562#1563#0" expanded="true" />
-            <element signature="e#1590#1591#0" expanded="true" />
-            <element signature="e#1645#1646#0" expanded="true" />
-            <element signature="e#1673#1674#0" expanded="true" />
+            <element signature="e#14095#14096#0" expanded="true" />
+            <element signature="e#14139#14140#0" expanded="true" />
+            <element signature="e#14187#14188#0" expanded="true" />
+            <element signature="e#14238#14239#0" expanded="true" />
           </folding>
->>>>>>> 24f5d74d6bd21986508bc246dd6885a929810071
->>>>>>> 7595504cd1130be67ee360ee950694f52d1b5ab5
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="3" selection-start-column="3" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/states/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="43" selection-start-line="1" selection-start-column="43" selection-end-line="1" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/inputs/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="94" selection-start-line="1" selection-start-column="94" selection-end-line="1" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/loops/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="18" lean-forward="true" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/test/GamepadTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/test/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="3" lean-forward="true" selection-start-column="3" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/test/SubsystemTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
   </component>
   <component name="masterDetails">
     <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
+      <state key="ProjectJDKs.UI">
         <settings>
           <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>DeepSpacePleaseWorkk</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>11</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>Gradle: com.ctre.phoenix:api-java:5.12.0</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
+                <option value="0.19794722" />
               </list>
             </option>
           </splitter-proportions>

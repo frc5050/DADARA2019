@@ -1,10 +1,17 @@
 package frc.utils;
 
-// TODO we can do better than this for conversions, this does not exactly produce smooth driving results, just simple ones
+/**
+ * Helper functions for taking human inputs from the drivers and converting them to outputs to the robot.
+ */
 public class DriveHelper {
-    // TODO experimentally determine these? Make them zero?
-    private static double TANK_DEFAULT_DEADBAND = 0.02;
-    private static double ARCADE_DEFAULT_DEADBAND = 0.02;
+    /**
+     * The default deadband to use for tank drives.
+     */
+    static double TANK_DEFAULT_DEADBAND = 0.02;
+    /**
+     * The default deadband to use for arcade drive.
+     */
+    static double ARCADE_DEFAULT_DEADBAND = 0.02;
 
     /**
      * Constructor. Private to avoid instantiation.
@@ -14,7 +21,7 @@ public class DriveHelper {
     }
 
     /**
-     * Converts left and right speeds to a {@link DriveSignal}, applys limiting and deadbands as well.
+     * Converts left and right speeds into a {@link DriveSignal}, applies limiting and deadbands as well.
      *
      * @param leftSpeed  the left input speed from the joystick.
      * @param rightSpeed the right input speed from the joystick.
@@ -26,7 +33,7 @@ public class DriveHelper {
     }
 
     /**
-     * Converts left and right speeds to a {@link DriveSignal}, applys limiting and deadbands as well.
+     * Converts left and right speeds into a {@link DriveSignal}, applies limiting and deadbands as well.
      *
      * @param leftSpeed    the left input speed from the joystick.
      * @param rightSpeed   the right input speed from the joystick.
@@ -39,7 +46,7 @@ public class DriveHelper {
     }
 
     /**
-     * Converts left and right speeds to a {@link DriveSignal}, applys limiting and deadbands as well.
+     * Converts left and right speeds into a {@link DriveSignal}, applies limiting and deadbands as well.
      *
      * @param leftSpeed    the left input speed from the joystick.
      * @param rightSpeed   the right input speed from the joystick.
@@ -60,18 +67,44 @@ public class DriveHelper {
         }
 
         return new DriveSignal(leftSpeed, rightSpeed);
-
     }
 
-    // Sets values/speeds/limits to the motor signals to produce arcade drive
+    /**
+     * Converts speed and turn values into a {@link DriveSignal}, applies limiting and deadbands as well.
+     *
+     * @param x         the "speed" input speed from the joystick.
+     * @param zRotation the "turn" input speed from the joystick.
+     * @return a new {@link DriveSignal} with the values to output to the motor, after limiting and deadbands are
+     * applied.
+     */
     public static DriveSignal arcadeToDriveSignal(double x, double zRotation) {
         return arcadeToDriveSignal(x, zRotation, true);
     }
 
+    /**
+     * Converts speed and turn values into a {@link DriveSignal}, applies limiting and deadbands as well.
+     *
+     * @param x            the "speed" input speed from the joystick.
+     * @param zRotation    the "turn" input speed from the joystick.
+     * @param squareInputs true if the inputs should be squared, false if they should be interpreted linearly.
+     * @return a new {@link DriveSignal} with the values to output to the motor, after limiting and deadbands are
+     * applied.
+     */
     public static DriveSignal arcadeToDriveSignal(double x, double zRotation, boolean squareInputs) {
         return arcadeToDriveSignal(x, zRotation, squareInputs, ARCADE_DEFAULT_DEADBAND);
     }
 
+    /**
+     * Converts speed and turn values into a {@link DriveSignal}, applies limiting and deadbands as well.
+     *
+     * @param x            the "speed" input speed from the joystick.
+     * @param zRotation    the "turn" input speed from the joystick.
+     * @param squareInputs true if the inputs should be squared, false if they should be interpreted linearly.
+     * @param deadband     the area at which powers should be rounded to zero and assumed to be zero, either due to input
+     *                     noise or the output being unable to properly handle such low outputs.
+     * @return a new {@link DriveSignal} with the values to output to the motor, after limiting and deadbands are
+     * applied.
+     */
     public static DriveSignal arcadeToDriveSignal(double x, double zRotation, boolean squareInputs, double deadband) {
         x = applyDeadband(limit(x), deadband);
         zRotation = applyDeadband(limit(zRotation), deadband);
@@ -120,7 +153,15 @@ public class DriveHelper {
         return val;
     }
 
-    // Sets power limits on the motors
+    /**
+     * Applies the deadband parameter to an input. Preserves an input value of 1.0 still resulting in an output of 1.0
+     * while every value less than or equal to the deadband results in an output of 0.
+     *
+     * @param value    the input value to have the deadband applied to, on the range [-1.0, 1.0].
+     * @param deadband the deadband, the minimum magnitude at which an output is considered valid.
+     * @return 0 if the magnitude of the value is less than or equal to the deadband, and a value on the range
+     * [-1.0, 1.0] if the magnitude of the input is greater than the deadband.
+     */
     private static double applyDeadband(double value, double deadband) {
         if (Math.abs(value) > deadband) {
             if (value > 0.0) {

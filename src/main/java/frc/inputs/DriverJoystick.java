@@ -31,44 +31,27 @@ public class DriverJoystick implements DriverHid {
     }
 
     @Override
-    public boolean liftJack() {
+    public boolean liftAllJacks() {
         return driverJoystick.getRawButton(1);
     }
 
-
-    // front 6, 4 extend/retract
-    // left  7, 8 extend/retract
-    // right 9 10 extend/retract
-    // some random axis wheels
-
     @Override
-    public boolean extendFrontJack() {
-//        return driverJoystick.getRawButton(6);
-        return false;
-    }
-
-    @Override
-    public boolean retractFrontJack() {
+    public boolean retractAllJacks() {
         return driverJoystick.getRawButton(4);
     }
 
     @Override
-    public boolean extendLeftJack() {
-        return driverJoystick.getRawButton(7);
-    }
-
-    @Override
-    public boolean retractLeftJack() {
+    public boolean initializeHabClimbing() {
         return driverJoystick.getRawButton(8);
     }
 
     @Override
-    public boolean extendRightJack() {
+    public boolean manualJackWheelOverride() {
         return driverJoystick.getRawButton(9);
     }
 
     @Override
-    public boolean retractRightJack() {
+    public boolean zeroJacks() {
         return driverJoystick.getRawButton(10);
     }
 
@@ -77,11 +60,6 @@ public class DriverJoystick implements DriverHid {
         return DriveSignal.NEUTRAL;
 //        double speed = driverJoystick.getRawAxis(3);
 //        return new DriveSignal(speed, speed);
-    }
-
-    @Override
-    public boolean holdAll() {
-        return driverJoystick.getRawButton(11);
     }
 
     @Override

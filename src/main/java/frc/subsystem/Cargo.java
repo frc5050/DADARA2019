@@ -22,10 +22,9 @@ public class Cargo extends Subsystem {
     private final WPI_TalonSRX centerSide;
     private final WPI_TalonSRX rightRear;
     private final WPI_TalonSRX leftRear;
-    private final DigitalInput cargoSensor = new DigitalInput(Constants.CARGO_SENSOR);
     private final WPI_TalonSRX intake;
     private final WPI_TalonSRX intakeTilt;
-
+    private final DigitalInput cargoSensor = new DigitalInput(Constants.CARGO_SENSOR);
 
     private CargoState currentState = new CargoState();
     private CargoStateMachine cargoStateMachine = new CargoStateMachine();
