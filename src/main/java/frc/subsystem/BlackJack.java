@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Timer;
 import frc.loops.Loop;
 import frc.loops.LooperInterface;
 import frc.utils.CheapWpiTalonSrx;
@@ -18,17 +19,18 @@ import static frc.utils.Constants.*;
  */
 public class BlackJack extends Subsystem {
     // Motion magic parameters when lifting
-    private static final int REAR_MOTION_MAGIC_VELOCITY_LIFT = 1500;
-    private static final int REAR_MOTION_MAGIC_ACCELERATION_LIFT = 425;
-    private static final int FRONT_MOTION_MAGIC_VELOCITY_LIFT = 4800;
-    private static final int FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 637;
+    private static final int REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
+    private static final int REAR_MOTION_MAGIC_ACCELERATION_LIFT = 500;
+    private static final int FRONT_MOTION_MAGIC_VELOCITY_LIFT = 1000;
+    private static final int FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 650;
     // Motion magic parameters when retracting
     private static final int REAR_MOTION_MAGIC_VELOCITY_RETRACT = 2000;
     private static final int REAR_MOTION_MAGIC_ACCELERATION_RETRACT = 600;
-    private static final int FRONT_MOTION_MAGIC_VELOCITY_RETRACT = 3500;
+    private static final int FRONT_MOTION_MAGIC_VELOCITY_RETRACT = 2000;
     private static final int FRONT_MOTION_MAGIC_ACCELERATION_RETRACT = 600;
     private static final int LIFT_TOLERANCE = 300;
-    private static final DriveSignal RUN_DRIVE_BASE_HAB_CLIMB = new DriveSignal(0.3, 0.3);
+    private static final DriveSignal RETRACT_FRONT_JACK_DRIVE_BASE = new DriveSignal(0.3, 0.3);
+    private static final DriveSignal RUN_DRIVE_BASE_HAB_CLIMB = new DriveSignal(0.5, 0.5);
     private static final DriveSignal RUN_JACK_WHEELS_HAB_CLIMB = new DriveSignal(1.0, 1.0);
     private static final double MAX_AMP_DRAW_ZEROING = 4.0;
     private static BlackJack instance;
@@ -39,6 +41,9 @@ public class BlackJack extends Subsystem {
     private final CheapWpiTalonSrx rightRearWheel;
     private final DigitalInput forwardIrSensor;
     private final PowerDistributionPanel pdp;
+    private double finishTimestamp = Timer.getFPGATimestamp();
+    private static final double HOLD_REAR_AND_RUN_FORWARD_TIME = 2.0;
+    private static final double HAB_CLIMB_FINISH_DRIVING_TIME = 0.45;
     private Drive drive = Drive.getInstance();
     private JackSystem state = JackSystem.OPEN_LOOP;
     private PeriodicIO periodicIo = new PeriodicIO();
@@ -166,28 +171,8 @@ public class BlackJack extends Subsystem {
                 synchronized (BlackJack.this) {
                     switch (state) {
                         case ZEROING:
-                            if (periodicIo.frontJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !frontHasZeroed) {
-                                frontHasZeroed = true;
-                                frontJack.setSelectedSensorPosition(0, 0, 30);
-                                periodicIo.frontJackDemand = JackState.STOP.getDemand();
-                                periodicIo.frontJackControlMode = JackState.STOP.getControlMode();
-                            }
-
-                            if (periodicIo.leftJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !leftHasZeroed) {
-                                leftHasZeroed = true;
-                                leftRearJack.setSelectedSensorPosition(0, 0, 30);
-                                periodicIo.leftJackDemand = JackState.STOP.getDemand();
-                                periodicIo.leftJackControlMode = JackState.STOP.getControlMode();
-                            }
-
-                            if (periodicIo.rightJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !rightHasZeroed) {
-                                rightHasZeroed = true;
-                                rightRearJack.setSelectedSensorPosition(0, 0, 30);
-                                periodicIo.rightJackDemand = JackState.STOP.getDemand();
-                                periodicIo.rightJackControlMode = JackState.STOP.getControlMode();
-                            }
-                            if (frontHasZeroed && rightHasZeroed && leftHasZeroed) {
-                                state = JackSystem.STOP;
+                            if(zero()){
+                                setState(JackSystem.STOP);
                             }
                             break;
                         case DRIVER_LIFT:
@@ -199,7 +184,10 @@ public class BlackJack extends Subsystem {
                             controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
                             break;
                         case INIT_HAB_CLIMB:
-                            setState(JackSystem.HAB_CLIMB_LIFT_ALL);
+                            if(zero()){
+                                setState(JackSystem.HAB_CLIMB_LIFT_ALL);
+                            }
+                            break;
                         case HAB_CLIMB_LIFT_ALL:
                             // TODO what if we let off of the button for a split second after we have retracted the first jack?
                             controlJacks(JackState.HAB3, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
@@ -209,7 +197,7 @@ public class BlackJack extends Subsystem {
                             break;
                         case HAB_CLIMB_RUN_FORWARD:
                             controlJacks(JackState.HAB3, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
-                            drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
+                            drive.setOpenLoop(RETRACT_FRONT_JACK_DRIVE_BASE);
                             setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
                             if (periodicIo.frontIrDetectsGround) {
                                 setState(JackSystem.HAB_CLIMB_RETRACT_FRONT_JACK);
@@ -217,37 +205,44 @@ public class BlackJack extends Subsystem {
                             break;
                         case HAB_CLIMB_RETRACT_FRONT_JACK:
                             controlJacks(JackState.RETRACT, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
-                            drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
+                            drive.setOpenLoop(RETRACT_FRONT_JACK_DRIVE_BASE);
                             setWheels(DriveSignal.NEUTRAL);
                             if (checkEncoders((int) (LIFT_TOLERANCE / 1.3))) {
+                                finishTimestamp = timestamp;
                                 setState(JackSystem.HAB_CLIMB_HOLD_REAR_AND_RUN_FORWARD);
                             }
                             break;
                         case HAB_CLIMB_HOLD_REAR_AND_RUN_FORWARD:
                             controlJacks(JackState.RETRACT, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
-                            // TODO figure out when to do this... limit switch, IR, encoders, etc. will be needed. Then transition
-                            //  state
-                            // drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
-                            // setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
+                            drive.setOpenLoop(RETRACT_FRONT_JACK_DRIVE_BASE);
+                            setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
+                            if(timestamp - finishTimestamp >= HOLD_REAR_AND_RUN_FORWARD_TIME/*2.0 @ 30%*/){
+                                finishTimestamp = timestamp;
+                                setState(JackSystem.HAB_CLIMB_RETRACT_REAR_JACKS);
+                            }
                             break;
                         case HAB_CLIMB_RETRACT_REAR_JACKS:
                             controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
                             drive.setOpenLoop(DriveSignal.NEUTRAL);
                             setWheels(DriveSignal.NEUTRAL);
-                            if (checkEncoders(LIFT_TOLERANCE)) {
+                            if (checkEncoders((int) (LIFT_TOLERANCE / 1.4))) {
+                                finishTimestamp = timestamp;
                                 setState(JackSystem.HAB_CLIMB_FINISH_DRIVING_FORWARD);
                             }
                             break;
                         case HAB_CLIMB_FINISH_DRIVING_FORWARD:
                             drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
                             controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
+                            if (timestamp - finishTimestamp >= HAB_CLIMB_FINISH_DRIVING_TIME/*0.8 @ 30%*/) {
+                                setState(JackSystem.STOP);
+                            }
                             break;
                         case OPEN_LOOP:
                             controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
                             setWheels(DriveSignal.NEUTRAL);
                             break;
                         case STOP:
-                            setOpenLoop(0.0);
+                            controlJacks(JackState.STOP, JackState.STOP, JackState.STOP, GainsState.NONE);
                     }
                 }
             }
@@ -259,10 +254,41 @@ public class BlackJack extends Subsystem {
         });
     }
 
+    private synchronized boolean zero(){
+        if (periodicIo.frontJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !frontHasZeroed) {
+            frontHasZeroed = true;
+            frontJack.setSelectedSensorPosition(0, 0, 30);
+            periodicIo.frontJackDemand = JackState.STOP.getDemand();
+            periodicIo.frontJackControlMode = JackState.STOP.getControlMode();
+        }
+
+        if (periodicIo.leftJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !leftHasZeroed) {
+            leftHasZeroed = true;
+            leftRearJack.setSelectedSensorPosition(0, 0, 30);
+            periodicIo.leftJackDemand = JackState.STOP.getDemand();
+            periodicIo.leftJackControlMode = JackState.STOP.getControlMode();
+        }
+
+        if (periodicIo.rightJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !rightHasZeroed) {
+            rightHasZeroed = true;
+            rightRearJack.setSelectedSensorPosition(0, 0, 30);
+            periodicIo.rightJackDemand = JackState.STOP.getDemand();
+            periodicIo.rightJackControlMode = JackState.STOP.getControlMode();
+        }
+
+        if (frontHasZeroed && rightHasZeroed && leftHasZeroed) {
+            System.out.println("Zeroing completed");
+            return true;
+        }
+        return false;
+    }
+
     public synchronized void setState(JackSystem desiredState) {
+        System.out.println("Desired State: " + desiredState.toString());
         if (state != desiredState) {
             state = desiredState;
             if (desiredState == JackSystem.ZEROING) {
+                System.out.println("Switching to zeroing");
                 resetZeros();
                 periodicIo.frontJackDemand = JackState.ZEROING.getDemand();
                 periodicIo.frontJackControlMode = JackState.ZEROING.getControlMode();
@@ -270,81 +296,18 @@ public class BlackJack extends Subsystem {
                 periodicIo.rightJackControlMode = JackState.ZEROING.getControlMode();
                 periodicIo.leftJackDemand = JackState.ZEROING.getDemand();
                 periodicIo.leftJackControlMode = JackState.ZEROING.getControlMode();
+            } else if(desiredState == JackSystem.INIT_HAB_CLIMB){
+                resetZeros();
             }
         }
     }
 
-//    /**
-//     * Zeros all of the jack lifts.
-//     *
-//     * @return true if all of the jack motors have successfully zeroed, false if they have not.
-//     */
-//    public synchronized void zero() {
-//         System.out.println(Timer.getMatchTime() + " zeros");
-//        if (state != JackSystem.ZEROING) {
-//             System.out.println(Timer.getMatchTime() + " changing state to zeroing");
-//            resetZeros();
-//            state = JackSystem.ZEROING;
-//            periodicIo.frontJackDemand = JackState.ZEROING.getDemand();
-//            periodicIo.frontJackControlMode = JackState.ZEROING.getControlMode();
-//            periodicIo.rightJackDemand = JackState.ZEROING.getDemand();
-//            periodicIo.rightJackControlMode = JackState.ZEROING.getControlMode();
-//            periodicIo.leftJackDemand = JackState.ZEROING.getDemand();
-//            periodicIo.leftJackControlMode = JackState.ZEROING.getControlMode();
-//        }
-//
-//        if (periodicIo.frontJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !frontHasZeroed) {
-//            frontHasZeroed = true;
-//            frontJack.setSelectedSensorPosition(0, 0, 30);
-//        }
-//
-//        if (periodicIo.leftJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !leftHasZeroed) {
-//            leftHasZeroed = true;
-//            leftRearJack.setSelectedSensorPosition(0, 0, 30);
-//        }
-//
-//        if (periodicIo.rightJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !rightHasZeroed) {
-//            rightHasZeroed = true;
-//            rightRearJack.setSelectedSensorPosition(0, 0, 30);
-//        }
-//
-//        final JackState frontJackStateOutput = frontHasZeroed ? JackState.STOP : JackState.ZEROING;
-//        final JackState leftJackStateOutput = leftHasZeroed ? JackState.STOP : JackState.ZEROING;
-//        final JackState rightJackStateOutput = rightHasZeroed ? JackState.STOP : JackState.ZEROING;
-//
-//        controlJacks(frontJackStateOutput, leftJackStateOutput, rightJackStateOutput, GainsState.NONE);
-//        if (periodicIo.frontJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !frontHasZeroed) {
-//            frontHasZeroed = true;
-//            frontJack.setSelectedSensorPosition(0, 0, 30);
-//            periodicIo.frontJackDemand = JackState.STOP.getDemand();
-//            periodicIo.frontJackControlMode = JackState.STOP.getControlMode();
-//        }
-//
-//        if (periodicIo.leftJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !leftHasZeroed) {
-//            leftHasZeroed = true;
-//            leftRearJack.setSelectedSensorPosition(0, 0, 30);
-//            periodicIo.leftJackDemand = JackState.STOP.getDemand();
-//            periodicIo.leftJackControlMode = JackState.STOP.getControlMode();
-//        }
-//
-//        if (periodicIo.rightJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !rightHasZeroed) {
-//            rightHasZeroed = true;
-//            rightRearJack.setSelectedSensorPosition(0, 0, 30);
-//            periodicIo.rightJackDemand = JackState.STOP.getDemand();
-//            periodicIo.rightJackControlMode = JackState.STOP.getControlMode();
-//        }
-//    }
-
     public void retract() {
         setState(JackSystem.DRIVER_RETRACT);
-//        reconfigureTalonsRetractMode();
-//        controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
     }
 
     public void lift() {
         setState(JackSystem.DRIVER_LIFT);
-//        reconfigureTalonsLiftMode();
-//        controlJacks(JackState.HAB3, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
     }
 
     /**
@@ -356,7 +319,6 @@ public class BlackJack extends Subsystem {
      * @param gainsState the {@link GainsState} to use for all of the jacks.
      */
     private synchronized void controlJacks(JackState front, JackState left, JackState right, GainsState gainsState) {
-        // System.out.println(Timer.getMatchTime() + " controlJacks");
         switch (gainsState) {
             case LIFT:
                 reconfigureTalonsLiftMode();
@@ -375,69 +337,6 @@ public class BlackJack extends Subsystem {
         periodicIo.rightJackControlMode = right.getControlMode();
     }
 
-//    /**
-//     * Executes an autonomous HAB climb to a given level.
-//     *
-//     * @param habLevel the HAB level to climb to, typically either {@link JackState#HAB2} or {@link JackState#HAB3}.
-//     */
-//    public void habClimb(JackState habLevel) {
-//        if (jackControlMode != JackControlMode.HAB_CLIMB) {
-//            jackControlMode = JackControlMode.HAB_CLIMB;
-//            state = JackSystem.INIT_HAB_CLIMB;
-//        }
-//        desiredState = state;
-//        switch (state) {
-//            case INIT_HAB_CLIMB:
-//                state = JackSystem.HAB_CLIMB_LIFT_ALL;
-//            case HAB_CLIMB_LIFT_ALL:
-//                 TODO what if we let off of the button for a split second after we have retracted the first jack?
-//                controlJacks(habLevel, habLevel, habLevel, GainsState.LIFT);
-//                if (checkEncoders(LIFT_TOLERANCE)) {
-//                    state = JackSystem.HAB_CLIMB_RUN_FORWARD;
-//                }
-//                break;
-//            case HAB_CLIMB_RUN_FORWARD:
-//                controlJacks(habLevel, habLevel, habLevel, GainsState.LIFT);
-//                drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
-//                setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
-//                if (periodicIo.frontIrDetectsGround) {
-//                    state = JackSystem.HAB_CLIMB_RETRACT_FRONT_JACK;
-//                }
-//                break;
-//            case HAB_CLIMB_RETRACT_FRONT_JACK:
-//                controlJacks(JackState.RETRACT, habLevel, habLevel, GainsState.LIFT);
-//                drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
-//                setWheels(DriveSignal.NEUTRAL);
-//                if (checkEncoders((int) (LIFT_TOLERANCE / 1.3))) {
-//                    state = JackSystem.HAB_CLIMB_HOLD_REAR_AND_RUN_FORWARD;
-//                }
-//                break;
-//            case HAB_CLIMB_HOLD_REAR_AND_RUN_FORWARD:
-//                controlJacks(JackState.RETRACT, habLevel, habLevel, GainsState.LIFT);
-//                 TODO figure out when to do this... limit switch, IR, encoders, etc. will be needed. Then transition
-//                  state
-//                 drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
-//                 setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
-//                break;
-//            case HAB_CLIMB_RETRACT_REAR_JACKS:
-//                controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
-//                drive.setOpenLoop(DriveSignal.NEUTRAL);
-//                setWheels(DriveSignal.NEUTRAL);
-//                if (checkEncoders(LIFT_TOLERANCE)) {
-//                    state = JackSystem.HAB_CLIMB_FINISH_DRIVING_FORWARD;
-//                }
-//                break;
-//            case HAB_CLIMB_FINISH_DRIVING_FORWARD:
-//                drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
-//                controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
-//                break;
-//            case OPEN_LOOP:
-//                controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
-//                setWheels(DriveSignal.NEUTRAL);
-//                break;
-//        }
-//    }
-
     /**
      * Checks whether all of the encoders are within tolerance of their currently set demands.
      *
@@ -451,16 +350,37 @@ public class BlackJack extends Subsystem {
                 && Math.abs(periodicIo.rightJackDemand - periodicIo.rightJackEncoder) < tolerance;
     }
 
+    private double lastTimestampRead = Timer.getFPGATimestamp();
+
     @Override
-    public void readPeriodicInputs() {
-        // System.out.println(Timer.getMatchTime() + " read periodic");
+    public synchronized void readPeriodicInputs() {
+        double time = Timer.getFPGATimestamp();
         periodicIo.frontIrDetectsGround = !forwardIrSensor.get();
         periodicIo.frontJackEncoder = frontJack.getSelectedSensorPosition(0);
         periodicIo.leftJackEncoder = leftRearJack.getSelectedSensorPosition(0);
         periodicIo.rightJackEncoder = rightRearJack.getSelectedSensorPosition(0);
-        periodicIo.frontJackCurrentDraw = pdp.getCurrent(FRONT_JACK_LIFT);
-        periodicIo.leftJackCurrentDraw = pdp.getCurrent(LEFT_REAR_JACK_LIFT);
-        periodicIo.rightJackCurrentDraw = pdp.getCurrent(RIGHT_REAR_JACK_LIFT);
+
+        double currentFrontVelocity = frontJack.getSelectedSensorVelocity(0);
+        double currentLeftVelocity = leftRearJack.getSelectedSensorVelocity(0);
+        double currentRightVelocity = rightRearJack.getSelectedSensorVelocity(0);
+        double dt = time - lastTimestampRead;
+        periodicIo.frontAcceleration = (currentFrontVelocity - periodicIo.frontVelocity) / dt;
+        periodicIo.leftAcceleration = (currentLeftVelocity - periodicIo.leftVelocity) / dt;
+        periodicIo.rightAcceleration = (currentRightVelocity - periodicIo.rightVelocity) / dt;
+        periodicIo.frontVelocity = currentFrontVelocity;
+        periodicIo.leftVelocity = currentLeftVelocity;
+        periodicIo.rightVelocity = currentRightVelocity;
+
+        periodicIo.frontDutyCycle = frontJack.getMotorOutputPercent();
+        periodicIo.leftDutyCycle = frontJack.getMotorOutputPercent();
+        periodicIo.rightDutyCycle = frontJack.getMotorOutputPercent();
+
+        if (state == JackSystem.ZEROING) {
+            periodicIo.frontJackCurrentDraw = pdp.getCurrent(FRONT_JACK_LIFT);
+            periodicIo.leftJackCurrentDraw = pdp.getCurrent(LEFT_REAR_JACK_LIFT);
+            periodicIo.rightJackCurrentDraw = pdp.getCurrent(RIGHT_REAR_JACK_LIFT);
+        }
+        lastTimestampRead = time;
     }
 
     /**
@@ -471,7 +391,6 @@ public class BlackJack extends Subsystem {
     public synchronized void setOpenLoop(double power) {
         // System.out.println(Timer.getMatchTime() + " setOpenLoop");
         setState(JackSystem.OPEN_LOOP);
-        state = JackSystem.OPEN_LOOP;
         periodicIo.frontJackDemand = power;
         periodicIo.leftJackDemand = power;
         periodicIo.rightJackDemand = power;
@@ -499,6 +418,15 @@ public class BlackJack extends Subsystem {
     @Override
     public void outputTelemetry() {
         JACKS_SHUFFLEBOARD.putString("State", state.toString());
+        JACKS_SHUFFLEBOARD.putNumber("Velocity Front", periodicIo.frontVelocity);
+        JACKS_SHUFFLEBOARD.putNumber("Velocity Left", periodicIo.leftVelocity);
+        JACKS_SHUFFLEBOARD.putNumber("Velocity Right", periodicIo.rightVelocity);
+        JACKS_SHUFFLEBOARD.putNumber("Acceleration Front", periodicIo.frontAcceleration);
+        JACKS_SHUFFLEBOARD.putNumber("Acceleration Left", periodicIo.leftAcceleration);
+        JACKS_SHUFFLEBOARD.putNumber("Acceleration Right", periodicIo.rightAcceleration);
+        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Front", periodicIo.frontDutyCycle);
+        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Left", periodicIo.leftDutyCycle);
+        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Right", periodicIo.rightDutyCycle);
         JACKS_SHUFFLEBOARD.putBoolean("Front Jack Zeroed", frontHasZeroed);
         JACKS_SHUFFLEBOARD.putBoolean("Left Jack Zeroed", leftHasZeroed);
         JACKS_SHUFFLEBOARD.putBoolean("Right Jack Zeroed", rightHasZeroed);
@@ -596,6 +524,17 @@ public class BlackJack extends Subsystem {
         double frontJackCurrentDraw;
         double leftJackCurrentDraw;
         double rightJackCurrentDraw;
+
+        // TODO temporary
+        double frontVelocity;
+        double frontAcceleration;
+        double leftVelocity;
+        double leftAcceleration;
+        double rightVelocity;
+        double rightAcceleration;
+        double frontDutyCycle;
+        double leftDutyCycle;
+        double rightDutyCycle;
 
         // Output
         double leftJackDemand;

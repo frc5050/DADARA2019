@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
             Drive.getInstance(),
             Cargo.getInstance(),
             Elevator2.getInstance(),
-            Hatch2.getInstance(),
+//            Hatch2.getInstance(),
             BlackJack.getInstance()
     ));
 
@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
     private Drive drive = Drive.getInstance();
 //    private Cargo cargo = Cargo.getInstance();
     private Elevator2 elevator = Elevator2.getInstance();
-    private Hatch2 hatch = Hatch2.getInstance();
+//    private Hatch2 hatch = Hatch2.getInstance();
 //    private Jacks jacks = Jacks.getInstance();
     private BlackJack jacks = BlackJack.getInstance();
 //    private Vision vision = Vision.getInstance();
@@ -103,7 +103,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drive.setOpenLoop(gameController.getDriveSignal());
-        hatch.setOpenLoop(gameController.hatchManual());
+//        hatch.setOpenLoop(gameController.hatchManual());
 //        cargo.intakeTilt(gameController.intakeTilt());
 //        if (gameController.cargoIntake()) {
 //            cargo.setDesiredState(CargoState.IntakeState.INTAKE);
@@ -122,23 +122,37 @@ public class Robot extends TimedRobot {
 //        }
 
 
-        if(!gameController.retractLeftJack()) {
+        if(!gameController.extendRightJack()) {
             jacks.setWheels(gameController.runJackWheels());
         } else {
             jacks.setWheels(DriveSignal.NEUTRAL);
         }
 
-        if(gameController.liftJack()){
-            jacks.lift();
-        } else if(gameController.retractFrontJack()) {
-            jacks.retract();
-        } else if(gameController.retractLeftJack()) {
-            jacks.setState(BlackJack.JackSystem.INIT_HAB_CLIMB);
-        } else if(gameController.retractRightJack()){
-            jacks.setState(BlackJack.JackSystem.ZEROING);
-        } else {
-            jacks.setOpenLoop(0.0);
+        boolean liftJack = gameController.liftJack();
+        boolean retractJacks = gameController.retractFrontJack();
+        boolean initHabClimb = gameController.retractLeftJack();
+        boolean zero = gameController.retractRightJack();
+
+        if(initHabClimb){
+            System.out.println("INIT HAB CLIMB PRESSED");
         }
+
+        if(liftJack){
+            System.out.println("Should be lifting");
+            jacks.lift();
+        } else if(retractJacks) {
+            System.out.println("Should be retracting");
+            jacks.retract();
+        } else if(initHabClimb) {
+            System.out.println("Should init hab climb...");
+            jacks.setState(BlackJack.JackSystem.INIT_HAB_CLIMB);
+        } else if(zero){
+            System.out.println("Should be zeroing");
+            jacks.setState(BlackJack.JackSystem.ZEROING);
+        }
+//        else {
+//            jacks.setOpenLoop(0.0);
+//        }
 
 
 //        if (!gameController.liftJack()) {

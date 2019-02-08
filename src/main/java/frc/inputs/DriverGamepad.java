@@ -50,20 +50,25 @@ public class DriverGamepad implements DriverHid {
 
     @Override
     public boolean retractLeftJack() {
-        return gamepad.getXButtonPressed();
+        boolean xButtonPressed = gamepad.getXButtonPressed();
+        if(xButtonPressed){
+            System.out.println("X button pressed");
+        }
+        return xButtonPressed;
     }
 
     @Override
     public boolean extendRightJack() {
-        return false;
+        return gamepad.getStartButton();
     }
 
     @Override
     public boolean retractRightJack() {
-        if(gamepad.getYButtonPressed()){
+        boolean yButtonPressed = gamepad.getYButtonPressed();
+        if(yButtonPressed){
             System.out.println("Y button pressed");
         }
-        return gamepad.getYButtonPressed();
+        return yButtonPressed;
     }
 
     @Override

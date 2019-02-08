@@ -58,7 +58,11 @@ public class GameController implements GameHid {
 
     @Override
     public boolean retractLeftJack() {
-        return driverHid.retractLeftJack();
+        boolean rlj = driverHid.retractLeftJack();
+        if(rlj){
+            System.out.println("RLJ: " + rlj);
+        }
+        return rlj;
     }
 
     @Override
@@ -68,7 +72,11 @@ public class GameController implements GameHid {
 
     @Override
     public boolean retractRightJack() {
-        return driverHid.retractRightJack();
+        boolean rrj = driverHid.retractRightJack();
+        if(rrj){
+            System.out.println("RRJ: " + rrj);
+        }
+        return rrj;
     }
 
     @Override
