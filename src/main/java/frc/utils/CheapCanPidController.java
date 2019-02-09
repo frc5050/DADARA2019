@@ -14,6 +14,7 @@ public class CheapCanPidController extends CANPIDController {
     private final double[] lastValue = new double[SLOTS];
     private final ControlType[] lastControlType = new ControlType[SLOTS];
     private final double[] lastArbFeedForward = new double[SLOTS];
+    private final double[] lastPValues = new double[SLOTS];
 
     /**
      * Constructor.
@@ -26,6 +27,7 @@ public class CheapCanPidController extends CANPIDController {
             lastValue[i] = Double.NaN;
             lastArbFeedForward[i] = Double.NaN;
             lastControlType[i] = null;
+            lastPValues[i] = Double.NaN;
         }
     }
 
@@ -82,6 +84,23 @@ public class CheapCanPidController extends CANPIDController {
             lastArbFeedForward[pidSlot] = pidSlot;
             return super.setReference(value, controlType, pidSlot, arbFeedForward);
         }
+        return CANError.kOK;
+    }
+
+    public CANError setP(double gain) {
+        return setP(gain, 0);
+    }
+
+    public CANError setP(double gain, int slotId) {
+        if (slotId < 0 || slotId >= SLOTS) {
+            return CANError.kError;
+        }
+
+        if (lastPValues[slotId] != gain) {
+            lastPValues[slotId] = gain;
+            return super.setP(gain, slotId);
+        }
+
         return CANError.kOK;
     }
 }

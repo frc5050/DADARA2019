@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
             Cargo.getInstance(),
-            Elevator.getInstance(),
+            Velocivator.getInstance(),
 //            Hatch2.getInstance(),
             Jacks.getInstance()
     ));
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
 
     private Drive drive = Drive.getInstance();
 //    private Cargo cargo = Cargo.getInstance();
-    private Elevator elevator = Elevator.getInstance();
+    private Velocivator elevator = Velocivator.getInstance();
 //    private Hatch2 hatch = Hatch2.getInstance();
 //    private Jacks jacks = Jacks.getInstance();
     private Jacks jacks = Jacks.getInstance();
@@ -148,22 +148,23 @@ public class Robot extends TimedRobot {
 
 
         gameController.update();
-//        if (gameController.setElevatorPositionLowHatch()) {
-//            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_LOW);
-//        } else if (gameController.setElevatorPositionMidHatch()) {
-//            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_MID);
-//        } else if (gameController.setElevatorPositionHighHatch()) {
-//            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_HIGH);
-//        } else if (gameController.setElevatorPositionLowCargo()) {
-//            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_LOW);
-//        } else if (gameController.setElevatorPositionMidCargo()) {
-//            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_MID);
-//        } else if (gameController.setElevatorPositionHighCargo()) {
-//            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_HIGH);
-//        } else {
+        if (gameController.setElevatorPositionLowHatch()) {
+            elevator.pidToPosition(Velocivator.ElevatorPosition.HATCH_LOW);
+        } else if (gameController.setElevatorPositionMidHatch()) {
+            elevator.pidToPosition(Velocivator.ElevatorPosition.HATCH_MID);
+        } else if (gameController.setElevatorPositionHighHatch()) {
+            elevator.pidToPosition(Velocivator.ElevatorPosition.HATCH_HIGH);
+        } else if (gameController.setElevatorPositionLowCargo()) {
+            elevator.pidToPosition(Velocivator.ElevatorPosition.CARGO_LOW);
+        } else if (gameController.setElevatorPositionMidCargo()) {
+            elevator.pidToPosition(Velocivator.ElevatorPosition.CARGO_MID);
+        } else if (gameController.setElevatorPositionHighCargo()) {
+            elevator.pidToPosition(Velocivator.ElevatorPosition.CARGO_HIGH);
+        } else {
             elevator.manualMovement(gameController.elevateManual());
-//        }
+        }
 
+        elevator.outputTelemetry();
 //        hatch.outputTelemetry();
         jacks.outputTelemetry();
     }

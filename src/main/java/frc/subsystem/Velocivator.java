@@ -1,17 +1,19 @@
 package frc.subsystem;
 
-import com.revrobotics.*;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.utils.CheapCanPidController;
 
-import javax.swing.text.Highlighter;
-
-import static frc.utils.Constants.*;
+import static frc.utils.Constants.ELEVATOR_NEO;
+import static frc.utils.Constants.ELEVATOR_SHUFFLEBOARD;
 import static frc.utils.UnitConversions.inchesToMeters;
 import static frc.utils.UnitConversions.metersToInches;
 
-public class Elevator extends Subsystem {
+public class Velocivator extends Subsystem {
     private static final double UPPER_POT_VALUE = 1.65;
     private static final double LOWER_POT_VALUE = 3.80;
     private static final double BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
@@ -22,15 +24,13 @@ public class Elevator extends Subsystem {
     private static final double HOLD_FEEDFORWARD = -0.02;
     private static final double DESIRED_TOLERANCE_METERS = inchesToMeters(0.125);
     private static final double DESIRED_SPEED_AT_TOLERANCE_POINT = 0.3;
-    private static final double KP_CUSTOM_PID = DESIRED_SPEED_AT_TOLERANCE_POINT / DESIRED_TOLERANCE_METERS;
-    private static final double KV_CUSTOM_PID = 0.01;
 
     private static final double REVOLUTIONS_PER_METER = -TOTAL_DELTA_ENCODER_VALUE / TOTAL_DELTA_HEIGHT; // revolutions / meter
-    private static final double REVOLUTION_TOLERANCE = REVOLUTIONS_PER_METER * DESIRED_TOLERANCE_METERS; // revolutions
-    private static final double KP_ENCODER_BASED_LOW = 2.0;
-    private static final double KP_ENCODER_BASED_MID = 2.0;
-    private static final double KP_ENCODER_BASED_HIGH = 5.0;
-    private static Elevator instance;
+    private static final double KP_ENCODER_BASED_LOW = 5E-5;
+    private static final double KP_ENCODER_BASED_MID = 5E-5;
+    private static final double KP_ENCODER_BASED_HIGH = 5E-5;
+    private static final double MAX_VELOCITY = 2700;
+    private static Velocivator instance;
     private final DigitalInput bottomLimit;
     private final CANSparkMax motor;
     private final CANEncoder encoder;
@@ -48,7 +48,7 @@ public class Elevator extends Subsystem {
     private double desiredEncoder = 0.0;
     private ElevatorPosition desiredPosition = ElevatorPosition.HATCH_LOW;
 
-    private Elevator() {
+    private Velocivator() {
         ELEVATOR_SHUFFLEBOARD.putNumber("REVOLUTIONS_PER_METER", REVOLUTIONS_PER_METER);
         bottomLimit = new DigitalInput(2);
         motor = new CANSparkMax(ELEVATOR_NEO, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -57,14 +57,14 @@ public class Elevator extends Subsystem {
         //controller = motor.getPIDController();
         controller.setFF(HOLD_FEEDFORWARD);
         controller.setP(0.0);
-        controller.setI(0.0);
-        controller.setD(0.01);
-        controller.setIZone(0.1);
+        controller.setI(1E-6);
+        controller.setD(0.0);
+        controller.setIZone(0.0);
     }
 
-    public static Elevator getInstance() {
+    public static Velocivator getInstance() {
         if (instance == null) {
-            instance = new Elevator();
+            instance = new Velocivator();
         }
         return instance;
     }
@@ -155,7 +155,6 @@ public class Elevator extends Subsystem {
         }
         desiredHeight = position.getHeight();
         desiredEncoder = convertHeightToEncoder(desiredHeight);
-        controller.setReference(desiredEncoder, ControlType.kPosition);
 //        double error = position.getHeight() - height;
 //        double velocity = lastError - error;
 //        power = (-error * KP_CUSTOM_PID) + (KV_CUSTOM_PID * velocity) + HOLD_FEEDFORWARD;
@@ -164,13 +163,13 @@ public class Elevator extends Subsystem {
 
     @Override
     public void writePeriodicOutputs() {
-        if(desiredPosition == ElevatorPosition.CARGO_HIGH || desiredPosition == ElevatorPosition.HATCH_HIGH){
-            if(Math.abs(desiredPosition.getHeight() - height) < 0.5 * 0.01){
-                controller.setP(1.0);
-            } else {
-                controller.setP(KP_ENCODER_BASED_HIGH);
-            }
-        }
+//        if(desiredPosition == ElevatorPosition.CARGO_HIGH || desiredPosition == ElevatorPosition.HATCH_HIGH){
+//            if(Math.abs(desiredPosition.getHeight() - height) < 0.5 * 0.01){
+//                controller.setP(1.0);
+//            } else {
+//                controller.setP(KP_ENCODER_BASED_HIGH);
+//            }
+//        }
         if (!usePID) {
             if (bottomLimitTriggered) {
                 power = power > 0 ? 0 : power;
@@ -184,6 +183,17 @@ public class Elevator extends Subsystem {
                     controller.setOutputRange(-1.0, 1.0);
                 }
             }
+            final double zeroTol = 0.03;
+            final double startSlowingTolerance = 0.08; // meters
+            final double error = -(desiredHeight - height);
+            final double errorToVelocityMultiplier = MAX_VELOCITY * error / startSlowingTolerance;
+            final double setpointVelocity;
+            if(Math.abs(error) < zeroTol){
+                setpointVelocity = 0.0;
+            } else {
+                setpointVelocity = Math.abs(errorToVelocityMultiplier) > MAX_VELOCITY ? Math.copySign(MAX_VELOCITY, errorToVelocityMultiplier) : errorToVelocityMultiplier;
+            }
+            controller.setReference(setpointVelocity, ControlType.kVelocity);
         }
         previousLimitTriggered = bottomLimitTriggered;
     }
