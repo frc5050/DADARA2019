@@ -31,6 +31,7 @@ public class GameController implements GameHid {
     // Driver controls
     //
 
+
     @Override
     public DriveSignal getDriveSignal() {
         return driverHid.getDriveSignal();
@@ -48,11 +49,7 @@ public class GameController implements GameHid {
 
     @Override
     public boolean initializeHabClimbing() {
-        boolean rlj = driverHid.initializeHabClimbing();
-        if (rlj) {
-            System.out.println("RLJ: " + rlj);
-        }
-        return rlj;
+        return driverHid.initializeHabClimbing();
     }
 
     @Override
@@ -62,11 +59,7 @@ public class GameController implements GameHid {
 
     @Override
     public boolean zeroJacks() {
-        boolean rrj = driverHid.zeroJacks();
-        if (rrj) {
-            System.out.println("RRJ: " + rrj);
-        }
-        return rrj;
+        return driverHid.zeroJacks();
     }
 
     @Override
@@ -81,6 +74,19 @@ public class GameController implements GameHid {
     @Override
     public void update() {
         operatorHid.update();
+        driverHid.update();
+    }
+
+    @Override
+    public void disabled(){
+        operatorHid.disabled();
+        driverHid.disabled();
+    }
+
+    @Override
+    public void disabledPeriodic(){
+        operatorHid.disabledPeriodic();
+        driverHid.disabledPeriodic();
     }
 
     @Override
@@ -105,12 +111,12 @@ public class GameController implements GameHid {
 
     @Override
     public boolean cargoIntakeRight() {
-        return operatorHid.cargoIntakeRight();
+        return driverHid.cargoIntakeRight();
     }
 
     @Override
     public boolean cargoIntakeLeft() {
-        return operatorHid.cargoIntakeLeft();
+        return driverHid.cargoIntakeLeft();
     }
 
     @Override

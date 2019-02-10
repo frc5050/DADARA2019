@@ -29,12 +29,12 @@ public class Elevator extends Subsystem {
     private static final double REVOLUTION_TOLERANCE = REVOLUTIONS_PER_METER * DESIRED_TOLERANCE_METERS; // revolutions
     private static final double KP_ENCODER_BASED_LOW = 2.0;
     private static final double KP_ENCODER_BASED_MID = 2.0;
-    private static final double KP_ENCODER_BASED_HIGH = 5.0;
+    private static final double KP_ENCODER_BASED_HIGH = 2.0;
     private static Elevator instance;
     private final DigitalInput bottomLimit;
     private final CANSparkMax motor;
     private final CANEncoder encoder;
-    private final CheapCanPidController controller;
+    private final CANPIDController controller;
     private double height = 0.0;
     private double encoderPosition = 0.0;
     private double encoderFilteredPosition = 0.0;
@@ -53,8 +53,7 @@ public class Elevator extends Subsystem {
         bottomLimit = new DigitalInput(2);
         motor = new CANSparkMax(ELEVATOR_NEO, CANSparkMaxLowLevel.MotorType.kBrushless);
         encoder = new CANEncoder(motor);
-        controller = new CheapCanPidController(motor);
-        //controller = motor.getPIDController();
+        controller = motor.getPIDController();
         controller.setFF(HOLD_FEEDFORWARD);
         controller.setP(0.0);
         controller.setI(0.0);
@@ -155,7 +154,6 @@ public class Elevator extends Subsystem {
         }
         desiredHeight = position.getHeight();
         desiredEncoder = convertHeightToEncoder(desiredHeight);
-        controller.setReference(desiredEncoder, ControlType.kPosition);
 //        double error = position.getHeight() - height;
 //        double velocity = lastError - error;
 //        power = (-error * KP_CUSTOM_PID) + (KV_CUSTOM_PID * velocity) + HOLD_FEEDFORWARD;
@@ -166,8 +164,10 @@ public class Elevator extends Subsystem {
     public void writePeriodicOutputs() {
         if(desiredPosition == ElevatorPosition.CARGO_HIGH || desiredPosition == ElevatorPosition.HATCH_HIGH){
             if(Math.abs(desiredPosition.getHeight() - height) < 0.5 * 0.01){
+                System.out.println("changed p to small err");
                 controller.setP(1.0);
             } else {
+                System.out.println("changed p to lrg err");
                 controller.setP(KP_ENCODER_BASED_HIGH);
             }
         }
@@ -184,6 +184,7 @@ public class Elevator extends Subsystem {
                     controller.setOutputRange(-1.0, 1.0);
                 }
             }
+            controller.setReference(desiredEncoder, ControlType.kPosition);
         }
         previousLimitTriggered = bottomLimitTriggered;
     }
@@ -194,12 +195,12 @@ public class Elevator extends Subsystem {
     }
 
     public enum ElevatorPosition {
-        HATCH_LOW(BOTTOM_DIST_FROM_GROUND),
+        HATCH_LOW(BOTTOM_DIST_FROM_GROUND + inchesToMeters(4)),
         HATCH_MID(inchesToMeters(38)),
-        HATCH_HIGH(inchesToMeters(64)),
+        HATCH_HIGH(inchesToMeters(64+1)),
         CARGO_LOW(inchesToMeters(21)),
         CARGO_MID(inchesToMeters(49.25)),
-        CARGO_HIGH(inchesToMeters(74));
+        CARGO_HIGH(inchesToMeters(74+1));
 
         private double height;
 

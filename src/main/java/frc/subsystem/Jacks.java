@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import frc.loops.Loop;
@@ -29,8 +30,10 @@ public class Jacks extends Subsystem {
     private static final int FRONT_MOTION_MAGIC_VELOCITY_RETRACT = 2000;
     private static final int FRONT_MOTION_MAGIC_ACCELERATION_RETRACT = 600;
     private static final int LIFT_TOLERANCE = 300;
+
     private static final DriveSignal RETRACT_FRONT_JACK_DRIVE_BASE = new DriveSignal(0.3, 0.3);
-    private static final DriveSignal RUN_DRIVE_BASE_HAB_CLIMB = new DriveSignal(0.5, 0.5);
+    private static final DriveSignal RUN_DRIVE_BASE_HAB_CLIMB = new DriveSignal(0.3, 0.3);
+
     private static final DriveSignal RUN_JACK_WHEELS_HAB_CLIMB = new DriveSignal(1.0, 1.0);
     private static final double MAX_AMP_DRAW_ZEROING = 4.0;
     private static final double HOLD_REAR_AND_RUN_FORWARD_TIME = 2.0;
@@ -67,9 +70,9 @@ public class Jacks extends Subsystem {
         leftRearWheel.setInverted(true);
         forwardIrSensor = new DigitalInput(3);
         rearIrSensor = new DigitalInput(4);
-        configureTalon(rightRearJack, true, false, 1.0);
-        configureTalon(leftRearJack, false, false, 1.0);
-        configureTalon(frontJack, true, false, 1.7);
+        configureTalon(rightRearJack, true, false, 1.0, 0.81, -1.0);
+        configureTalon(leftRearJack, false, false, 1.0, 0.90, -1.0);
+        configureTalon(frontJack, true, false, 1.7, 1.0, -1.0);
     }
 
     /**
@@ -95,7 +98,7 @@ public class Jacks extends Subsystem {
      *                    output, true if it is out of phase.
      * @param kp          the P gain parameter to set the Talon to use.
      */
-    private void configureTalon(WPI_TalonSRX talon, boolean inverted, boolean sensorPhase, double kp) {
+    private void configureTalon(WPI_TalonSRX talon, boolean inverted, boolean sensorPhase, double kp, double peakOutputForward, double peakOutputReverse) {
         talon.setSelectedSensorPosition(0, 0, 30);
         talon.setInverted(inverted);
         talon.setSensorPhase(sensorPhase);
@@ -105,8 +108,8 @@ public class Jacks extends Subsystem {
         talon.config_kF(0, 0, 30);
         talon.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 10);
         talon.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10);
-        talon.configPeakOutputForward(1.0);
-        talon.configPeakOutputReverse(-1.0);
+        talon.configPeakOutputForward(peakOutputForward);
+        talon.configPeakOutputReverse(peakOutputReverse);
     }
 
     /**
@@ -149,13 +152,21 @@ public class Jacks extends Subsystem {
     /**
      * Resets the flags indicating whether each of the jacks have zeroed or not.
      */
-    private synchronized void resetZeros() {
+    private synchronized void resetZeros(boolean startMovingUp) {
         frontHasZeroed = false;
         leftHasZeroed = false;
         rightHasZeroed = false;
         periodicIo.frontJackCurrentDraw = 0.0;
         periodicIo.leftJackCurrentDraw = 0.0;
         periodicIo.rightJackCurrentDraw = 0.0;
+        if(startMovingUp){
+            periodicIo.frontJackDemand = JackState.ZEROING.getDemand();
+            periodicIo.frontJackControlMode = JackState.ZEROING.getControlMode();
+            periodicIo.rightJackDemand = JackState.ZEROING.getDemand();
+            periodicIo.rightJackControlMode = JackState.ZEROING.getControlMode();
+            periodicIo.leftJackDemand = JackState.ZEROING.getDemand();
+            periodicIo.leftJackControlMode = JackState.ZEROING.getControlMode();
+        }
     }
 
     @Override
@@ -163,7 +174,9 @@ public class Jacks extends Subsystem {
         looperInterface.registerLoop(new Loop() {
             @Override
             public void onStart(double timestamp) {
-                // do nothing
+                synchronized (Jacks.this){
+                    setState(JackSystem.ZEROING);
+                }
             }
 
             @Override
@@ -192,6 +205,8 @@ public class Jacks extends Subsystem {
                             controlJacks(JackState.HAB3, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
                             if (checkEncoders(LIFT_TOLERANCE)) {
                                 setState(JackSystem.HAB_CLIMB_RUN_FORWARD);
+                                leftRearJack.configPeakOutputForward(1.0);
+                                rightRearJack.configPeakOutputForward(1.0);
                             }
                             break;
                         case HAB_CLIMB_RUN_FORWARD:
@@ -243,6 +258,9 @@ public class Jacks extends Subsystem {
                             break;
                         case STOP:
                             controlJacks(JackState.STOP, JackState.STOP, JackState.STOP, GainsState.NONE);
+                            break;
+                        default:
+                            DriverStation.reportError("Jack state default reached", false);
                     }
                 }
             }
@@ -279,6 +297,8 @@ public class Jacks extends Subsystem {
         if (frontHasZeroed && rightHasZeroed && leftHasZeroed) {
             System.out.println("Zeroing completed");
             return true;
+        } else {
+            System.out.println("Zeroing incomplete");
         }
         return false;
     }
@@ -297,24 +317,19 @@ public class Jacks extends Subsystem {
             state = desiredState;
             if (desiredState == JackSystem.ZEROING) {
                 System.out.println("Switching to zeroing");
-                resetZeros();
-                periodicIo.frontJackDemand = JackState.ZEROING.getDemand();
-                periodicIo.frontJackControlMode = JackState.ZEROING.getControlMode();
-                periodicIo.rightJackDemand = JackState.ZEROING.getDemand();
-                periodicIo.rightJackControlMode = JackState.ZEROING.getControlMode();
-                periodicIo.leftJackDemand = JackState.ZEROING.getDemand();
-                periodicIo.leftJackControlMode = JackState.ZEROING.getControlMode();
+                resetZeros(true);
             } else if (desiredState == JackSystem.INIT_HAB_CLIMB) {
-                resetZeros();
+                System.out.println("Switching to init hab climb");
+                resetZeros(true);
             }
         }
     }
 
-    public void retract() {
+    public synchronized void retract() {
         setState(JackSystem.DRIVER_RETRACT);
     }
 
-    public void lift() {
+    public synchronized void lift() {
         setState(JackSystem.DRIVER_LIFT);
     }
 
@@ -367,22 +382,22 @@ public class Jacks extends Subsystem {
         periodicIo.leftJackEncoder = leftRearJack.getSelectedSensorPosition(0);
         periodicIo.rightJackEncoder = rightRearJack.getSelectedSensorPosition(0);
 
-        double currentFrontVelocity = frontJack.getSelectedSensorVelocity(0);
-        double currentLeftVelocity = leftRearJack.getSelectedSensorVelocity(0);
-        double currentRightVelocity = rightRearJack.getSelectedSensorVelocity(0);
-        double dt = time - lastTimestampRead;
-        periodicIo.frontAcceleration = (currentFrontVelocity - periodicIo.frontVelocity) / dt;
-        periodicIo.leftAcceleration = (currentLeftVelocity - periodicIo.leftVelocity) / dt;
-        periodicIo.rightAcceleration = (currentRightVelocity - periodicIo.rightVelocity) / dt;
-        periodicIo.frontVelocity = currentFrontVelocity;
-        periodicIo.leftVelocity = currentLeftVelocity;
-        periodicIo.rightVelocity = currentRightVelocity;
+//        double currentFrontVelocity = frontJack.getSelectedSensorVelocity(0);
+//        double currentLeftVelocity = leftRearJack.getSelectedSensorVelocity(0);
+//        double currentRightVelocity = rightRearJack.getSelectedSensorVelocity(0);
+//        double dt = time - lastTimestampRead;
+//        periodicIo.frontAcceleration = (currentFrontVelocity - periodicIo.frontVelocity) / dt;
+//        periodicIo.leftAcceleration = (currentLeftVelocity - periodicIo.leftVelocity) / dt;
+//        periodicIo.rightAcceleration = (currentRightVelocity - periodicIo.rightVelocity) / dt;
+//        periodicIo.frontVelocity = currentFrontVelocity;
+//        periodicIo.leftVelocity = currentLeftVelocity;
+//        periodicIo.rightVelocity = currentRightVelocity;
+//
+//        periodicIo.frontDutyCycle = frontJack.getMotorOutputPercent();
+//        periodicIo.leftDutyCycle = frontJack.getMotorOutputPercent();
+//        periodicIo.rightDutyCycle = frontJack.getMotorOutputPercent();
 
-        periodicIo.frontDutyCycle = frontJack.getMotorOutputPercent();
-        periodicIo.leftDutyCycle = frontJack.getMotorOutputPercent();
-        periodicIo.rightDutyCycle = frontJack.getMotorOutputPercent();
-
-        if (state == JackSystem.ZEROING) {
+        if (state == JackSystem.ZEROING || state == JackSystem.INIT_HAB_CLIMB) {
             periodicIo.frontJackCurrentDraw = pdp.getCurrent(FRONT_JACK_LIFT);
             periodicIo.leftJackCurrentDraw = pdp.getCurrent(LEFT_REAR_JACK_LIFT);
             periodicIo.rightJackCurrentDraw = pdp.getCurrent(RIGHT_REAR_JACK_LIFT);
@@ -425,15 +440,15 @@ public class Jacks extends Subsystem {
     @Override
     public void outputTelemetry() {
         JACKS_SHUFFLEBOARD.putString("State", state.toString());
-        JACKS_SHUFFLEBOARD.putNumber("Velocity Front", periodicIo.frontVelocity);
-        JACKS_SHUFFLEBOARD.putNumber("Velocity Left", periodicIo.leftVelocity);
-        JACKS_SHUFFLEBOARD.putNumber("Velocity Right", periodicIo.rightVelocity);
-        JACKS_SHUFFLEBOARD.putNumber("Acceleration Front", periodicIo.frontAcceleration);
-        JACKS_SHUFFLEBOARD.putNumber("Acceleration Left", periodicIo.leftAcceleration);
-        JACKS_SHUFFLEBOARD.putNumber("Acceleration Right", periodicIo.rightAcceleration);
-        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Front", periodicIo.frontDutyCycle);
-        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Left", periodicIo.leftDutyCycle);
-        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Right", periodicIo.rightDutyCycle);
+//        JACKS_SHUFFLEBOARD.putNumber("Velocity Front", periodicIo.frontVelocity);
+//        JACKS_SHUFFLEBOARD.putNumber("Velocity Left", periodicIo.leftVelocity);
+//        JACKS_SHUFFLEBOARD.putNumber("Velocity Right", periodicIo.rightVelocity);
+//        JACKS_SHUFFLEBOARD.putNumber("Acceleration Front", periodicIo.frontAcceleration);
+//        JACKS_SHUFFLEBOARD.putNumber("Acceleration Left", periodicIo.leftAcceleration);
+//        JACKS_SHUFFLEBOARD.putNumber("Acceleration Right", periodicIo.rightAcceleration);
+//        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Front", periodicIo.frontDutyCycle);
+//        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Left", periodicIo.leftDutyCycle);
+//        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Right", periodicIo.rightDutyCycle);
         JACKS_SHUFFLEBOARD.putBoolean("Front Jack Zeroed", frontHasZeroed);
         JACKS_SHUFFLEBOARD.putBoolean("Left Jack Zeroed", leftHasZeroed);
         JACKS_SHUFFLEBOARD.putBoolean("Right Jack Zeroed", rightHasZeroed);
@@ -458,7 +473,7 @@ public class Jacks extends Subsystem {
     }
 
     public enum JackState {
-        HAB3(19500, ControlMode.MotionMagic),
+        HAB3(20000, ControlMode.MotionMagic),
         HAB2(5000, ControlMode.MotionMagic),
         RETRACT(0, ControlMode.MotionMagic),
         ZEROING(-0.3, ControlMode.PercentOutput),
@@ -534,16 +549,16 @@ public class Jacks extends Subsystem {
         double leftJackCurrentDraw;
         double rightJackCurrentDraw;
 
-        // TODO temporary
-        double frontVelocity;
-        double frontAcceleration;
-        double leftVelocity;
-        double leftAcceleration;
-        double rightVelocity;
-        double rightAcceleration;
-        double frontDutyCycle;
-        double leftDutyCycle;
-        double rightDutyCycle;
+//        // TODO temporary
+//        double frontVelocity;
+//        double frontAcceleration;
+//        double leftVelocity;
+//        double leftAcceleration;
+//        double rightVelocity;
+//        double rightAcceleration;
+//        double frontDutyCycle;
+//        double leftDutyCycle;
+//        double rightDutyCycle;
 
         // Output
         double leftJackDemand;

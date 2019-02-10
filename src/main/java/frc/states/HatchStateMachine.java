@@ -12,8 +12,8 @@ public class HatchStateMachine {
     private static final double REDUCTION_BETWEEN_ENCODER_AND_OUTPUT = 10.0;
     private static final double ROTATIONS_TO_ENCODER = (ENCODER_COUNTS_PER_REVOLUTION * REDUCTION_BETWEEN_ENCODER_AND_OUTPUT);
     private static final double ENCODER_TO_ROTATIONS = 1.0 / ROTATIONS_TO_ENCODER;
-    private static final double PEAK_FORWARD_OUTPUT_LIMIT_PRESSED = 0.0;
-    private static final double PEAK_REVERSE_OUTPUT_LIMIT_PRESSED = -1.0;
+    private static final double PEAK_FORWARD_OUTPUT_LIMIT_PRESSED = 1.0;
+    private static final double PEAK_REVERSE_OUTPUT_LIMIT_PRESSED = 0.0;
     private static final double HARDWARE_FAULT_AMPERAGE_MAXIMUM = 10.0;
     private static final int TOP_ENCODER_VALUE = 0;
     private static final int BOTTOM_ENCODER_VALUE = -4100;
@@ -44,6 +44,9 @@ public class HatchStateMachine {
 //        this.desiredControlState = MOTION_MAGIC;
         // TODO filter
 //        this.desiredEncoderPosition = desiredEncoderPosition;
+        zeroDesired();
+        this.desiredControlState = MOTION_MAGIC;
+        this.desiredEncoderPosition = 500;
     }
 
     public synchronized void setOpenLoop(double joystickPower) {

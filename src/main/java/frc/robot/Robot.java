@@ -8,12 +8,19 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.inputs.GameController;
 import frc.loops.Looper;
+import frc.states.CargoState;
 import frc.subsystem.*;
+import frc.subsystem.test.GamepadTest;
+import frc.subsystem.test.SubsystemTest;
 import frc.utils.DriveSignal;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,45 +30,42 @@ import java.util.Arrays;
  * project.
  */
 public class Robot extends TimedRobot {
-    //    private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
-    //    private final SendableChooser<String> testChooser = new SendableChooser<>();
-
+    private final SendableChooser<String> testChooser = new SendableChooser<>();
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
             Cargo.getInstance(),
-            Velocivator.getInstance(),
-//            Hatch2.getInstance(),
+            Elevator.getInstance(),
+            Hatch2.getInstance(),
             Jacks.getInstance()
     ));
-
+    private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
     private Looper enabledLooper = new Looper();
     private Looper disabledLooper = new Looper();
 
     private GameController gameController = GameController.getInstance();
 
     private Drive drive = Drive.getInstance();
-//    private Cargo cargo = Cargo.getInstance();
-    private Velocivator elevator = Velocivator.getInstance();
-//    private Hatch2 hatch = Hatch2.getInstance();
-//    private Jacks jacks = Jacks.getInstance();
+    private Cargo cargo = Cargo.getInstance();
+    private Elevator elevator = Elevator.getInstance();
+    private Hatch2 hatch = Hatch2.getInstance();
     private Jacks jacks = Jacks.getInstance();
-//    private Vision vision = Vision.getInstance();
-//    private SubsystemTest subsystemTest;
+    private Vision vision = Vision.getInstance();
+    private SubsystemTest subsystemTest;
 
     @Override
     public void robotInit() {
-//        tests.put(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST);
-//        testChooser.setDefaultOption(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST.getOption());
-//
-//        for (Test test : Test.values()) {
-//            if (test != Test.DEFAULT_TEST) {
-//                tests.put(test.getOption(), test);
-//            }
-//        }
-//
-//        for (String testKey : tests.keySet()) {
-//            testChooser.addOption(testKey, testKey);
-//        }
+        tests.put(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST);
+        testChooser.setDefaultOption(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST.getOption());
+
+        for (Test test : Test.values()) {
+            if (test != Test.DEFAULT_TEST) {
+                tests.put(test.getOption(), test);
+            }
+        }
+
+        for (String testKey : tests.keySet()) {
+            testChooser.addOption(testKey, testKey);
+        }
 
         subsystemManager.registerEnabledLoops(enabledLooper);
         subsystemManager.registerDisabledLoop(disabledLooper);
@@ -69,18 +73,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-
     }
 
     @Override
     public void disabledInit() {
         enabledLooper.stop();
         disabledLooper.start();
+        gameController.disabled();
     }
 
     @Override
     public void disabledPeriodic() {
-
+        gameController.disabledPeriodic();
     }
 
     @Override
@@ -102,80 +106,100 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        final double t0 = Timer.getFPGATimestamp();
         drive.setOpenLoop(gameController.getDriveSignal());
-//        hatch.setOpenLoop(gameController.hatchManual());
-//        cargo.intakeTilt(gameController.intakeTilt());
-//        if (gameController.cargoIntake()) {
-//            cargo.setDesiredState(CargoState.IntakeState.INTAKE);
-//        } else if (gameController.cargoIntakeLeft()) {
-//            cargo.setDesiredState(CargoState.IntakeState.INTAKE_LEFT);
-//        } else if (gameController.cargoIntakeRight()) {
-//            cargo.setDesiredState(CargoState.IntakeState.INTAKE_RIGHT);
-//        } else if (gameController.cargoOuttakeLeft()) {
-//            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_LEFT);
-//        } else if (gameController.cargoOuttakeRight()) {
-//            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_RIGHT);
-//        } else if (gameController.cargoOuttakeFront()) {
-//            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_FRONT);
-//        } else {
-//            cargo.setDesiredState(CargoState.IntakeState.STOPPED);
-//        }
+        final double tDrive = Timer.getFPGATimestamp();
+        if (gameController.hatchFeederHeight()) {
+            hatch.setPosition(1);
+        } else {
+            hatch.setOpenLoop(gameController.hatchManual());
+        }
+        final double tHatch = Timer.getFPGATimestamp();
+        cargo.intakeTilt(gameController.intakeTilt());
+        if (gameController.cargoIntake()) {
+            cargo.setDesiredState(CargoState.IntakeState.INTAKE);
+        } else if (gameController.cargoIntakeLeft()) {
+            cargo.setDesiredState(CargoState.IntakeState.INTAKE_LEFT);
+        } else if (gameController.cargoIntakeRight()) {
+            cargo.setDesiredState(CargoState.IntakeState.INTAKE_RIGHT);
+        } else if (gameController.cargoOuttakeLeft()) {
+            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_LEFT);
+        } else if (gameController.cargoOuttakeRight()) {
+            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_RIGHT);
+        } else if (gameController.cargoOuttakeFront()) {
+            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_FRONT);
+        } else {
+            cargo.setDesiredState(CargoState.IntakeState.STOPPED);
+        }
+        final double tCargo = Timer.getFPGATimestamp();
 
 
-        if(!gameController.manualJackWheelOverride()) {
+        if (!gameController.manualJackWheelOverride()) {
             jacks.setWheels(gameController.runJackWheels());
         } else {
             jacks.setWheels(DriveSignal.NEUTRAL);
         }
-
-        if(gameController.liftAllJacks()){
+//
+        if (gameController.liftAllJacks()) {
             System.out.println("Should be lifting");
             jacks.lift();
-        } else if(gameController.retractAllJacks()) {
+        } else if (gameController.retractAllJacks()) {
             System.out.println("Should be retracting");
             jacks.retract();
-        } else if(gameController.initializeHabClimbing()) {
+        } else if (gameController.initializeHabClimbing()) {
             System.out.println("Should init hab climb...");
             jacks.beginHabClimb();
-        } else if(gameController.zeroJacks()){
+        } else if (gameController.zeroJacks()) {
             System.out.println("Should be zeroing");
             jacks.beginZeroing();
         }
 //        else {
 //            jacks.setOpenLoop(0.0);
 //        }
-
+        final double tJacks = Timer.getFPGATimestamp();
 
 
         gameController.update();
+        final double tController = Timer.getFPGATimestamp();
         if (gameController.setElevatorPositionLowHatch()) {
-            elevator.pidToPosition(Velocivator.ElevatorPosition.HATCH_LOW);
+            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_LOW);
         } else if (gameController.setElevatorPositionMidHatch()) {
-            elevator.pidToPosition(Velocivator.ElevatorPosition.HATCH_MID);
+            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_MID);
         } else if (gameController.setElevatorPositionHighHatch()) {
-            elevator.pidToPosition(Velocivator.ElevatorPosition.HATCH_HIGH);
+            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_HIGH);
         } else if (gameController.setElevatorPositionLowCargo()) {
-            elevator.pidToPosition(Velocivator.ElevatorPosition.CARGO_LOW);
+            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_LOW);
         } else if (gameController.setElevatorPositionMidCargo()) {
-            elevator.pidToPosition(Velocivator.ElevatorPosition.CARGO_MID);
+            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_MID);
         } else if (gameController.setElevatorPositionHighCargo()) {
-            elevator.pidToPosition(Velocivator.ElevatorPosition.CARGO_HIGH);
+            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_HIGH);
         } else {
             elevator.manualMovement(gameController.elevateManual());
         }
+        final double tElevator = Timer.getFPGATimestamp();
 
-        elevator.outputTelemetry();
+//        elevator.outputTelemetry();
 //        hatch.outputTelemetry();
         jacks.outputTelemetry();
+//        drive.outputTelemetry();
+        final double tOutput = Timer.getFPGATimestamp();
+        SmartDashboard.putNumber("Time to drive", tDrive - t0);
+        SmartDashboard.putNumber("Time to hatch", tHatch - tDrive);
+        SmartDashboard.putNumber("Time to cargo", tCargo - tHatch);
+        SmartDashboard.putNumber("Time to jacks", tJacks - tCargo);
+        SmartDashboard.putNumber("Time to elevator", tController - tJacks);
+        SmartDashboard.putNumber("Time to elevator", tElevator - tController);
+        SmartDashboard.putNumber("Time to output", tOutput - tElevator);
     }
 
     // TODO add more tests
     // TODO automate test validation
     @Override
     public void testInit() {
-//        Test testSelected = tests.get(testChooser.getSelected());
-//        disabledLooper.stop();
-//        enabledLooper.stop();
+        Test testSelected = tests.get(testChooser.getSelected());
+        disabledLooper.stop();
+        enabledLooper.stop();
+        subsystemTest = new GamepadTest();
 //        switch (testSelected) {
 //            case DEFAULT_TEST:
 //                subsystemTest = null;
@@ -205,34 +229,34 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testPeriodic() {
-//        subsystemTest.periodic(Timer.getFPGATimestamp());
+        subsystemTest.periodic(Timer.getFPGATimestamp());
     }
 
     public void outputTelemetry() {
 //        subsystemManager.outputTelemetry();
 //        enabledLooper.outputTelemetry();
     }
-//
-//    public enum Test {
-//        DEFAULT_TEST("None"),
-//        GAMEPAD_TEST("Gamepad Automated Test"),
-//        DRIVE_TEST("Drive Automated Test"),
-//        CARGO_TEST("Cargo Automated Test"),
-//        HATCH_MECHANISM_TEST("Hatch Automated Test"),
-//        ELEVATOR_TEST("Elevator Automated Test"),
-//        JACKS_TEST("Test"),
-//        ROBOT_STATE_TEST("Robot State Test");
-//
-//
-//        private String option;
-//
-//        Test(String option) {
-//            this.option = option;
-//        }
-//
-//        public String getOption() {
-//            return option;
-//        }
-//    }
+
+    public enum Test {
+        DEFAULT_TEST("None"),
+        GAMEPAD_TEST("Gamepad Automated Test"),
+        DRIVE_TEST("Drive Automated Test"),
+        CARGO_TEST("Cargo Automated Test"),
+        HATCH_MECHANISM_TEST("Hatch Automated Test"),
+        ELEVATOR_TEST("Elevator Automated Test"),
+        JACKS_TEST("Test"),
+        ROBOT_STATE_TEST("Robot State Test");
+
+
+        private String option;
+
+        Test(String option) {
+            this.option = option;
+        }
+
+        public String getOption() {
+            return option;
+        }
+    }
 
 }

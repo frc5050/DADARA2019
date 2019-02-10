@@ -20,6 +20,16 @@ public interface OperatorHid {
     void update();
 
     /**
+     * Clears internal variables in the controller. Must be called on {@link Robot#disabledInit()}.
+     */
+    void disabled();
+
+    /**
+     * Clears internal variables in the controller. Must be called every loop in {@link Robot#disabledPeriodic()}.
+     */
+    void disabledPeriodic();
+
+    /**
      * Returns true if the {@link frc.subsystem.Cargo} subsystem should intake a cargo from the back.
      *
      * @return true if the {@link frc.subsystem.Cargo} subsystem should intake cargo from the back.
@@ -32,20 +42,6 @@ public interface OperatorHid {
      * @return true if the {@link frc.subsystem.Cargo} subsystem should outtake cargo to the front.
      */
     boolean cargoOuttakeFront();
-
-    /**
-     * Returns true if the {@link frc.subsystem.Cargo} subsystem should intake cargo from the right.
-     *
-     * @return true if the {@link frc.subsystem.Cargo} subsystem should intake cargo from the right.
-     */
-    boolean cargoIntakeRight();
-
-    /**
-     * Returns true if the {@link frc.subsystem.Cargo} subsystem should intake cargo from the left.
-     *
-     * @return true if the {@link frc.subsystem.Cargo} subsystem should intake cargo from the left.
-     */
-    boolean cargoIntakeLeft();
 
     /**
      * Returns the value to issue to the intake tilt motor.
