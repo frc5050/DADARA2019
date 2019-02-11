@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DeepSpace2019tmppp.iml" filepath="$PROJECT_DIR$/DeepSpace2019tmppp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DeepSpace2019tmppp.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DeepSpacePleaseWorkk.iml" filepath="$PROJECT_DIR$/DeepSpacePleaseWorkk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeepSpacePleaseWorkk.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DeepSpacePleaseWorkk.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeepSpacePleaseWorkk.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DeepSpacePleaseWorkk.test.iml" />
     </modules>
   </component>
 </project>

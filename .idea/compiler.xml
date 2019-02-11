@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="DeepSpace2019tmppp.main" target="11" />
       <module name="DeepSpace2019tmppp.test" target="11" />
+      <module name="DeepSpacePleaseWorkk.main" target="11" />
+      <module name="DeepSpacePleaseWorkk.test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
