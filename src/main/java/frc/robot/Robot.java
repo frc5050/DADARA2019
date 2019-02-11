@@ -178,7 +178,7 @@ public class Robot extends TimedRobot {
         }
         final double tElevator = Timer.getFPGATimestamp();
 
-//        elevator.outputTelemetry();
+        elevator.outputTelemetry();
 //        hatch.outputTelemetry();
         jacks.outputTelemetry();
 //        drive.outputTelemetry();

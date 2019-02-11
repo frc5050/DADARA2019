@@ -38,6 +38,8 @@ public class Elevator extends Subsystem {
     private double lastErrorMeters = 0.0;
     private double lastTimestamp = Timer.getFPGATimestamp();
     private boolean hasZeroed = false;
+    private static final double POSITION_LOOP_KP = -5 * MAX_RPM; // (revolutions / minute) / (meter)
+    private static final double POSITION_LOOP_KV = -3300; // (revolutions / minute) / (meter / second)
 
     private Elevator() {
         ELEVATOR_SHUFFLEBOARD.putNumber("REVOLUTIONS_PER_METER", REVOLUTIONS_PER_METER);
@@ -97,6 +99,8 @@ public class Elevator extends Subsystem {
         double closedLoopPositionError = desiredEncoder - encoderPosition;
         double error = desiredPosition.getHeight() - height;
         ELEVATOR_SHUFFLEBOARD.putNumber("Velocity", encoder.getVelocity());
+        ELEVATOR_SHUFFLEBOARD.putString("LOOK @ ME/ControlType", controlType.toString());
+        ELEVATOR_SHUFFLEBOARD.putNumber("LOOK @ ME/value", value);
         ELEVATOR_SHUFFLEBOARD.putNumber("Height To Encoder", convertHeightToEncoder(height));
         ELEVATOR_SHUFFLEBOARD.putNumber("Height To Encoder Error (revs)", estimatedEncoderError);
         ELEVATOR_SHUFFLEBOARD.putNumber("Height (inches)", metersToInches(height));
@@ -125,24 +129,21 @@ public class Elevator extends Subsystem {
         desiredPosition = position;
         desiredEncoder = convertHeightToEncoder(desiredHeight);
     }
-
+    double value;
+    ControlType controlType;
     @Override
     public synchronized void writePeriodicOutputs() {
-        double value;
-        ControlType controlType;
         if (!usePID) {
             value = power;
             controlType = ControlType.kDutyCycle;
         } else {
             controlType = ControlType.kVelocity;
             double errorMeters = (desiredPosition.getHeight() - height);
-            final double kp = -5 * MAX_RPM; // (revolutions / minute) / (meter)
-            final double kv = -3300; // (revolutions / minute) / (meter / second)
             // TODO move to readPeriodicInputs
             final double timestamp = Timer.getFPGATimestamp();
 
             final double velocity = (errorMeters - lastErrorMeters) / (timestamp - lastTimestamp);
-            value = (kp * errorMeters) + (kv * velocity);
+            value = (POSITION_LOOP_KP * errorMeters) + (POSITION_LOOP_KV * velocity);
             value = Math.abs(value) > MAX_RPM ? Math.copySign(MAX_RPM, value) : value;
             lastErrorMeters = errorMeters;
             lastTimestamp = timestamp;
@@ -151,7 +152,7 @@ public class Elevator extends Subsystem {
                 value = 0.2;
             }
         }
-        if (bottomLimitTriggered && value > 0) {
+        if (bottomLimitTriggered && value >= -1E-5) {
             controlType = ControlType.kDutyCycle;
             value = 0;
         }
