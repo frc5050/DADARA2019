@@ -159,5 +159,7 @@ bin/
 # IntelliJ
 
 .idea/workspace.xml
+.idea/
+.idea/*
 
 # End of https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
