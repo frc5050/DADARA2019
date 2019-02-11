@@ -19,16 +19,12 @@ public class Constants {
     public static final int LEFT_REAR_JACK_LIFT = 4; // SRX
     public static final int RIGHT_REAR_JACK_WHEEL = 6; // SRX
     public static final int LEFT_REAR_JACK_WHEEL = 5; // SRX
-    public static final int ELEVATOR_NEO = 13; // MAX TODO remove
+    public static final int ELEVATOR_NEO = 14; // MAX
     public static final int CARGO_CENTER = 10; // SRX
     public static final int CARGO_LEFT = 9; // SRX
     public static final int CARGO_RIGHT = 8; // SRX
     public static final boolean USE_JOYSTICK_FOR_DRIVING = false;
     public static final boolean USE_GAMEPAD_FOR_OPERATING = true;
-
-    // TODO DEPRECATED
-    public static final int LEFT_LIFT_NEO = 14; // MAX
-    public static final int RIGHT_LIFT_NEO = 13; // MAX TODO remove
 
     // HID ports
     public static final int DRIVER_JOYSTICK_PORT = 0;
@@ -70,6 +66,16 @@ public class Constants {
             HATCH_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
         }
     }
+
+    public static final int POV_DPAD_UP = 0;
+    public static final int POV_DPAD_UPPER_RIGHT = 45;
+    public static final int POV_DPAD_LOWER_RIGHT = 135;
+    public static final int POV_DPAD_RIGHT = 90;
+    public static final int POV_DPAD_DOWN = 180;
+    public static final int POV_DPAD_LEFT = 270;
+    public static final int POV_DPAD_UPPER_LEFT = 315;
+    public static final int POV_DPAD_LOWER_LEFT = 225;
+
 
     private Constants() {
 

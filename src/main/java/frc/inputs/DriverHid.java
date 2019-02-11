@@ -1,5 +1,6 @@
 package frc.inputs;
 
+import frc.robot.Robot;
 import frc.utils.DriveSignal;
 
 /**
@@ -12,6 +13,21 @@ import frc.utils.DriveSignal;
  * robot's code.
  */
 public interface DriverHid {
+    /**
+     * Updates internal variables in the controller. Must be called every loop in {@link Robot#teleopPeriodic()}.
+     */
+    void update();
+
+    /**
+     * Clears internal variables in the controller. Must be called on {@link Robot#disabledInit()}.
+     */
+    void disabled();
+
+    /**
+     * Clears internal variables in the controller. Must be called every loop in {@link Robot#disabledPeriodic()}.
+     */
+    void disabledPeriodic();
+
     /**
      * Returns the {@link DriveSignal} to issue to the drive base for manual control.
      *
@@ -75,4 +91,18 @@ public interface DriverHid {
      * @return true if the {@link frc.subsystem.Cargo} subsystem should outtake cargo to the left.
      */
     boolean cargoOuttakeLeft();
+
+    /**
+     * Returns true if the {@link frc.subsystem.Cargo} subsystem should intake cargo from the right.
+     *
+     * @return true if the {@link frc.subsystem.Cargo} subsystem should intake cargo from the right.
+     */
+    boolean cargoIntakeRight();
+
+    /**
+     * Returns true if the {@link frc.subsystem.Cargo} subsystem should intake cargo from the left.
+     *
+     * @return true if the {@link frc.subsystem.Cargo} subsystem should intake cargo from the left.
+     */
+    boolean cargoIntakeLeft();
 }

@@ -9,7 +9,7 @@ public class GamepadTest implements SubsystemTest {
 
     @Override
     public void periodic(double timestamp) {
-        // TODO, do nothing?
+        outputTelemetry();
     }
 
     @Override

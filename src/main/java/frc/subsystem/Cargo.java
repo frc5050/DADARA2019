@@ -150,6 +150,6 @@ public class Cargo extends Subsystem {
     }
 
     public void intakeTilt(double power) {
-        intakeTiltPower = power;
+        intakeTiltPower = 0.5 * power;
     }
 }

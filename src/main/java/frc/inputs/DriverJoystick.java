@@ -26,6 +26,21 @@ public class DriverJoystick implements DriverHid {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void disabled() {
+
+    }
+
+    @Override
+    public void disabledPeriodic() {
+
+    }
+
+    @Override
     public DriveSignal getDriveSignal() {
         return DriveHelper.arcadeToDriveSignal(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0));
     }
@@ -70,5 +85,15 @@ public class DriverJoystick implements DriverHid {
     @Override
     public boolean cargoOuttakeLeft() {
         return driverJoystick.getRawButton(5);
+    }
+
+    @Override
+    public boolean cargoIntakeRight() {
+        return false;
+    }
+
+    @Override
+    public boolean cargoIntakeLeft() {
+        return false;
     }
 }

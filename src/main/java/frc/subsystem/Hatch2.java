@@ -50,8 +50,8 @@ public class Hatch2 extends Subsystem {
         hatch.config_kI(0, 0.0); //todo
         hatch.config_kD(0, 0.0); //todo
 
-        hatch.configMotionCruiseVelocity(6000, SETTINGS_TIMEOUT);
-        hatch.configMotionAcceleration(6000, SETTINGS_TIMEOUT);
+        hatch.configMotionCruiseVelocity(600, SETTINGS_TIMEOUT);
+        hatch.configMotionAcceleration(600, SETTINGS_TIMEOUT);
 
         resetSensorPosition();
     }
@@ -92,7 +92,7 @@ public class Hatch2 extends Subsystem {
     }
 
     public synchronized void setOpenLoop(double power) {
-        hatchStateMachine.setOpenLoop(power);
+        hatchStateMachine.setOpenLoop(-power / 2.0);
     }
 
     public synchronized void setPosition(double power) {
@@ -101,7 +101,7 @@ public class Hatch2 extends Subsystem {
 
     @Override
     public synchronized void readPeriodicInputs() {
-        hatchState.limitHit = upperLimitSwitch.get();
+        hatchState.limitHit = !upperLimitSwitch.get();
         hatchState.encoder = hatch.getSelectedSensorPosition(0);
         hatchState.outputCurrent = hatch.getOutputCurrent();
     }
@@ -127,12 +127,11 @@ public class Hatch2 extends Subsystem {
         HATCH_SHUFFLEBOARD.putBoolean("Limit Hit", hatchState.limitHit);
         HATCH_SHUFFLEBOARD.putBoolean("Hardware Fault", hatchStateMachine.hasHadHardwareFault());
         HATCH_SHUFFLEBOARD.putNumber("Amperage", hatch.getOutputCurrent());
-        HATCH_SHUFFLEBOARD.putNumber("Demand", hatchState.demand);
+        HATCH_SHUFFLEBOARD.putNumber("Demand", outputState.demand);
         HATCH_SHUFFLEBOARD.putNumber("Peak Output Forward", hatchState.peakOutputForward);
         HATCH_SHUFFLEBOARD.putNumber("Peak Output Reverse", hatchState.peakOutputReverse);
         HATCH_SHUFFLEBOARD.putString("Control Mode", hatchState.controlMode.toString());
         HATCH_SHUFFLEBOARD.putNumber("Encoder", hatchState.encoder);
-
     }
 
     @Override

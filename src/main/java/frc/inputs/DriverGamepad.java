@@ -13,6 +13,7 @@ import static frc.utils.Constants.DRIVER_GAMEPAD_PORT;
 public class DriverGamepad implements DriverHid {
     private static DriverGamepad instance;
     private XboxController gamepad;
+    private LastDpadState lastDpadState = LastDpadState.NONE;
 
     /**
      * Constructor.
@@ -29,9 +30,25 @@ public class DriverGamepad implements DriverHid {
     }
 
     @Override
+    public void update() {
+        int pov = gamepad.getPOV();
+        lastDpadState = DpadHelper.lastDpadUpdate(lastDpadState, pov);
+    }
+
+    @Override
+    public void disabled() {
+
+    }
+
+    @Override
+    public void disabledPeriodic() {
+        gamepad.getXButtonPressed();
+        gamepad.getYButtonPressed();
+    }
+
+    @Override
     public DriveSignal getDriveSignal() {
         return DriveHelper.tankToDriveSignal(-gamepad.getY(GenericHID.Hand.kLeft), -gamepad.getY(GenericHID.Hand.kRight), false);
-//        TODO remove once above is confirmed to work return new DriveSignal(-gamepad.getY(GenericHID.Hand.kLeft), -gamepad.getY(GenericHID.Hand.kRight));
     }
 
     @Override
@@ -46,11 +63,7 @@ public class DriverGamepad implements DriverHid {
 
     @Override
     public boolean initializeHabClimbing() {
-        boolean xButtonPressed = gamepad.getXButtonPressed();
-        if (xButtonPressed) {
-            System.out.println("X button pressed");
-        }
-        return xButtonPressed;
+        return gamepad.getXButtonPressed();
     }
 
     @Override
@@ -60,17 +73,14 @@ public class DriverGamepad implements DriverHid {
 
     @Override
     public boolean zeroJacks() {
-        boolean yButtonPressed = gamepad.getYButtonPressed();
-        if (yButtonPressed) {
-            System.out.println("Y button pressed");
-        }
-        return yButtonPressed;
+        return gamepad.getYButtonPressed();
     }
 
     @Override
     public DriveSignal runJackWheels() {
-        double power = gamepad.getBumper(GenericHID.Hand.kRight) ? 0.8 : (gamepad.getBumper(GenericHID.Hand.kLeft) ? -0.8 : 0.0);
-        return new DriveSignal(power, power, true);
+//        double power = gamepad.getBumper(GenericHID.Hand.kRight) ? 0.8 : (gamepad.getBumper(GenericHID.Hand.kLeft) ? -0.8 : 0.0);
+//        return new DriveSignal(power, power, true);
+        return DriveSignal.NEUTRAL;
     }
 
     @Override
@@ -81,5 +91,15 @@ public class DriverGamepad implements DriverHid {
     @Override
     public boolean cargoOuttakeLeft() {
         return gamepad.getBumper(GenericHID.Hand.kLeft);
+    }
+
+    @Override
+    public boolean cargoIntakeRight() {
+        return lastDpadState == LastDpadState.RIGHT;
+    }
+
+    @Override
+    public boolean cargoIntakeLeft() {
+        return lastDpadState == LastDpadState.LEFT;
     }
 }
