@@ -7,14 +7,7 @@
   <component name="ChangeListManager">
     <list default="true" id="40f6da60-8376-4188-ba11-e007f90fc10f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/loops/Looper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/loops/Looper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/asdfasbot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/asdfasbot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendordeps/PathfinderOLD.json" beforeDir="false" afterPath="$PROJECT_DIR$/vendordeps/PathfinderOLD.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendordeps/Phoenix.json" beforeDir="false" afterPath="$PROJECT_DIR$/vendordeps/Phoenix.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendordeps/REVRobotics.json" beforeDir="false" afterPath="$PROJECT_DIR$/vendordeps/REVRobotics.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendordeps/navx_frc.json" beforeDir="false" afterPath="$PROJECT_DIR$/vendordeps/navx_frc.json" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -37,8 +30,17 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="220">
-                  <caret line="132" column="47" selection-start-line="132" selection-start-column="38" selection-end-line="132" selection-end-column="47" />
+                <state relative-caret-position="348">
+                  <caret line="167" column="41" selection-start-line="167" selection-start-column="41" selection-end-line="167" selection-end-column="41" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Velocivator.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="221">
+                  <caret line="24" selection-start-line="24" selection-end-line="24" />
                 </state>
               </provider>
             </entry>
@@ -81,18 +83,6 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/GuacBot.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="340">
-                  <caret line="85" column="55" selection-start-line="85" selection-start-column="55" selection-end-line="85" selection-end-column="55" />
-                  <folding>
-                    <element signature="e#0#9497#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
             <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.revrobotics.frc/SparkMax-java/1.0.27/891cdcbe2d7e45894bf8cbfda924aad14b184546/SparkMax-java-1.0.27.jar!/com/revrobotics/CANPIDController.class">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="229">
@@ -104,8 +94,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="518">
-                  <caret line="87" selection-start-line="87" selection-end-line="87" />
+                <state relative-caret-position="127">
+                  <caret line="64" column="36" lean-forward="true" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
                 </state>
               </provider>
             </entry>
@@ -122,11 +112,24 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Main.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="323">
-                  <caret line="24" column="35" lean-forward="true" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
+                <state relative-caret-position="425">
+                  <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
                   <folding>
                     <element signature="e#1036#1037#0" expanded="true" />
                     <element signature="e#1084#1085#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="350">
+                  <caret line="163" column="36" lean-forward="true" selection-start-line="163" selection-start-column="36" selection-end-line="163" selection-end-column="36" />
+                  <folding>
+                    <element signature="e#8738#8739#0" expanded="true" />
+                    <element signature="e#8802#8803#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -137,15 +140,6 @@
       <split-second>
         <leaf>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator42.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="881">
-                  <caret line="136" lean-forward="true" selection-start-line="136" selection-end-line="136" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/asdfasbot.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="51">
@@ -171,13 +165,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>.5</find>
-      <find>intakeTilt</find>
-      <find>LastDpadState</find>
-      <find>intake</find>
-      <find>runJack</find>
-      <find>PERIOD</find>
-      <find>dt</find>
       <find>FeedBackDei</find>
       <find>configSelec</find>
       <find>LEFT_REAR</find>
@@ -201,6 +188,13 @@
       <find>instance</find>
       <find>reportError</find>
       <find>kVelocity</find>
+      <find>kVeloci</find>
+      <find>readPeriodic</find>
+      <find>Cheap</find>
+      <find>LOW</find>
+      <find>hasZeroed</find>
+      <find>zero</find>
+      <find>hasZeroed =</find>
     </findStrings>
     <replaceStrings>
       <replace>EPSILON_SMALL_DOUBLES</replace>
@@ -248,7 +242,6 @@
         <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/test/GamepadTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/inputs/GameHid.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Cargo.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/utils/Constants.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/utils/DpadHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/inputs/OperatorHid.java" />
@@ -262,8 +255,9 @@
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/JangalierBot.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/asdfasbot.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/GuacBot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator42.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java" />
       </list>
     </option>
@@ -368,7 +362,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549837714913" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549926168431" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -500,7 +494,7 @@
       <workItem from="1549607299556" duration="4944000" />
       <workItem from="1549624632544" duration="28354000" />
       <workItem from="1549688991751" duration="36062000" />
-      <workItem from="1549813206658" duration="17603000" />
+      <workItem from="1549813206658" duration="21224000" />
     </task>
     <servers />
   </component>
@@ -537,13 +531,12 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86963000" />
+    <option name="totallyTimeSpent" value="90584000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16044776" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16044776" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -558,7 +551,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Build" order="7" weight="0.32917964" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49946696" weight="0.37694705" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49946696" visible="true" weight="0.18899272" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50053304" side_tool="true" weight="0.576324" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.32917964" />
@@ -654,13 +647,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/SpideyBot.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Velocivator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="43" column="31" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/LemurBot.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -816,22 +802,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="126" column="9" lean-forward="true" selection-start-line="126" selection-start-column="9" selection-end-line="126" selection-end-column="9" />
-          <folding>
-            <element signature="e#3184#3185#0" expanded="true" />
-            <element signature="e#3213#3214#0" expanded="true" />
-            <element signature="e#8802#8803#0" expanded="true" />
-            <element signature="e#9251#9252#0" expanded="true" />
-            <element signature="e#9295#9296#0" expanded="true" />
-            <element signature="e#9332#9333#0" expanded="true" />
-            <element signature="e#9369#9370#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/utils/CheapCanPidController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -964,17 +934,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/JangalierBot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="18" lean-forward="true" selection-start-column="18" selection-end-line="4" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#919#920#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendordeps/REVRobotics-Beta.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -989,37 +948,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="518">
-          <caret line="87" selection-start-line="87" selection-end-line="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.revrobotics.frc/SparkMax-java/1.0.27/891cdcbe2d7e45894bf8cbfda924aad14b184546/SparkMax-java-1.0.27.jar!/com/revrobotics/CANPIDController.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="76" column="32" selection-start-line="76" selection-start-column="32" selection-end-line="76" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Hatch2.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="191">
           <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="24" column="35" lean-forward="true" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
-          <folding>
-            <element signature="e#1036#1037#0" expanded="true" />
-            <element signature="e#1084#1085#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1034,16 +968,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/asdfasbot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2019.2.1/599923037b305f46559b710b67dde971ea94fdb3/wpilibj-java-2019.2.1-sources.jar!/edu/wpi/first/wpilibj/DriverStation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="275">
@@ -1051,17 +975,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/JangalierBot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="132" column="47" selection-start-line="132" selection-start-column="38" selection-end-line="132" selection-end-column="47" />
+        <state relative-caret-position="170">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#823#824#0" expanded="true" />
+            <element signature="e#919#920#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator42.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="881">
-          <caret line="136" lean-forward="true" selection-start-line="136" selection-end-line="136" />
+        <state relative-caret-position="199">
+          <caret line="134" column="46" selection-start-line="134" selection-start-column="46" selection-end-line="134" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/asdfasbot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="28" column="29" lean-forward="true" selection-start-line="28" selection-start-column="29" selection-end-line="30" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1260#1261#0" expanded="true" />
+            <element signature="e#1301#1302#0" expanded="true" />
+            <element signature="e#1356#1357#0" expanded="true" />
+            <element signature="e#1405#1406#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+          <folding>
+            <element signature="e#1036#1037#0" expanded="true" />
+            <element signature="e#1084#1085#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="163" column="36" lean-forward="true" selection-start-line="163" selection-start-column="36" selection-end-line="163" selection-end-column="36" />
+          <folding>
+            <element signature="e#8738#8739#0" expanded="true" />
+            <element signature="e#8802#8803#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.revrobotics.frc/SparkMax-java/1.0.27/891cdcbe2d7e45894bf8cbfda924aad14b184546/SparkMax-java-1.0.27.jar!/com/revrobotics/CANPIDController.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="76" column="32" selection-start-line="76" selection-start-column="32" selection-end-line="76" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/ElevatorTestBot39.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="64" column="36" lean-forward="true" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Velocivator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/subsystem/Elevator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="167" column="41" selection-start-line="167" selection-start-column="41" selection-end-line="167" selection-end-column="41" />
         </state>
       </provider>
     </entry>

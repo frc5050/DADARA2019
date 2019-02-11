@@ -4,11 +4,9 @@ import com.revrobotics.*;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import frc.utils.CheapCanPidController;
 
-import javax.swing.text.Highlighter;
-
-import static frc.utils.Constants.*;
+import static frc.utils.Constants.ELEVATOR_NEO;
+import static frc.utils.Constants.ELEVATOR_SHUFFLEBOARD;
 import static frc.utils.UnitConversions.inchesToMeters;
 import static frc.utils.UnitConversions.metersToInches;
 
@@ -39,6 +37,7 @@ public class Elevator extends Subsystem {
     private ElevatorPosition desiredPosition = ElevatorPosition.HATCH_LOW;
     private double lastErrorMeters = 0.0;
     private double lastTimestamp = Timer.getFPGATimestamp();
+    private boolean hasZeroed = false;
 
     private Elevator() {
         ELEVATOR_SHUFFLEBOARD.putNumber("REVOLUTIONS_PER_METER", REVOLUTIONS_PER_METER);
@@ -72,6 +71,11 @@ public class Elevator extends Subsystem {
     @Override
     public void readPeriodicInputs() {
         bottomLimitTriggered = bottomLimit.get();
+        if (!hasZeroed) {
+            if (bottomLimitTriggered) {
+                hasZeroed = true;
+            }
+        }
         encoderPosition = encoder.getPosition();
         temperature = motor.getMotorTemperature();
         if (bottomLimitTriggered) {
@@ -115,7 +119,7 @@ public class Elevator extends Subsystem {
         power = (Math.abs(power) < MANUAL_MOVEMENT_DEADBAND) ? 0.0 : power;
     }
 
-    public void pidToPosition(ElevatorPosition position) {
+    public synchronized void pidToPosition(ElevatorPosition position) {
         usePID = true;
         desiredHeight = position.getHeight();
         desiredPosition = position;
@@ -142,6 +146,10 @@ public class Elevator extends Subsystem {
             value = Math.abs(value) > MAX_RPM ? Math.copySign(MAX_RPM, value) : value;
             lastErrorMeters = errorMeters;
             lastTimestamp = timestamp;
+            if (!hasZeroed) {
+                controlType = ControlType.kDutyCycle;
+                value = 0.2;
+            }
         }
         if (bottomLimitTriggered && value > 0) {
             controlType = ControlType.kDutyCycle;
@@ -157,7 +165,7 @@ public class Elevator extends Subsystem {
     }
 
     public enum ElevatorPosition {
-        HATCH_LOW(BOTTOM_DIST_FROM_GROUND + inchesToMeters(4)),
+        HATCH_LOW(BOTTOM_DIST_FROM_GROUND),
         HATCH_MID(inchesToMeters(38)),
         HATCH_HIGH(inchesToMeters(64 + 1)),
         CARGO_LOW(inchesToMeters(21)),
