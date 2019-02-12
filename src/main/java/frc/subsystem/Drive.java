@@ -68,6 +68,9 @@ public class Drive extends Subsystem {
 
         }
     };
+    private double yawOffset = 0.0;
+    private double rollOffset = 0.0;
+    private double pitchOffset = 0.0;
 
     private Drive() {
         periodicIo = new PeriodicIO();
@@ -259,6 +262,13 @@ public class Drive extends Subsystem {
     public synchronized void setHeading(double heading) {
         gyroOffset = heading - navX.getYaw();
     }
+//
+//    // TODO remove this once we tune the gains properly
+//    private synchronized void reloadGains() {
+//        final int longTimeout = 100; // ms
+//        reloadGains(leftMaster, periodicIo.kP, periodicIo.kI, periodicIo.kD, periodicIo.kF, (int) periodicIo.kIz, longTimeout);
+//        reloadGains(rightMaster, periodicIo.kP, periodicIo.kI, periodicIo.kD, periodicIo.kF, (int) periodicIo.kIz, longTimeout);
+//    }
 
     @Override
     public void zeroSensors() {
@@ -311,13 +321,6 @@ public class Drive extends Subsystem {
 //            reloadGains();
 //        }
     }
-//
-//    // TODO remove this once we tune the gains properly
-//    private synchronized void reloadGains() {
-//        final int longTimeout = 100; // ms
-//        reloadGains(leftMaster, periodicIo.kP, periodicIo.kI, periodicIo.kD, periodicIo.kF, (int) periodicIo.kIz, longTimeout);
-//        reloadGains(rightMaster, periodicIo.kP, periodicIo.kI, periodicIo.kD, periodicIo.kF, (int) periodicIo.kIz, longTimeout);
-//    }
 
     //    // TODO remove this once we tune the gains properly
 //    private void initGainsOnShuffleBoard() {
@@ -344,15 +347,33 @@ public class Drive extends Subsystem {
         periodicIo.rightFeedForward = velocities.getRightOutput();
     }
 
+    public synchronized void resetNavX() {
+        yawOffset = periodicIo.yaw;
+        rollOffset = periodicIo.roll;
+        pitchOffset = periodicIo.pitch;
+    }
+
     public synchronized double getYaw() {
-        return periodicIo.yaw;
+        return periodicIo.yaw + yawOffset;
     }
 
     public synchronized double getPitch() {
-        return periodicIo.pitch;
+        return periodicIo.pitch + pitchOffset;
     }
 
     public synchronized double getRoll() {
+        return periodicIo.roll + rollOffset;
+    }
+
+    public synchronized double getYawRaw() {
+        return periodicIo.yaw;
+    }
+
+    public synchronized double getPitchRaw() {
+        return periodicIo.pitch;
+    }
+
+    public synchronized double getRollRaw() {
         return periodicIo.roll;
     }
 

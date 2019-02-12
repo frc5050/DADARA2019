@@ -1,6 +1,7 @@
 package frc.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -32,12 +33,12 @@ public class Jacks extends Subsystem {
     private static final int LIFT_TOLERANCE = 300;
 
     private static final DriveSignal RETRACT_FRONT_JACK_DRIVE_BASE = new DriveSignal(0.3, 0.3);
-    private static final DriveSignal RUN_DRIVE_BASE_HAB_CLIMB = new DriveSignal(0.3, 0.3);
+    private static final DriveSignal RUN_DRIVE_BASE_HAB_CLIMB = new DriveSignal(0.2, 0.2);
 
     private static final DriveSignal RUN_JACK_WHEELS_HAB_CLIMB = new DriveSignal(1.0, 1.0);
     private static final double MAX_AMP_DRAW_ZEROING = 4.0;
     private static final double HOLD_REAR_AND_RUN_FORWARD_TIME = 2.0;
-    private static final double HAB_CLIMB_FINISH_DRIVING_TIME = 0.4;
+    private static final double HAB_CLIMB_FINISH_DRIVING_TIME = 1.0;
     private static Jacks instance;
     private final CheapWpiTalonSrx rightRearJack;
     private final CheapWpiTalonSrx leftRearJack;
@@ -70,9 +71,11 @@ public class Jacks extends Subsystem {
         leftRearWheel.setInverted(true);
         forwardIrSensor = new DigitalInput(3);
         rearIrSensor = new DigitalInput(4);
-        configureTalon(rightRearJack, true, false, 1.0, 0.81, -1.0);
-        configureTalon(leftRearJack, false, false, 1.0, 0.90, -1.0);
-        configureTalon(frontJack, true, false, 1.7, 1.0, -1.0);
+//        configureTalon(rightRearJack, true, false, 1.0, 0.81, -1.0);
+        configureTalon(rightRearJack, true, false, 1.0, 1.0, -1.0);
+//        configureTalon(leftRearJack, false, false, 1.0, 0.90, -1.0);
+        configureTalon(leftRearJack, false, false, 1.0, 1.0, -1.0);
+        configureTalon(frontJack, true, false, 1.0, 1.0, -1.0);
     }
 
     /**
@@ -159,7 +162,7 @@ public class Jacks extends Subsystem {
         periodicIo.frontJackCurrentDraw = 0.0;
         periodicIo.leftJackCurrentDraw = 0.0;
         periodicIo.rightJackCurrentDraw = 0.0;
-        if(startMovingUp){
+        if (startMovingUp) {
             periodicIo.frontJackDemand = JackState.ZEROING.getDemand();
             periodicIo.frontJackControlMode = JackState.ZEROING.getControlMode();
             periodicIo.rightJackDemand = JackState.ZEROING.getDemand();
@@ -174,7 +177,7 @@ public class Jacks extends Subsystem {
         looperInterface.registerLoop(new Loop() {
             @Override
             public void onStart(double timestamp) {
-                synchronized (Jacks.this){
+                synchronized (Jacks.this) {
                     setState(JackSystem.ZEROING);
                 }
             }
@@ -191,6 +194,7 @@ public class Jacks extends Subsystem {
                         case DRIVER_LIFT:
                             reconfigureTalonsLiftMode();
                             controlJacks(JackState.HAB3, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
+                            gyroCorrect();
                             break;
                         case DRIVER_RETRACT:
                             reconfigureTalonsRetractMode();
@@ -198,6 +202,7 @@ public class Jacks extends Subsystem {
                             break;
                         case INIT_HAB_CLIMB:
                             if (zero()) {
+                                drive.resetNavX();
                                 setState(JackSystem.HAB_CLIMB_LIFT_ALL);
                             }
                             break;
@@ -333,6 +338,19 @@ public class Jacks extends Subsystem {
         setState(JackSystem.DRIVER_LIFT);
     }
 
+    private synchronized void gyroCorrect() {
+        final double pitchCorrectionKp = 0.07; // %vbus per degree
+        final double rollCorrectionKp = 0.05; // %vbus per degree
+        final double pitchCorrectionOutput = pitchCorrectionKp * periodicIo.pitch;
+        final double rollCorrectionOutput = rollCorrectionKp * periodicIo.roll;
+        periodicIo.frontJackFeedForward += rollCorrectionOutput;
+        periodicIo.leftJackFeedForward -= rollCorrectionOutput;
+        periodicIo.rightJackFeedForward -= rollCorrectionOutput;
+
+        periodicIo.leftJackFeedForward += pitchCorrectionOutput;
+        periodicIo.rightJackFeedForward -= pitchCorrectionOutput;
+    }
+
     /**
      * Sets the jacks' demands to given control modes.
      *
@@ -381,6 +399,11 @@ public class Jacks extends Subsystem {
         periodicIo.frontJackEncoder = frontJack.getSelectedSensorPosition(0);
         periodicIo.leftJackEncoder = leftRearJack.getSelectedSensorPosition(0);
         periodicIo.rightJackEncoder = rightRearJack.getSelectedSensorPosition(0);
+        periodicIo.pitch = drive.getPitch();
+        periodicIo.roll = drive.getRoll();
+        periodicIo.frontJackFeedForward = 0.0;
+        periodicIo.leftJackFeedForward = 0.0;
+        periodicIo.rightJackFeedForward = 0.0;
 
 //        double currentFrontVelocity = frontJack.getSelectedSensorVelocity(0);
 //        double currentLeftVelocity = leftRearJack.getSelectedSensorVelocity(0);
@@ -411,7 +434,6 @@ public class Jacks extends Subsystem {
      * @param power the output percent to issue to all of the jacks, in the range [-1.0, 1.0].
      */
     public synchronized void setOpenLoop(double power) {
-        // System.out.println(Timer.getMatchTime() + " setOpenLoop");
         setState(JackSystem.OPEN_LOOP);
         periodicIo.frontJackDemand = power;
         periodicIo.leftJackDemand = power;
@@ -422,17 +444,15 @@ public class Jacks extends Subsystem {
     }
 
     public synchronized void setWheels(DriveSignal driveSignal) {
-        // System.out.println(Timer.getMatchTime() + " setWheels");
         periodicIo.leftWheelDemand = driveSignal.getLeftOutput();
         periodicIo.rightWheelDemand = driveSignal.getRightOutput();
     }
 
     @Override
     public synchronized void writePeriodicOutputs() {
-        // System.out.println(Timer.getMatchTime() + " writePeriodic");
-        frontJack.set(periodicIo.frontJackControlMode, periodicIo.frontJackDemand);
-        leftRearJack.set(periodicIo.leftJackControlMode, periodicIo.leftJackDemand);
-        rightRearJack.set(periodicIo.rightJackControlMode, periodicIo.rightJackDemand);
+        frontJack.set(periodicIo.frontJackControlMode, periodicIo.frontJackDemand, DemandType.ArbitraryFeedForward, periodicIo.frontJackFeedForward);
+        leftRearJack.set(periodicIo.leftJackControlMode, periodicIo.leftJackDemand, DemandType.ArbitraryFeedForward, periodicIo.leftJackFeedForward);
+        rightRearJack.set(periodicIo.rightJackControlMode, periodicIo.rightJackDemand, DemandType.ArbitraryFeedForward, periodicIo.rightJackFeedForward);
         leftRearWheel.set(ControlMode.PercentOutput, periodicIo.leftWheelDemand);
         rightRearWheel.set(ControlMode.PercentOutput, periodicIo.rightWheelDemand);
     }
@@ -548,7 +568,8 @@ public class Jacks extends Subsystem {
         double frontJackCurrentDraw;
         double leftJackCurrentDraw;
         double rightJackCurrentDraw;
-
+        double pitch;
+        double roll;
 //        // TODO temporary
 //        double frontVelocity;
 //        double frontAcceleration;
@@ -561,10 +582,13 @@ public class Jacks extends Subsystem {
 //        double rightDutyCycle;
 
         // Output
+        double frontJackDemand;
         double leftJackDemand;
         double rightJackDemand;
-        double frontJackDemand;
         double leftWheelDemand;
         double rightWheelDemand;
+        double frontJackFeedForward;
+        double leftJackFeedForward;
+        double rightJackFeedForward;
     }
 }
