@@ -1,19 +1,29 @@
 package frc.inputs;
 
-import frc.utils.Constants;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.utils.DriveSignal;
+
+import static frc.utils.Constants.DRIVER_HID_OPTION;
 
 public class GameController implements GameHid {
     private static GameController instance;
     private final DriverHid driverHid;
     private final OperatorHid operatorHid;
 
-
     private GameController() {
-        if (Constants.USE_JOYSTICK_FOR_DRIVING) {
-            driverHid = DriverJoystick.getInstance();
-        } else {
-            driverHid = DriverGamepad.getInstance();
+        switch (DRIVER_HID_OPTION) {
+            case SINGLE_JOYSTICK:
+                driverHid = DriverJoystick.getInstance();
+                break;
+            case DUAL_JOYSTICKS:
+                driverHid = DriverDoubleJoysticks.getInstance();
+                break;
+            case GAMEPAD:
+                driverHid = DriverGamepad.getInstance();
+                break;
+            default:
+                driverHid = DriverGamepad.getInstance();
+                DriverStation.reportError("GameController driver hid reached default case", false);
         }
         operatorHid = OperatorGamepad.getInstance();
     }
@@ -67,38 +77,6 @@ public class GameController implements GameHid {
         return driverHid.runJackWheels();
     }
 
-    //
-    // Operator Controls
-    //
-
-    @Override
-    public void update() {
-        operatorHid.update();
-        driverHid.update();
-    }
-
-    @Override
-    public void disabled(){
-        operatorHid.disabled();
-        driverHid.disabled();
-    }
-
-    @Override
-    public void disabledPeriodic(){
-        operatorHid.disabledPeriodic();
-        driverHid.disabledPeriodic();
-    }
-
-    @Override
-    public boolean cargoIntake() {
-        return operatorHid.cargoIntake();
-    }
-
-    @Override
-    public boolean cargoOuttakeFront() {
-        return operatorHid.cargoOuttakeFront();
-    }
-
     @Override
     public boolean cargoOuttakeRight() {
         return driverHid.cargoOuttakeRight();
@@ -117,6 +95,22 @@ public class GameController implements GameHid {
     @Override
     public boolean cargoIntakeLeft() {
         return driverHid.cargoIntakeLeft();
+    }
+
+
+    //
+    // Operator Controls
+    //
+
+
+    @Override
+    public boolean cargoIntake() {
+        return operatorHid.cargoIntake();
+    }
+
+    @Override
+    public boolean cargoOuttakeFront() {
+        return operatorHid.cargoOuttakeFront();
     }
 
     @Override
@@ -172,5 +166,28 @@ public class GameController implements GameHid {
     @Override
     public boolean hatchFeederHeight() {
         return operatorHid.hatchFeederHeight();
+    }
+
+
+    //
+    // Controls for both
+    //
+
+    @Override
+    public void update() {
+        operatorHid.update();
+        driverHid.update();
+    }
+
+    @Override
+    public void disabled() {
+        operatorHid.disabled();
+        driverHid.disabled();
+    }
+
+    @Override
+    public void disabledPeriodic() {
+        operatorHid.disabledPeriodic();
+        driverHid.disabledPeriodic();
     }
 }

@@ -1,11 +1,21 @@
 package frc.subsystem.test;
 
 import frc.inputs.GameController;
+import frc.utils.DriveSignal;
 
-import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
+import static frc.utils.Constants.TEST_SHUFFLEBOARD;
 
 public class GamepadTest implements SubsystemTest {
+    private static final String GAMEPAD_TEST_NETWORK_TABLES_PREFIX = "GamepadTest/";
     private GameController gameController = GameController.getInstance();
+
+    private static void putNumber(String key, double num) {
+        TEST_SHUFFLEBOARD.putNumber(GAMEPAD_TEST_NETWORK_TABLES_PREFIX + key, num);
+    }
+
+    private static void putBoolean(String key, boolean booleanToPut) {
+        TEST_SHUFFLEBOARD.putBoolean(GAMEPAD_TEST_NETWORK_TABLES_PREFIX + key, booleanToPut);
+    }
 
     @Override
     public void periodic(double timestamp) {
@@ -14,20 +24,38 @@ public class GamepadTest implements SubsystemTest {
 
     @Override
     public void outputTelemetry() {
-        ROBOT_MAIN_SHUFFLEBOARD.putNumber("Drive Signal Left", gameController.getDriveSignal().getLeftOutput());
-        ROBOT_MAIN_SHUFFLEBOARD.putNumber("Drive Signal Right", gameController.getDriveSignal().getRightOutput());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Intake", gameController.cargoIntake());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Front", gameController.cargoOuttakeFront());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Left", gameController.cargoOuttakeLeft());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Cargo Outtake Right", gameController.cargoOuttakeRight());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Lift Jack", gameController.liftAllJacks());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Low Cargo", gameController.setElevatorPositionLowCargo());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Mid Cargo", gameController.setElevatorPositionMidCargo());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position High Cargo", gameController.setElevatorPositionHighCargo());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Low Hatch", gameController.setElevatorPositionLowHatch());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position Mid Hatch", gameController.setElevatorPositionMidHatch());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Set Elevator Position High Hatch", gameController.setElevatorPositionHighHatch());
-        ROBOT_MAIN_SHUFFLEBOARD.putNumber("Hatch Manual", gameController.hatchManual());
-        ROBOT_MAIN_SHUFFLEBOARD.putBoolean("Hatch Feeder Height", gameController.hatchFeederHeight());
+        // Drive base
+        final DriveSignal driveSignal = gameController.getDriveSignal();
+        putNumber("Drive/Signal Left", driveSignal.getLeftOutput());
+        putNumber("Drive/Signal Right", driveSignal.getRightOutput());
+        // Jacks
+        putBoolean("Jacks/Lift All", gameController.liftAllJacks());
+        putBoolean("Jacks/Retract All", gameController.retractAllJacks());
+        putBoolean("Jacks/Initialize Hab Climbing", gameController.initializeHabClimbing());
+        putBoolean("Jacks/Zero Jacks", gameController.zeroJacks());
+        final DriveSignal runJackWheelsDriveSignal = gameController.runJackWheels();
+        putNumber("Jacks/Wheels/Signal Left", runJackWheelsDriveSignal.getLeftOutput());
+        putNumber("Jacks/Wheels/Signal Right", runJackWheelsDriveSignal.getRightOutput());
+        putBoolean("Jacks/Wheels/Use Override", gameController.manualJackWheelOverride());
+        // Cargo
+        putBoolean("Cargo/Outtake Front", gameController.cargoOuttakeFront());
+        putBoolean("Cargo/Outtake Left", gameController.cargoOuttakeLeft());
+        putBoolean("Cargo/Outtake Right", gameController.cargoOuttakeRight());
+        putBoolean("Cargo/Intake", gameController.cargoIntake());
+        putBoolean("Cargo/Intake Left", gameController.cargoOuttakeLeft());
+        putBoolean("Cargo/Intake Right", gameController.cargoOuttakeLeft());
+        putNumber("Cargo/Intake Tilt", gameController.intakeTilt());
+        // Elevator
+        putBoolean("Elevator/Cargo Low", gameController.setElevatorPositionLowCargo());
+        putBoolean("Elevator/Cargo Mid", gameController.setElevatorPositionMidCargo());
+        putBoolean("Elevator/Cargo High", gameController.setElevatorPositionHighCargo());
+        putBoolean("Elevator/Hatch Low", gameController.setElevatorPositionLowHatch());
+        putBoolean("Elevator/Hatch Mid", gameController.setElevatorPositionMidHatch());
+        putBoolean("Elevator/Hatch High", gameController.setElevatorPositionHighHatch());
+        putNumber("Elevator/Manual Power", gameController.elevateManual());
+        // Hatch
+        putBoolean("Hatch/Use Open Loop", gameController.useHatchOpenLoop());
+        putNumber("Hatch/Manual", gameController.hatchManual());
+        putBoolean("Hatch/Feeder Height", gameController.hatchFeederHeight());
     }
 }

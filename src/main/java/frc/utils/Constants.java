@@ -1,7 +1,6 @@
 package frc.utils;
 
 public class Constants {
-    public static final double INCHES_TO_METERS = 0.0254;
     public static final double EPSILON_SMALL_DOUBLE = 1E-11;
 
     // Motor controller ports
@@ -11,8 +10,6 @@ public class Constants {
     public static final int RIGHT_DRIVE_2 = 3; // SPX
     public static final int HATCH = 12; // SRX
     public static final int INTAKE_TILT = 13; // SRX
-
-    // Intakes Cargo, both
     public static final int INTAKE = 1; // SRX
     public static final int FRONT_JACK_LIFT = 11; // SRX
     public static final int RIGHT_REAR_JACK_LIFT = 7; // SRX
@@ -23,15 +20,22 @@ public class Constants {
     public static final int CARGO_CENTER = 10; // SRX
     public static final int CARGO_LEFT = 9; // SRX
     public static final int CARGO_RIGHT = 8; // SRX
-    public static final boolean USE_JOYSTICK_FOR_DRIVING = false;
-    public static final boolean USE_GAMEPAD_FOR_OPERATING = true;
+    public static final DriverHidOption DRIVER_HID_OPTION = DriverHidOption.GAMEPAD;
 
     // HID ports
     public static final int DRIVER_JOYSTICK_PORT = 0;
     public static final int DRIVER_GAMEPAD_PORT = 0;
     public static final int OPERATOR_GAMEPAD_PORT = 1;
-    public static final int OPERATOR_JOYSTICK_PORT = 0;
-    public static final int CARGO_SENSOR = 0;
+    public static final int DRIVER_JOYSTICK_LEFT_PORT = 0;
+    public static final int DRIVER_JOYSTICK_RIGHT_PORT = 2;
+
+    // Sensor ports
+    public static final int CARGO_SENSOR = 0; // dio
+    public static final int ELEVATOR_BOTTOM_LIMIT = 2; // dio
+    public static final int DRIVE_FRONT_IR_SENSOR = 3; // dio
+    public static final int DRIVE_REAR_IR_SENSOR = 4; // dio
+
+    // Network Tables Ports
     public static final String DEFAULT_NETWORK_TABLE_KEY = "SmartDashboard";
     public static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = true;
     public static final ShuffleboardWriter ROBOT_MAIN_SHUFFLEBOARD;
@@ -40,7 +44,7 @@ public class Constants {
     public static final ShuffleboardWriter ELEVATOR_SHUFFLEBOARD;
     public static final ShuffleboardWriter JACKS_SHUFFLEBOARD;
     public static final ShuffleboardWriter CARGO_SHUFFLEBOARD;
-    public static final ShuffleboardWriter ROBOT_STATE_SHUFFLEBOARD;
+    public static final ShuffleboardWriter TEST_SHUFFLEBOARD;
     public static final ShuffleboardWriter HATCH_SHUFFLEBOARD;
     public static final int CAN_TIMEOUT_MS = 10; // ms
     public static final double DRIVE_VOLTAGE_RAMP_RATE = 0; // time from neutral to full power
@@ -53,7 +57,7 @@ public class Constants {
             ELEVATOR_SHUFFLEBOARD = ShuffleboardWriter.getInstance("Elevator");
             JACKS_SHUFFLEBOARD = ShuffleboardWriter.getInstance("Jacks");
             CARGO_SHUFFLEBOARD = ShuffleboardWriter.getInstance("Cargo");
-            ROBOT_STATE_SHUFFLEBOARD = ShuffleboardWriter.getInstance("RobotState");
+            TEST_SHUFFLEBOARD = ShuffleboardWriter.getInstance("Test");
             HATCH_SHUFFLEBOARD = ShuffleboardWriter.getInstance("Hatch");
         } else {
             ROBOT_MAIN_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
@@ -62,22 +66,19 @@ public class Constants {
             ELEVATOR_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
             JACKS_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
             CARGO_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
-            ROBOT_STATE_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
+            TEST_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
             HATCH_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
         }
     }
 
-    public static final int POV_DPAD_UP = 0;
-    public static final int POV_DPAD_UPPER_RIGHT = 45;
-    public static final int POV_DPAD_LOWER_RIGHT = 135;
-    public static final int POV_DPAD_RIGHT = 90;
-    public static final int POV_DPAD_DOWN = 180;
-    public static final int POV_DPAD_LEFT = 270;
-    public static final int POV_DPAD_UPPER_LEFT = 315;
-    public static final int POV_DPAD_LOWER_LEFT = 225;
-
 
     private Constants() {
 
+    }
+
+    public enum DriverHidOption {
+        SINGLE_JOYSTICK,
+        DUAL_JOYSTICKS,
+        GAMEPAD
     }
 }

@@ -3,7 +3,7 @@ package frc.subsystem.test;
 import frc.subsystem.Drive;
 import frc.utils.DriveSignal;
 
-import static frc.utils.Constants.DRIVE_SHUFFLEBOARD;
+import static frc.utils.Constants.TEST_SHUFFLEBOARD;
 
 public class DriveTest implements SubsystemTest {
     private static final double BREAK_PERIOD = 0.30;
@@ -36,8 +36,8 @@ public class DriveTest implements SubsystemTest {
     }
 
     public void outputTelemetry() {
-        DRIVE_SHUFFLEBOARD.putString("Test State", state.toString());
-        DRIVE_SHUFFLEBOARD.putString("Test State Expected", state.getInformation());
+        TEST_SHUFFLEBOARD.putString("Test State", state.toString());
+        TEST_SHUFFLEBOARD.putString("Test State Expected", state.getInformation());
         drive.outputTelemetry();
     }
 

@@ -3,7 +3,7 @@ package frc.subsystem.test;
 import frc.states.CargoState.IntakeState;
 import frc.subsystem.Cargo;
 
-import static frc.utils.Constants.CARGO_SHUFFLEBOARD;
+import static frc.utils.Constants.TEST_SHUFFLEBOARD;
 
 public class CargoTest implements SubsystemTest {
 
@@ -36,8 +36,8 @@ public class CargoTest implements SubsystemTest {
     }
 
     public void outputTelemetry() {
-        CARGO_SHUFFLEBOARD.putString("Test State", state.toString());
-        CARGO_SHUFFLEBOARD.putString("Test State Expected", state.getInformation());
+        TEST_SHUFFLEBOARD.putString("Test State", state.toString());
+        TEST_SHUFFLEBOARD.putString("Test State Expected", state.getInformation());
         cargo.outputTelemetry();
     }
 
@@ -50,16 +50,25 @@ public class CargoTest implements SubsystemTest {
                 cargo.setDesiredState(IntakeState.INTAKE);
                 handleLoop(timestamp, CargoTestState.OUTTAKE_RIGHT);
                 break;
+            case OUTTAKE_LEFT:
+                cargo.setDesiredState(IntakeState.OUTTAKE_LEFT);
+                handleLoop(timestamp, CargoTestState.STOPPED);
+                break;
             case OUTTAKE_RIGHT:
                 cargo.setDesiredState(IntakeState.OUTTAKE_RIGHT);
                 handleLoop(timestamp, CargoTestState.OUTTAKE_LEFT);
                 break;
-            case OUTTAKE_LEFT:
-                cargo.setDesiredState(IntakeState.OUTTAKE_LEFT);
-                handleLoop(timestamp, CargoTestState.END_DISABLED);
+            case INTAKE_LEFT:
+                cargo.setDesiredState(IntakeState.INTAKE_LEFT);
+                handleLoop(timestamp, CargoTestState.OUTTAKE_LEFT);
                 break;
-            case END_DISABLED:
+            case INTAKE_RIGHT:
+                cargo.setDesiredState(IntakeState.INTAKE_RIGHT);
+                handleLoop(timestamp, CargoTestState.OUTTAKE_LEFT);
+                break;
+            case STOPPED:
                 cargo.setDesiredState(IntakeState.STOPPED);
+                handleLoop(timestamp, CargoTestState.OUTTAKE_LEFT);
                 break;
         }
         cargo.writePeriodicOutputs();
@@ -67,10 +76,12 @@ public class CargoTest implements SubsystemTest {
 
     private enum CargoTestState {
         INIT_DISABLED("The robot's intake should not move before setup", 1.0),
-        INTAKE_FRONT("The robot should intake, and disable if a ball is introduced", 4.0),
-        OUTTAKE_RIGHT("The robot should be outtaking to the right", 2.0),
+        INTAKE_FRONT("The robot should intake, and disable when a ball is introduced", 4.0),
+        INTAKE_LEFT("The robot should intake from the left, and disable when a ball is introduced", 4.0),
+        INTAKE_RIGHT("The robot should intake from the left, and disable when a ball is introduced", 4.0),
         OUTTAKE_LEFT("The robot should be outtaking to the left", 2.0),
-        END_DISABLED("The robot's intake should be stopped", 2.0);
+        OUTTAKE_RIGHT("The robot should be outtaking to the right", 2.0),
+        STOPPED("The robot's intake should be stopped", 2.0);
 
         private String information;
         private double timeToRun;

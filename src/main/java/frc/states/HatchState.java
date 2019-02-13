@@ -6,7 +6,6 @@ public class HatchState {
     // Input
     public boolean limitHit = false;
     public double encoder = 0.0;
-    public double outputCurrent = 0.0;
 
     // Output
     public double demand = 0.0;
@@ -18,8 +17,6 @@ public class HatchState {
     // Non-IO
     ControlState hatchState = ControlState.STOPPED;
     boolean hasZeroed = false;
-    boolean hasHadHardwareFault = false;
-
 
     public enum ControlState {
         ZEROING(true),

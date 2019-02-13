@@ -2,10 +2,12 @@ package frc.inputs;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.utils.DpadHelper;
 import frc.utils.DriveHelper;
 import frc.utils.DriveSignal;
 
 import static frc.utils.Constants.DRIVER_GAMEPAD_PORT;
+import static frc.utils.DpadHelper.LastDpadState;
 
 /**
  * Implements {@link DriverHid} with an Xbox style gamepad.

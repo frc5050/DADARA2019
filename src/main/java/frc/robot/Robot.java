@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
             Drive.getInstance(),
             Cargo.getInstance(),
             Elevator.getInstance(),
-            Hatch2.getInstance(),
+            Hatch.getInstance(),
             Jacks.getInstance()
     ));
     private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
     private Drive drive = Drive.getInstance();
     private Cargo cargo = Cargo.getInstance();
     private Elevator elevator = Elevator.getInstance();
-    private Hatch2 hatch = Hatch2.getInstance();
+    private Hatch hatch = Hatch.getInstance();
     private Jacks jacks = Jacks.getInstance();
     private Vision vision = Vision.getInstance();
     private SubsystemTest subsystemTest;

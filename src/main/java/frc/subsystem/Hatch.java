@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Timer;
 import frc.loops.Loop;
 import frc.loops.Looper;
 import frc.loops.LooperInterface;
@@ -16,18 +15,18 @@ import static frc.states.HatchStateMachine.PEAK_REVERSE_OUTPUT_STANDARD;
 import static frc.utils.Constants.HATCH;
 import static frc.utils.Constants.HATCH_SHUFFLEBOARD;
 
-public class Hatch2 extends Subsystem {
+public class Hatch extends Subsystem {
     private static final int SETTINGS_TIMEOUT = 30;
     private static final int PERIOD_MS = (int) (Looper.PERIOD * 1000);
     private static final double EPSILON = 1E-5;
-    private static Hatch2 instance;
+    private static Hatch instance;
     private final WPI_TalonSRX hatch;
     private final DigitalInput upperLimitSwitch;
-    private HatchStateMachine hatchStateMachine = new HatchStateMachine(Timer.getFPGATimestamp());
+    private HatchStateMachine hatchStateMachine = new HatchStateMachine();
     private HatchState hatchState = new HatchState();
     private HatchState outputState = new HatchState();
 
-    private Hatch2() {
+    private Hatch() {
         upperLimitSwitch = new DigitalInput(1);
         hatch = new WPI_TalonSRX(HATCH);
 
@@ -56,9 +55,9 @@ public class Hatch2 extends Subsystem {
         resetSensorPosition();
     }
 
-    public static Hatch2 getInstance() {
+    public static Hatch getInstance() {
         if (instance == null) {
-            instance = new Hatch2();
+            instance = new Hatch();
         }
         return instance;
     }
@@ -73,8 +72,8 @@ public class Hatch2 extends Subsystem {
 
             @Override
             public void onLoop(double timestamp) {
-                synchronized (Hatch2.this) {
-                    outputState = hatchStateMachine.update(hatchState, timestamp);
+                synchronized (Hatch.this) {
+                    outputState = hatchStateMachine.update(hatchState);
                 }
             }
 
@@ -103,7 +102,6 @@ public class Hatch2 extends Subsystem {
     public synchronized void readPeriodicInputs() {
         hatchState.limitHit = !upperLimitSwitch.get();
         hatchState.encoder = hatch.getSelectedSensorPosition(0);
-        hatchState.outputCurrent = hatch.getOutputCurrent();
     }
 
     @Override
@@ -125,8 +123,6 @@ public class Hatch2 extends Subsystem {
     @Override
     public void outputTelemetry() {
         HATCH_SHUFFLEBOARD.putBoolean("Limit Hit", hatchState.limitHit);
-        HATCH_SHUFFLEBOARD.putBoolean("Hardware Fault", hatchStateMachine.hasHadHardwareFault());
-        HATCH_SHUFFLEBOARD.putNumber("Amperage", hatch.getOutputCurrent());
         HATCH_SHUFFLEBOARD.putNumber("Demand", outputState.demand);
         HATCH_SHUFFLEBOARD.putNumber("Peak Output Forward", hatchState.peakOutputForward);
         HATCH_SHUFFLEBOARD.putNumber("Peak Output Reverse", hatchState.peakOutputReverse);

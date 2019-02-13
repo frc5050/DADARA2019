@@ -69,8 +69,8 @@ public class Jacks extends Subsystem {
         leftRearWheel = new CheapWpiTalonSrx(Constants.LEFT_REAR_JACK_WHEEL);
         rightRearWheel = new CheapWpiTalonSrx(Constants.RIGHT_REAR_JACK_WHEEL);
         leftRearWheel.setInverted(true);
-        forwardIrSensor = new DigitalInput(3);
-        rearIrSensor = new DigitalInput(4);
+        forwardIrSensor = new DigitalInput(DRIVE_FRONT_IR_SENSOR);
+        rearIrSensor = new DigitalInput(DRIVE_REAR_IR_SENSOR);
 //        configureTalon(rightRearJack, true, false, 1.0, 0.81, -1.0);
         configureTalon(rightRearJack, true, false, 1.0, 1.0, -1.0);
 //        configureTalon(leftRearJack, false, false, 1.0, 0.90, -1.0);

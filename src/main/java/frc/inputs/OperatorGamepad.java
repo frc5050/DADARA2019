@@ -3,8 +3,9 @@ package frc.inputs;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.utils.Constants;
+import frc.utils.DpadHelper;
 
-import static frc.utils.Constants.*;
+import static frc.utils.DpadHelper.LastDpadState;
 
 /**
  * An implementation of the Driver's controls for when the robot is being

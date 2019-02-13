@@ -6,8 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.utils.PidfConstants;
 
-import static frc.utils.Constants.ELEVATOR_NEO;
-import static frc.utils.Constants.ELEVATOR_SHUFFLEBOARD;
+import static frc.utils.Constants.*;
 import static frc.utils.UnitConversions.inchesToMeters;
 import static frc.utils.UnitConversions.metersToInches;
 
@@ -45,7 +44,7 @@ public class Elevator extends Subsystem {
      * Constructor.
      */
     private Elevator() {
-        bottomLimit = new DigitalInput(2);
+        bottomLimit = new DigitalInput(ELEVATOR_BOTTOM_LIMIT);
         motor = new CANSparkMax(ELEVATOR_NEO, CANSparkMaxLowLevel.MotorType.kBrushless);
         encoder = new CANEncoder(motor);
         controller = motor.getPIDController();
