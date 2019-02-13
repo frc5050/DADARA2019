@@ -3,7 +3,6 @@ package frc.subsystem;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
-// TODO
 public class Vision {
     private static Vision instance;
 
@@ -19,7 +18,6 @@ public class Vision {
     }
 
     private static void configureUsbCamera(UsbCamera camera){
-
         camera.setExposureAuto();
         camera.setWhiteBalanceAuto();
         camera.setFPS(20);
