@@ -10,17 +10,20 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.inputs.GameController;
 import frc.loops.Looper;
 import frc.states.CargoState;
 import frc.subsystem.*;
+import frc.subsystem.test.CargoTest;
+import frc.subsystem.test.DriveTest;
 import frc.subsystem.test.GamepadTest;
 import frc.subsystem.test.SubsystemTest;
 import frc.utils.DriveSignal;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+
+import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -107,14 +110,17 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         final double t0 = Timer.getFPGATimestamp();
+
         drive.setOpenLoop(gameController.getDriveSignal());
         final double tDrive = Timer.getFPGATimestamp();
+
         if (gameController.hatchFeederHeight()) {
             hatch.setPosition(1);
         } else {
             hatch.setOpenLoop(gameController.hatchManual());
         }
         final double tHatch = Timer.getFPGATimestamp();
+
         cargo.intakeTilt(gameController.intakeTilt());
         if (gameController.cargoIntake()) {
             cargo.setDesiredState(CargoState.IntakeState.INTAKE);
@@ -133,13 +139,12 @@ public class Robot extends TimedRobot {
         }
         final double tCargo = Timer.getFPGATimestamp();
 
-
         if (!gameController.manualJackWheelOverride()) {
             jacks.setWheels(gameController.runJackWheels());
         } else {
             jacks.setWheels(DriveSignal.NEUTRAL);
         }
-//
+
         if (gameController.liftAllJacks()) {
             System.out.println("Should be lifting");
             jacks.lift();
@@ -153,14 +158,12 @@ public class Robot extends TimedRobot {
             System.out.println("Should be zeroing");
             jacks.beginZeroing();
         }
-//        else {
-//            jacks.setOpenLoop(0.0);
-//        }
         final double tJacks = Timer.getFPGATimestamp();
 
 
         gameController.update();
         final double tController = Timer.getFPGATimestamp();
+
         if (gameController.setElevatorPositionLowHatch()) {
             elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_LOW);
         } else if (gameController.setElevatorPositionMidHatch()) {
@@ -183,13 +186,14 @@ public class Robot extends TimedRobot {
         jacks.outputTelemetry();
 //        drive.outputTelemetry();
         final double tOutput = Timer.getFPGATimestamp();
-        SmartDashboard.putNumber("Time to drive", tDrive - t0);
-        SmartDashboard.putNumber("Time to hatch", tHatch - tDrive);
-        SmartDashboard.putNumber("Time to cargo", tCargo - tHatch);
-        SmartDashboard.putNumber("Time to jacks", tJacks - tCargo);
-        SmartDashboard.putNumber("Time to elevator", tController - tJacks);
-        SmartDashboard.putNumber("Time to elevator", tElevator - tController);
-        SmartDashboard.putNumber("Time to output", tOutput - tElevator);
+
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Drive", tDrive - t0);
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Hatch", tHatch - tDrive);
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Cargo", tCargo - tHatch);
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Jacks", tJacks - tCargo);
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Controller", tController - tJacks);
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Elevator", tElevator - tController);
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Output", tOutput - tElevator);
     }
 
     // TODO add more tests
@@ -199,37 +203,36 @@ public class Robot extends TimedRobot {
         Test testSelected = tests.get(testChooser.getSelected());
         disabledLooper.stop();
         enabledLooper.stop();
-        subsystemTest = new GamepadTest();
-//        switch (testSelected) {
-//            case DEFAULT_TEST:
-//                subsystemTest = null;
-//                break;
-//            case GAMEPAD_TEST:
-//                subsystemTest = new GamepadTest();
-//                break;
-//            case DRIVE_TEST:
-//                subsystemTest = new DriveTest();
-//                break;
-//            case CARGO_TEST:
-//                subsystemTest = new CargoTest();
-//                break;
-//            case HATCH_MECHANISM_TEST:
-//                break;
-//            case ELEVATOR_TEST:
-//                subsystemTest = null;
-//                break;
-//            case JACKS_TEST:
-//                subsystemTest = null;
-//                break;
-//            case ROBOT_STATE_TEST:
-//                subsystemTest = null;
-//                break;
-//        }
+        switch (testSelected) {
+            case DEFAULT_TEST:
+                subsystemTest = null;
+                break;
+            case GAMEPAD_TEST:
+                subsystemTest = new GamepadTest();
+                break;
+            case DRIVE_TEST:
+                subsystemTest = new DriveTest();
+                break;
+            case CARGO_TEST:
+                subsystemTest = new CargoTest();
+                break;
+            case HATCH_MECHANISM_TEST:
+                subsystemTest = null;
+                break;
+            case ELEVATOR_TEST:
+                subsystemTest = null;
+                break;
+            case JACKS_TEST:
+                subsystemTest = null;
+                break;
+        }
     }
 
     @Override
     public void testPeriodic() {
-        subsystemTest.periodic(Timer.getFPGATimestamp());
+        if (subsystemTest != null) {
+            subsystemTest.periodic(Timer.getFPGATimestamp());
+        }
     }
 
     public void outputTelemetry() {
@@ -237,23 +240,57 @@ public class Robot extends TimedRobot {
 //        enabledLooper.outputTelemetry();
     }
 
+    /**
+     * Test cases that can be executed in the test mode to confirm functionality of various subsystems.
+     */
     public enum Test {
+        /**
+         * Default, does not run any test.
+         */
         DEFAULT_TEST("None"),
+        /**
+         * Chooses the {@link GamepadTest} as the test to run to confirm full functionality of the
+         * {@link GameController}.
+         */
         GAMEPAD_TEST("Gamepad Automated Test"),
+        /**
+         * Chooses the {@link DriveTest} as the test to run to confirm full functionality of the {@link Drive} subsystem
+         */
         DRIVE_TEST("Drive Automated Test"),
+        /**
+         * Chooses the {@link CargoTest} as the test to run to confirm full functionality of the {@link Cargo} subsystem.
+         */
         CARGO_TEST("Cargo Automated Test"),
+        /**
+         * TODO, will run an automated test on the {@link Hatch}.
+         */
         HATCH_MECHANISM_TEST("Hatch Automated Test"),
+        /**
+         * TODO, will run an automated test on the {@link Elevator}.
+         */
         ELEVATOR_TEST("Elevator Automated Test"),
-        JACKS_TEST("Test"),
-        ROBOT_STATE_TEST("Robot State Test");
 
+        /**
+         * TODO, will run an automated test on the {@link Jacks}.
+         */
+        JACKS_TEST("Test");
 
         private String option;
 
+        /**
+         * Constructor.
+         *
+         * @param option the option to put on the dashboard chooser's list.
+         */
         Test(String option) {
             this.option = option;
         }
 
+        /**
+         * Returns the option to put on the dashboard chooser's list.
+         *
+         * @return the option to put on the dashboard chooser's list.
+         */
         public String getOption() {
             return option;
         }

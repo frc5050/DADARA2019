@@ -5,11 +5,18 @@ import frc.utils.DriveSignal;
 
 import static frc.utils.Constants.DRIVER_HID_OPTION;
 
+/**
+ * An implementation of the Driver's controls for when the robot is being
+ * operated with a gamepad.
+ */
 public class GameController implements GameHid {
     private static GameController instance;
     private final DriverHid driverHid;
     private final OperatorHid operatorHid;
 
+    /**
+     * Constructor.
+     */
     private GameController() {
         switch (DRIVER_HID_OPTION) {
             case SINGLE_JOYSTICK:
@@ -28,7 +35,13 @@ public class GameController implements GameHid {
         operatorHid = OperatorGamepad.getInstance();
     }
 
-
+    /**
+     * Returns a static instance of the {@link GameController} class. If none has been created yet, the instance
+     * is created. This enables multiple any other classes to use this class without having to pass an instance or take
+     * the risk of trying to instantiate multiple instances of this class, which would result in errors.
+     *
+     * @return a static instance of the {@link GameController} subsystem.
+     */
     public static GameController getInstance() {
         if (instance == null) {
             instance = new GameController();

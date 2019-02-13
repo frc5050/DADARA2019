@@ -18,6 +18,13 @@ public class DriverJoystick implements DriverHid {
         driverJoystick = new Joystick(Constants.DRIVER_JOYSTICK_PORT);
     }
 
+    /**
+     * Returns a static instance of the {@link DriverJoystick} class. If none has been created yet, the instance
+     * is created. This enables multiple any other classes to use this class without having to pass an instance or take
+     * the risk of trying to instantiate multiple instances of this class, which would result in errors.
+     *
+     * @return a static instance of the {@link DriverJoystick} subsystem.
+     */
     public static DriverJoystick getInstance() {
         if (instance == null) {
             instance = new DriverJoystick();

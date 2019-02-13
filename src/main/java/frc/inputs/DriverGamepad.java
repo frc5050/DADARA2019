@@ -24,6 +24,13 @@ public class DriverGamepad implements DriverHid {
         gamepad = new XboxController(DRIVER_GAMEPAD_PORT);
     }
 
+    /**
+     * Returns a static instance of the {@link DriverGamepad} class. If none has been created yet, the instance
+     * is created. This enables multiple any other classes to use this class without having to pass an instance or take
+     * the risk of trying to instantiate multiple instances of this class, which would result in errors.
+     *
+     * @return a static instance of the {@link DriverGamepad} subsystem.
+     */
     public static DriverGamepad getInstance() {
         if (instance == null) {
             instance = new DriverGamepad();

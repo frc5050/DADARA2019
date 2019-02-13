@@ -2,6 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 
+/**
+ * Just a {@link TimedRobot} that does nothing the whole time. Useful for getting baseline values for certain things.
+ */
 public class NothingnessBot extends TimedRobot {
 
     @Override
@@ -18,7 +21,7 @@ public class NothingnessBot extends TimedRobot {
     }
 
     @Override
-    public void disabledPeriodic(){
+    public void disabledPeriodic() {
 
     }
 

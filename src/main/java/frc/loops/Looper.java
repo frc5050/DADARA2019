@@ -8,7 +8,13 @@ import java.util.List;
 
 import static frc.utils.Constants.LOOPER_SHUFFLEBOARD;
 
+/**
+ * Takes groups of {@link Loop}s and executes their functions periodically via an {@link Notifier}..
+ */
 public class Looper implements LooperInterface {
+    /**
+     * The period that all loops should run at when registered in a {@link Looper}.
+     */
     public static final double PERIOD = 0.01;
     private final Notifier notifier;
     private final List<Loop> loops;
@@ -32,18 +38,29 @@ public class Looper implements LooperInterface {
         }
     };
 
+    /**
+     * Constructor.
+     */
     public Looper() {
         notifier = new Notifier(runnable);
         running = false;
         loops = new ArrayList<>();
     }
 
+    /**
+     * Adds a loop to the list of loops to use and call periodically.
+     *
+     * @param loop the {@link Loop} to add to the looper.
+     */
     public synchronized void registerLoop(Loop loop) {
         synchronized (runningLock) {
             loops.add(loop);
         }
     }
 
+    /**
+     * Starts running all loops by calling their {@link Loop#onStart(double)} function.
+     */
     public synchronized void start() {
         if (!running) {
             synchronized (runningLock) {
@@ -57,6 +74,9 @@ public class Looper implements LooperInterface {
         }
     }
 
+    /**
+     * Stops running all loops by calling their {@link Loop#onStop(double)} function.
+     */
     public synchronized void stop() {
         if (running) {
             notifier.stop();
@@ -70,7 +90,10 @@ public class Looper implements LooperInterface {
         }
     }
 
+    /**
+     * Outputs telemetry to SmartDashboard/Shuffleboard about the current state of the looper.
+     */
     public void outputTelemetry() {
-        LOOPER_SHUFFLEBOARD.putNumber("Looper dt", dt * 100);
+        LOOPER_SHUFFLEBOARD.putNumber("Looper dt", dt);
     }
 }

@@ -8,8 +8,10 @@ import frc.utils.DpadHelper;
 import static frc.utils.DpadHelper.LastDpadState;
 
 /**
- * An implementation of the Driver's controls for when the robot is being
- * operated with a gamepad.
+ * Provides an implementation of an {@link GameHid} to encapsulate all of the functions that the all of the active
+ * HID's, together, must provide. For most seasons, this essentially ties
+ * together the driver and operator gamepad functions into one simpler
+ * interface.
  */
 public class OperatorGamepad implements OperatorHid {
     private static OperatorGamepad instance;
@@ -25,6 +27,13 @@ public class OperatorGamepad implements OperatorHid {
         operatorGamepad = new XboxController(Constants.OPERATOR_GAMEPAD_PORT);
     }
 
+    /**
+     * Returns a static instance of the {@link OperatorGamepad} class. If none has been created yet, the instance
+     * is created. This enables multiple any other classes to use this class without having to pass an instance or take
+     * the risk of trying to instantiate multiple instances of this class, which would result in errors.
+     *
+     * @return a static instance of the {@link OperatorGamepad} subsystem.
+     */
     public static OperatorGamepad getInstance() {
         if (instance == null) {
             instance = new OperatorGamepad();
