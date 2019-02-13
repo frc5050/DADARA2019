@@ -59,10 +59,31 @@ public class UnitConversions {
     /**
      * Converts from seconds to minutes.
      *
+     * @param minutes the value in minutes to convert to seconds.
+     * @return the given time interval converted to seconds, with the sign of the input preserved.
+     */
+
+    public static double minutesToSeconds(double minutes) {
+        return minutes * 60.0;
+    }
+
+    /**
+     * Converts from seconds to minutes.
+     *
      * @param seconds the value in seconds to convert to minutes.
-     * @return the same time interval, converted to minutes, with the sign of the input preserved.
+     * @return the given time interval converted to minutes, with the sign of the input preserved.
      */
     public static double secondsToMinutes(double seconds) {
         return seconds / 60.0;
+    }
+
+    public static double encoderUnitsPerMinuteToDistancePerSecond(final double totalDeltaEncoder, final double totalDeltaDistance, final double encoderUnitsPerMinute) {
+        final double distancePerEncoderUnit = totalDeltaDistance / totalDeltaEncoder;
+        return encoderUnitsPerMinute * secondsToMinutes(1) * distancePerEncoderUnit;
+    }
+
+    public static double distancePerSecondToEncoderUnitsPerMinute(final double totalDeltaEncoder, final double totalDeltaDistance, final double distancePerSecond) {
+        final double encoderUnitsPerDistance = totalDeltaEncoder / totalDeltaDistance;
+        return distancePerSecond * minutesToSeconds(1) * encoderUnitsPerDistance;
     }
 }

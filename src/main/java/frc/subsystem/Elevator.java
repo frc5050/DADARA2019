@@ -17,12 +17,12 @@ public class Elevator extends Subsystem {
     private static final double UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
     private static final double TOTAL_DELTA_HEIGHT = UPPER_DIST_FROM_GROUND - BOTTOM_DIST_FROM_GROUND;
     private static final double MANUAL_MOVEMENT_DEADBAND = 0.02;
-    private static final double MAX_RPM = 5000;
-    private static final double POSITION_LOOP_KP = -5 * MAX_RPM; // (revolutions / minute) / (meter)
-    private static final double POSITION_LOOP_KV = -3300; // (revolutions / minute) / (meter / second)
+    private static final double MAX_RPM = 5000.0;
+    private static final double POSITION_LOOP_KP = -5.0; // (revolutions / minute) / (meter)
+    private static final double POSITION_LOOP_KV = -0.66; // (revolutions / minute) / (meter / second)
     private static final double MAXIMUM_ELEVATOR_MOTOR_TEMPERATURE = 80.0; // Celsius
     private static final double ZEROING_PERCENT_OUTPUT = 0.2;
-    private static final PidfConstants ELEVATOR_NEO_PIDF_PARAMETERS = new PidfConstants(3E-5, 1E-6, 0.0, 0.0, 0.0);
+    private static final PidfConstants ELEVATOR_NEO_PIDF_PARAMETERS = new PidfConstants(3.0E-05, 1.0E-06, 0.0, 0.0, 0.0);
     private static Elevator instance;
     private final DigitalInput bottomLimit;
     private final CANSparkMax motor;
@@ -41,6 +41,9 @@ public class Elevator extends Subsystem {
     private boolean usePID = false;
     private boolean bottomLimitTriggered = false;
 
+    /**
+     * Constructor.
+     */
     private Elevator() {
         bottomLimit = new DigitalInput(2);
         motor = new CANSparkMax(ELEVATOR_NEO, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -58,6 +61,13 @@ public class Elevator extends Subsystem {
         //  motor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus2, 10);
     }
 
+    /**
+     * Returns a static instance of the {@link Elevator} subsystem. If none has been created yet, the instance is created.
+     * This enables multiple other subsystems and any other classes to use this class without having to pass an instance
+     * or take the risk of trying to instantiate multiple instances of this class, which would result in errors.
+     *
+     * @return a static instance of the {@link Elevator} subsystem.
+     */
     public static Elevator getInstance() {
         if (instance == null) {
             instance = new Elevator();
@@ -65,12 +75,26 @@ public class Elevator extends Subsystem {
         return instance;
     }
 
-    private double convertRawEncoderToRealHeight(double encoderValue) {
-        return BOTTOM_DIST_FROM_GROUND + ((encoderValue + encoderOffset) / TOTAL_DELTA_ENCODER_VALUE) * TOTAL_DELTA_HEIGHT;
+    /**
+     * Converts a filtered encoder value to a real height in meters.
+     *
+     * @param encoderValueFiltered the filtered encoder value, that is, the raw encoder value with the zero point taken
+     *                             into account.
+     * @return the real height of the bottom of the carriage from the ground, in meters.
+     */
+    private static double convertFilteredEncoderToRealHeight(double encoderValueFiltered) {
+        return BOTTOM_DIST_FROM_GROUND + (encoderValueFiltered / TOTAL_DELTA_ENCODER_VALUE) * TOTAL_DELTA_HEIGHT;
     }
 
-    private double convertHeightToEncoder(double height) {
-        return ((height - BOTTOM_DIST_FROM_GROUND) / TOTAL_DELTA_HEIGHT) * TOTAL_DELTA_ENCODER_VALUE - encoderOffset;
+    /**
+     * Converts a filtered encoder value to a real height in meters.
+     *
+     * @param height the real height of the bottom of the carriage from the ground, in meters.
+     * @return the filtered encoder value at the specified height, that is, the raw encoder value with the zero point
+     * taken into account.
+     */
+    private static double convertHeightToFilteredEncoder(double height) {
+        return ((height - BOTTOM_DIST_FROM_GROUND) / TOTAL_DELTA_HEIGHT) * TOTAL_DELTA_ENCODER_VALUE;
     }
 
     @Override
@@ -86,7 +110,7 @@ public class Elevator extends Subsystem {
             }
             encoderOffset = -encoderPosition;
         }
-        height = convertRawEncoderToRealHeight(encoderPosition);
+        height = convertFilteredEncoderToRealHeight(encoderPosition + encoderOffset);
 
         // Warn the drivers if the elevator motor temperature gets too high.
         temperature = motor.getMotorTemperature();
@@ -102,6 +126,31 @@ public class Elevator extends Subsystem {
         currentVelocity = (errorMeters - currentErrorMeters) / (timestamp - lastReadTimestamp);
         currentErrorMeters = errorMeters;
         lastReadTimestamp = timestamp;
+    }
+
+    @Override
+    public synchronized void writePeriodicOutputs() {
+        double value;
+        ControlType controlType;
+
+        if (!usePID) {
+            desiredManualOutputPower = (Math.abs(desiredManualOutputPower) < MANUAL_MOVEMENT_DEADBAND) ? 0.0 : desiredManualOutputPower;
+            value = desiredManualOutputPower;
+            controlType = ControlType.kDutyCycle;
+        } else if (hasZeroed) {
+            controlType = ControlType.kVelocity;
+            value = ((POSITION_LOOP_KP * currentErrorMeters) + (POSITION_LOOP_KV * currentVelocity)) * MAX_RPM;
+            value = Math.abs(value) > MAX_RPM ? Math.copySign(MAX_RPM, value) : value;
+        } else {
+            controlType = ControlType.kDutyCycle;
+            value = ZEROING_PERCENT_OUTPUT;
+        }
+
+        if (bottomLimitTriggered && value >= -1.0E-05) {
+            controlType = ControlType.kDutyCycle;
+            value = 0;
+        }
+        controller.setReference(value, controlType);
     }
 
     @Override
@@ -124,42 +173,9 @@ public class Elevator extends Subsystem {
         // TODO remove this once we've figured out which method to use for getting velocity
         ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Velocity Differences", currentVelocity - encVelocityMeasured);
         ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Desired Height", desiredPosition.getHeight());
-        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Desired Encoder", convertHeightToEncoder(desiredPosition.getHeight()));
-    }
-
-    public synchronized void manualMovement(double manualPower) {
-        usePID = false;
-        desiredManualOutputPower = -manualPower;
-    }
-
-    public synchronized void pidToPosition(ElevatorPosition position) {
-        usePID = true;
-        desiredPosition = position;
-    }
-
-    @Override
-    public synchronized void writePeriodicOutputs() {
-        double value;
-        ControlType controlType;
-        if (!usePID) {
-            desiredManualOutputPower = (Math.abs(desiredManualOutputPower) < MANUAL_MOVEMENT_DEADBAND) ? 0.0 : desiredManualOutputPower;
-            value = desiredManualOutputPower;
-            controlType = ControlType.kDutyCycle;
-        } else {
-            if (hasZeroed) {
-                controlType = ControlType.kVelocity;
-                value = (POSITION_LOOP_KP * currentErrorMeters) + (POSITION_LOOP_KV * currentVelocity);
-                value = Math.abs(value) > MAX_RPM ? Math.copySign(MAX_RPM, value) : value;
-            } else {
-                controlType = ControlType.kDutyCycle;
-                value = ZEROING_PERCENT_OUTPUT;
-            }
-        }
-        if (bottomLimitTriggered && value >= -1.0E-05) {
-            controlType = ControlType.kDutyCycle;
-            value = 0;
-        }
-        controller.setReference(value, controlType);
+        final double desiredEncoderPositionFiltered = convertHeightToFilteredEncoder(desiredPosition.getHeight());
+        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Desired Encoder Filtered", desiredEncoderPositionFiltered);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Desired Encoder Raw", desiredEncoderPositionFiltered - encoderOffset);
     }
 
     @Override
@@ -167,6 +183,32 @@ public class Elevator extends Subsystem {
         manualMovement(0.0);
     }
 
+    /**
+     * Writes the given duty cycle to the motor as an override for positional control. Does not require prior zeroing
+     * and does not use any closed loop control.
+     *
+     * @param dutyCycle the duty cycle to write to the motor on the range [-1.0, 1.0]
+     */
+    public synchronized void manualMovement(double dutyCycle) {
+        usePID = false;
+        desiredManualOutputPower = -dutyCycle;
+    }
+
+    /**
+     * Sets the elevator to try and automatically move to a given position. Note that this function does not need to be
+     * called continuously, and can just be called whenever there is a desire for a change in the desired position
+     * of the elevator.
+     *
+     * @param position the {@link ElevatorPosition} to try to move to.
+     */
+    public synchronized void pidToPosition(ElevatorPosition position) {
+        usePID = true;
+        desiredPosition = position;
+    }
+
+    /**
+     * The positions that the elevator can be set to automatically go to.
+     */
     public enum ElevatorPosition {
         HATCH_LOW(BOTTOM_DIST_FROM_GROUND),
         HATCH_MID(inchesToMeters(38)),
