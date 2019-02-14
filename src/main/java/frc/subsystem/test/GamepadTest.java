@@ -56,6 +56,6 @@ public class GamepadTest implements SubsystemTest {
         // Hatch
         putBoolean("Hatch/Use Open Loop", gameController.useHatchOpenLoop());
         putNumber("Hatch/Manual", gameController.hatchManual());
-        putBoolean("Hatch/Feeder Height", gameController.hatchFeederHeight());
+        putBoolean("Hatch/Feeder Height", gameController.placeHatch());
     }
 }

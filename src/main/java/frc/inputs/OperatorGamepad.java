@@ -135,8 +135,13 @@ public class OperatorGamepad implements OperatorHid {
     }
 
     @Override
-    public boolean hatchFeederHeight() {
-        return operatorGamepad.getXButton();
+    public boolean placeHatch() {
+        return operatorGamepad.getBumper(Hand.kRight);
+    }
+
+    @Override
+    public boolean pullHatch() {
+        return operatorGamepad.getBumper(Hand.kLeft);
     }
 
     @Override

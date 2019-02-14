@@ -136,5 +136,7 @@ public interface OperatorHid {
      * @return true when the hatch should be set to the correct position in order to correctly grab from the feeder
      * station.
      */
-    boolean hatchFeederHeight();
+    boolean placeHatch();
+
+    boolean pullHatch();
 }

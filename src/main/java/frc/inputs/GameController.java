@@ -177,8 +177,13 @@ public class GameController implements GameHid {
     }
 
     @Override
-    public boolean hatchFeederHeight() {
-        return operatorHid.hatchFeederHeight();
+    public boolean placeHatch() {
+        return operatorHid.placeHatch();
+    }
+
+    @Override
+    public boolean pullHatch() {
+        return operatorHid.pullHatch();
     }
 
 

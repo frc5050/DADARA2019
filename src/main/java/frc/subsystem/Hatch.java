@@ -49,8 +49,8 @@ public class Hatch extends Subsystem {
         hatch.config_kI(0, 0.0); //todo
         hatch.config_kD(0, 0.0); //todo
 
-        hatch.configMotionCruiseVelocity(600, SETTINGS_TIMEOUT);
-        hatch.configMotionAcceleration(600, SETTINGS_TIMEOUT);
+        hatch.configMotionCruiseVelocity(6000, SETTINGS_TIMEOUT);
+        hatch.configMotionAcceleration(6000, SETTINGS_TIMEOUT);
 
         resetSensorPosition();
     }
@@ -94,8 +94,12 @@ public class Hatch extends Subsystem {
         hatchStateMachine.setOpenLoop(-power / 2.0);
     }
 
-    public synchronized void setPosition(double power) {
-        hatchStateMachine.setPosition(power);
+    public synchronized void setHatchPlace() {
+        hatchStateMachine.setHatchPlace();
+    }
+
+    public synchronized void setHatchPull() {
+        hatchStateMachine.setHatchPull();
     }
 
     @Override

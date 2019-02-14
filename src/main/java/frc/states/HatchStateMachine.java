@@ -20,10 +20,16 @@ public class HatchStateMachine {
 
     }
 
-    public synchronized void setPosition(double joystickPower) {
+    public synchronized void setHatchPlace() {
         this.desiredOpenLoopPower = 0.0;
         this.desiredControlState = MOTION_MAGIC;
-        this.desiredEncoderPosition = 500;
+        this.desiredEncoderPosition = 470;
+    }
+
+    public synchronized void setHatchPull() {
+        this.desiredOpenLoopPower = 0.0;
+        this.desiredControlState = MOTION_MAGIC;
+        this.desiredEncoderPosition = 760;
     }
 
     public synchronized void setOpenLoop(double joystickPower) {
@@ -35,7 +41,7 @@ public class HatchStateMachine {
         if (currentState.limitHit) {
             systemState.peakOutputForward = PEAK_FORWARD_OUTPUT_LIMIT_PRESSED;
             systemState.peakOutputReverse = PEAK_REVERSE_OUTPUT_LIMIT_PRESSED;
-            if (!limitHitOnLastUpdate && !systemState.hasZeroed) {
+            if (!limitHitOnLastUpdate) {
                 systemState.resetSensor = true;
                 systemState.hasZeroed = true;
             }

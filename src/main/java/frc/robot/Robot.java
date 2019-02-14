@@ -114,9 +114,11 @@ public class Robot extends TimedRobot {
         drive.setOpenLoop(gameController.getDriveSignal());
         final double tDrive = Timer.getFPGATimestamp();
 
-        if (gameController.hatchFeederHeight()) {
-            hatch.setPosition(1);
-        } else {
+        if (gameController.placeHatch()) {
+            hatch.setHatchPlace();
+        } else if(gameController.pullHatch()){
+            hatch.setHatchPull();
+        }else {
             hatch.setOpenLoop(gameController.hatchManual());
         }
         final double tHatch = Timer.getFPGATimestamp();
@@ -182,7 +184,7 @@ public class Robot extends TimedRobot {
         final double tElevator = Timer.getFPGATimestamp();
 
         elevator.outputTelemetry();
-//        hatch.outputTelemetry();
+        hatch.outputTelemetry();
         jacks.outputTelemetry();
 //        drive.outputTelemetry();
         final double tOutput = Timer.getFPGATimestamp();
