@@ -26,7 +26,6 @@ import frc.autonomous.Lvl2RightCloseRKT;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-
 import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
 
 /**
@@ -160,7 +159,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         final double t0 = Timer.getFPGATimestamp();
-
         drive.setOpenLoop(gameController.getDriveSignal());
         final double tDrive = Timer.getFPGATimestamp();
 
@@ -231,7 +229,7 @@ public class Robot extends TimedRobot {
         elevator.outputTelemetry();
 //        hatch.outputTelemetry();
         jacks.outputTelemetry();
-//        drive.outputTelemetry();
+        drive.outputTelemetry();
         final double tOutput = Timer.getFPGATimestamp();
 
         ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Drive", tDrive - t0);

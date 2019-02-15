@@ -32,6 +32,7 @@ public class JigglyPuffBot extends TimedRobot {
         SmartDashboard.putBoolean("Dio 3", dio3.get());
         SmartDashboard.putBoolean("Dio 4", dio4.get());
     }
+    
     @Override
     public void disabledInit() {
     }
