@@ -177,8 +177,8 @@ public class Drive extends Subsystem {
     // Puts values on the Dashboard (Shuffleboard)
     @Override
     public void outputTelemetry() {
-//        DRIVE_SHUFFLEBOARD.putNumber("Left Drive Distance (m)", periodicIo.leftDistance);
-//        DRIVE_SHUFFLEBOARD.putNumber("Right Drive Distance (m)", periodicIo.rightDistance);
+        DRIVE_SHUFFLEBOARD.putNumber("Left Drive Distance (m)", periodicIo.leftDistance);
+        DRIVE_SHUFFLEBOARD.putNumber("Right Drive Distance (m)", periodicIo.rightDistance);
 //        DRIVE_SHUFFLEBOARD.putNumber("Left Drive Ticks", periodicIo.leftPositionTicks);
 //        DRIVE_SHUFFLEBOARD.putNumber("Right Drive Ticks", periodicIo.rightPositionTicks);
         DRIVE_SHUFFLEBOARD.putNumber("Left Demand", periodicIo.leftDemand);
@@ -187,8 +187,8 @@ public class Drive extends Subsystem {
         DRIVE_SHUFFLEBOARD.putNumber("Right Feed Forward", periodicIo.rightFeedForward);
 //        DRIVE_SHUFFLEBOARD.putNumber("Left Velocity Ticks Per 100 ms", periodicIo.leftVelocityTicksPer100ms);
 //        DRIVE_SHUFFLEBOARD.putNumber("Right Velocity Ticks Per 100 ms", periodicIo.rightVelocityTicksPer100ms);
-//        DRIVE_SHUFFLEBOARD.putNumber("Right Velocity", periodicIo.rightVelocity);
-//        DRIVE_SHUFFLEBOARD.putNumber("Left Velocity", periodicIo.leftVelocity);
+        DRIVE_SHUFFLEBOARD.putNumber("Right Velocity", periodicIo.rightVelocity);
+        DRIVE_SHUFFLEBOARD.putNumber("Left Velocity", periodicIo.leftVelocity);
 //        DRIVE_SHUFFLEBOARD.putNumber("Gyro Heading", periodicIo.gyroHeading);
         DRIVE_SHUFFLEBOARD.putNumber("Yaw", periodicIo.yaw);
         DRIVE_SHUFFLEBOARD.putNumber("Roll", periodicIo.roll);
@@ -284,24 +284,24 @@ public class Drive extends Subsystem {
     // Reads the inputs from the sensors, and sets variables
     @Override
     public void readPeriodicInputs() {
-//        double prevLeftTicks = periodicIo.leftPositionTicks;
-//        double prevRightTicks = periodicIo.rightPositionTicks;
-//        periodicIo.leftPositionTicks = leftMaster.getSelectedSensorPosition(0);
-//        periodicIo.rightPositionTicks = rightMaster.getSelectedSensorPosition(0);
-//        periodicIo.leftVelocityTicksPer100ms = leftMaster.getSelectedSensorVelocity(0);
-//        periodicIo.rightVelocityTicksPer100ms = rightMaster.getSelectedSensorVelocity(0);
-//        periodicIo.leftVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.leftVelocityTicksPer100ms);
-//        periodicIo.rightVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.rightVelocityTicksPer100ms);
+        double prevLeftTicks = periodicIo.leftPositionTicks;
+        double prevRightTicks = periodicIo.rightPositionTicks;
+        periodicIo.leftPositionTicks = leftMaster.getSelectedSensorPosition(0);
+        periodicIo.rightPositionTicks = rightMaster.getSelectedSensorPosition(0);
+        periodicIo.leftVelocityTicksPer100ms = leftMaster.getSelectedSensorVelocity(0);
+        periodicIo.rightVelocityTicksPer100ms = rightMaster.getSelectedSensorVelocity(0);
+        periodicIo.leftVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.leftVelocityTicksPer100ms);
+        periodicIo.rightVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.rightVelocityTicksPer100ms);
         periodicIo.yaw = navX.getYaw();
         periodicIo.roll = navX.getRoll();
         periodicIo.pitch = navX.getPitch();
 //        periodicIo.gyroHeading = handleGyroInput(periodicIo.yaw, gyroOffset);
 
-//        double deltaLeftTicks = ((periodicIo.leftPositionTicks - prevLeftTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
-//        periodicIo.leftDistance += deltaLeftTicks * DRIVE_WHEEL_DIAMETER;
+        double deltaLeftTicks = ((periodicIo.leftPositionTicks - prevLeftTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
+        periodicIo.leftDistance += deltaLeftTicks * DRIVE_WHEEL_DIAMETER;
 
-//        double deltaRightTicks = ((periodicIo.rightPositionTicks - prevRightTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
-//        periodicIo.rightDistance += deltaRightTicks * DRIVE_WHEEL_DIAMETER;
+        double deltaRightTicks = ((periodicIo.rightPositionTicks - prevRightTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
+        periodicIo.rightDistance += deltaRightTicks * DRIVE_WHEEL_DIAMETER;
 
 
 //        // TODO remove this once we tune the gains properly
@@ -386,15 +386,15 @@ public class Drive extends Subsystem {
     // All the periodic values
     private static class PeriodicIO {
         // Input
-//        double leftPositionTicks;
-//        double rightPositionTicks;
-//        double leftVelocityTicksPer100ms;
-//        double rightVelocityTicksPer100ms;
-//        double leftVelocity;
-//        double rightVelocity;
+        double leftPositionTicks;
+        double rightPositionTicks;
+        double leftVelocityTicksPer100ms;
+        double rightVelocityTicksPer100ms;
+        double leftVelocity;
+        double rightVelocity;
 //        double gyroHeading;
-//        double leftDistance;
-//        double rightDistance;
+        double leftDistance;
+        double rightDistance;
         double yaw;
         double roll;
         double pitch;
@@ -410,5 +410,9 @@ public class Drive extends Subsystem {
         double rightDemand;
         double leftFeedForward;
         double rightFeedForward;
+    }
+
+    public void Turn_Robot(double angle){
+        // TODO put thing here to make robot turn to specified angle.
     }
 }
