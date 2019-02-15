@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.autonomous.AutoBase;
+import frc.autonomous.SampleAutoBase;
 import frc.inputs.GameController;
 import frc.loops.Looper;
 import frc.states.IntakeState;
@@ -94,11 +96,24 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         disabledLooper.stop();
         enabledLooper.start();
+        autonomous = new SampleAutoBase();
     }
+
+    private enum Level2RightCloseState {
+        INIT,
+        LEVEL_2_TO_ROCKET,
+        BACK_UP_A_LITTLE_BIT,
+        GO_TO_FEEDER_STATION_AGAIN
+    }
+    private AutoBase autonomous = null;
+
+    private Level2RightCloseState level2RightCloseState = Level2RightCloseState.INIT;
 
     @Override
     public void autonomousPeriodic() {
-
+        if(autonomous != null){
+            autonomous.periodic(Timer.getFPGATimestamp());
+        }
     }
 
     @Override

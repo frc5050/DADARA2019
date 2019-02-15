@@ -227,7 +227,7 @@ public final class Drive extends Subsystem {
     }
 
     // Checks for if the trajectory is completed
-    private synchronized boolean isDone() {
+    public synchronized boolean isDone() {
         if (trajectory == null || state != DriveState.PATH_FOLLOWING) {
             return false;
         }
