@@ -115,14 +115,11 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         disabledLooper.stop();
         enabledLooper.start();
-<<<<<<< HEAD
         m_autoSelected = m_chooser.getSelected();
         // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
         System.out.println("Auto selected: " + m_autoSelected);
-        
-=======
         autonomous = new SampleAutoBase();
->>>>>>> 4733368674cccba5f31e9ef93cb23e423d80f450
+        
     }
     private enum LvlTwoRightCloseRKTState {
         INIT,
@@ -130,48 +127,34 @@ public class Robot extends TimedRobot {
         Right_RKT_Close_Backup,
         Close_Right_Rkt_to_FEED
     }
-    private LvlTwoRightCloseRKTState LvlTwoRightCloseRKTState = LvlTwoRightCloseRKTState.INIT;
-
-    private enum Level2RightCloseState {
-        INIT,
-        LEVEL_2_TO_ROCKET,
-        BACK_UP_A_LITTLE_BIT,
-        GO_TO_FEEDER_STATION_AGAIN
-    }
+    private LvlTwoRightCloseRKTState lvlTwoRightCloseRKTState = LvlTwoRightCloseRKTState.INIT;
     private AutoBase autonomous = null;
-
-    private Level2RightCloseState level2RightCloseState = Level2RightCloseState.INIT;
 
     @Override
     public void autonomousPeriodic() {
-<<<<<<< HEAD
         switch (m_autoSelected) {
             case LvlTwoRightCloseRKT:
-                switch LvlTwoRightCloseRKTState {
-                    case PATH_FOLLOWING:
-                    File myFile = new File("LEVEL2_to_Rocket.pf1.csv");
-                    hatch.setHatchPlace();
-                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-                    drive.updatePathFollower();
-                    elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
-                    hatch.setHatchPull();
-                    myFile = new File("Right_RKT_Close_Backup.pf1.csv");
-                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-                    drive.updatePathFollower();
-                    //Insert gyro-turn 180 here
-                    myFile = new File("Close_Right_Rkt_to_FEED.pf1.csv");
-                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-                    drive.updatePathFollower();
-                    hatch.setOpenLoop(100);
-                    }
+                autonomous.periodic(Timer.getFPGATimestamp());
+                File myFile = new File("LEVEL2_to_Rocket.pf1.csv");
+                hatch.setHatchPlace();
+                drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+                drive.updatePathFollower();
+                elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
+                hatch.setHatchPull();
+                myFile = new File("Right_RKT_Close_Backup.pf1.csv");
+                drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+                drive.updatePathFollower();
+                //Insert gyro-turn 180 here
+                myFile = new File("Close_Right_Rkt_to_FEED.pf1.csv");
+                drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+                drive.updatePathFollower();
+                hatch.setOpenLoop(100);
             case kDefaultAuto:
             default:
             myFile = new File("EncodeTest.pf1.csv");
             drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-=======
         if(autonomous != null){
             autonomous.periodic(Timer.getFPGATimestamp());
->>>>>>> 4733368674cccba5f31e9ef93cb23e423d80f450
         }
     }
 
@@ -188,15 +171,10 @@ public class Robot extends TimedRobot {
         drive.setOpenLoop(gameController.getDriveSignal());
         final double tDrive = Timer.getFPGATimestamp();
 
-<<<<<<< HEAD
-        if (gameController.setElevatorPositionLowHatch()) {
-            elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
-=======
         if (gameController.placeHatch()) {
             hatch.setHatchPlace();
         } else if (gameController.pullHatch()) {
             hatch.setHatchPull();
->>>>>>> 4733368674cccba5f31e9ef93cb23e423d80f450
         } else {
             hatch.setOpenLoop(gameController.hatchManual());
         }

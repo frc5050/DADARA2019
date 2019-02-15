@@ -11,21 +11,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class JigglyPuffBot extends TimedRobot {
 
-<<<<<<< HEAD
-    private DigitalInput dio0 = new DigitalInput(0);
-    private DigitalInput dio1 = new DigitalInput(1);
-    private DigitalInput dio2 = new DigitalInput(2);
-    private DigitalInput dio3 = new DigitalInput(3);
-    private DigitalInput dio4 = new DigitalInput(4);
-    private AnalogInput analogInput = new AnalogInput(0);
-    private DigitalOutput digOutput = new DigitalOutput(7);
-=======
     private final DigitalInput dio0 = new DigitalInput(0);
     private final DigitalInput dio1 = new DigitalInput(1);
     private final DigitalInput dio2 = new DigitalInput(2);
     private final DigitalInput dio3 = new DigitalInput(3);
     private final DigitalInput dio4 = new DigitalInput(4);
->>>>>>> 4733368674cccba5f31e9ef93cb23e423d80f450
 
     @Override
     public void robotInit() {
@@ -38,7 +28,6 @@ public class JigglyPuffBot extends TimedRobot {
         SmartDashboard.putBoolean("Dio 1", dio1.get());
         SmartDashboard.putBoolean("Dio 3", dio3.get());
         SmartDashboard.putBoolean("Dio 4", dio4.get());
-        digOutput.set(true);
     }
     @Override
     public void disabledInit() {
