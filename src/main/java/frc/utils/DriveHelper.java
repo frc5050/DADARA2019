@@ -4,6 +4,8 @@ package frc.utils;
  * Helper functions for taking human inputs from the drivers and converting them to outputs to the robot.
  */
 public class DriveHelper {
+    public static final double kDefaultQuickStopThreshold = 0.2;
+    public static final double kDefaultQuickStopAlpha = 0.1;
     /**
      * The default deadband to use for tank drives.
      */
@@ -12,11 +14,12 @@ public class DriveHelper {
      * The default deadband to use for arcade drive.
      */
     static double ARCADE_DEFAULT_DEADBAND = 0.02;
+    private double quickStopAccumulator;
 
     /**
      * Constructor. Private to avoid instantiation.
      */
-    private DriveHelper() {
+    public DriveHelper() {
 
     }
 
@@ -172,5 +175,69 @@ public class DriveHelper {
         } else {
             return 0.0;
         }
+    }
+
+    public DriveSignal curvatureDrive(double xSpeed, double zRotation, boolean quickTurn) {
+        return curvatureDrive(xSpeed, zRotation, 0.2, quickTurn);
+    }
+
+    public DriveSignal curvatureDrive(double xSpeed, double zRotation, double deadband, boolean isQuickTurn) {
+        xSpeed = limit(xSpeed);
+        xSpeed = applyDeadband(xSpeed, deadband);
+
+        zRotation = limit(zRotation);
+        zRotation = applyDeadband(zRotation, deadband);
+
+        double angularPower;
+        boolean overPower;
+
+        if (isQuickTurn) {
+            if (Math.abs(xSpeed) < kDefaultQuickStopThreshold) {
+                quickStopAccumulator = (1 - kDefaultQuickStopAlpha) * quickStopAccumulator
+                        + kDefaultQuickStopAlpha * limit(zRotation) * 2;
+            }
+            overPower = true;
+            angularPower = zRotation;
+        } else {
+            overPower = false;
+            angularPower = Math.abs(xSpeed) * zRotation - quickStopAccumulator;
+
+            if (quickStopAccumulator > 1) {
+                quickStopAccumulator -= 1;
+            } else if (quickStopAccumulator < -1) {
+                quickStopAccumulator += 1;
+            } else {
+                quickStopAccumulator = 0.0;
+            }
+        }
+
+        double leftMotorOutput = xSpeed + angularPower;
+        double rightMotorOutput = xSpeed - angularPower;
+
+        // If rotation is overpowered, reduce both outputs to within acceptable range
+        if (overPower) {
+            if (leftMotorOutput > 1.0) {
+                rightMotorOutput -= leftMotorOutput - 1.0;
+                leftMotorOutput = 1.0;
+            } else if (rightMotorOutput > 1.0) {
+                leftMotorOutput -= rightMotorOutput - 1.0;
+                rightMotorOutput = 1.0;
+            } else if (leftMotorOutput < -1.0) {
+                rightMotorOutput -= leftMotorOutput + 1.0;
+                leftMotorOutput = -1.0;
+            } else if (rightMotorOutput < -1.0) {
+                leftMotorOutput -= rightMotorOutput + 1.0;
+                rightMotorOutput = -1.0;
+            }
+        }
+
+        // Normalize the wheel speeds
+        double maxMagnitude = Math.max(Math.abs(leftMotorOutput), Math.abs(rightMotorOutput));
+        if (maxMagnitude > 1.0) {
+            leftMotorOutput /= maxMagnitude;
+            rightMotorOutput /= maxMagnitude;
+        }
+
+        return new DriveSignal(leftMotorOutput, rightMotorOutput);
     }
 }

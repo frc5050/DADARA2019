@@ -47,9 +47,14 @@ public class DriverJoystick implements DriverHid {
 
     }
 
+    DriveHelper driveHelperForCurvature = new DriveHelper();
+
     @Override
     public DriveSignal getDriveSignal() {
-        return DriveHelper.arcadeToDriveSignal(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0));
+        // if less than 15 degrees left/right
+        boolean quickTurn = Math.abs((driverJoystick.getDirectionDegrees() % 180.0) - 90) <= 15.0;
+        return driveHelperForCurvature.curvatureDrive(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0), quickTurn);
+//        return DriveHelper.arcadeToDriveSignal(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0));
     }
 
     @Override
