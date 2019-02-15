@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.loops.Loop;
 import frc.loops.LooperInterface;
 import frc.utils.DriveSignal;
@@ -231,8 +232,8 @@ public final class Drive extends Subsystem {
             rightFollower = new EncoderFollower(rightTrajectory);
             leftFollower.configureEncoder(periodicIo.leftPositionTicks, DRIVE_TICKS_PER_ROTATION, DRIVE_WHEEL_DIAMETER);
             rightFollower.configureEncoder(periodicIo.rightPositionTicks, DRIVE_TICKS_PER_ROTATION, DRIVE_WHEEL_DIAMETER);
-            leftFollower.configurePIDVA(1.0, 0.0, 0.0, 1.0 / 3.2, 0);
-            rightFollower.configurePIDVA(1.0, 0.0, 0.0, 1.0 / 3.2, 0);
+            leftFollower.configurePIDVA(2.0, 0.0, 0.0, 1.0 / 3.2, 0);
+            rightFollower.configurePIDVA(2.0, 0.0, 0.0, 1.0 / 3.2, 0);
             lastTrajectoryValue = 0;
             trajectoryValues = trajectory.length();
             state = DriveState.PATH_FOLLOWING;
@@ -257,6 +258,8 @@ public final class Drive extends Subsystem {
                 double rightVelocity = rightTrajectory.get(lastTrajectoryValue).velocity * METERS_PER_SEC_TO_TICKS_PER_100_MS;
                 double leftPower = leftFollower.calculate(periodicIo.leftPositionTicks);
                 double rightPower = rightFollower.calculate(periodicIo.rightPositionTicks);
+                DRIVE_SHUFFLEBOARD.putBoolean("Left Is Finished", leftFollower.isFinished());
+                DRIVE_SHUFFLEBOARD.putBoolean("Right Is Finished", rightFollower.isFinished());
                 setVelocity(new DriveSignal(leftPower, rightPower), DriveSignal.BRAKE);
             } else {
                 setVelocity(DriveSignal.BRAKE, DriveSignal.BRAKE);
