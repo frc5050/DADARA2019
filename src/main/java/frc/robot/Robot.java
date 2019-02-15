@@ -22,6 +22,7 @@ import frc.subsystem.test.DriveTest;
 import frc.subsystem.test.GamepadTest;
 import frc.subsystem.test.SubsystemTest;
 import frc.utils.DriveSignal;
+import frc.autonomous.Lvl2RightCloseRKT;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -56,7 +57,7 @@ public class Robot extends TimedRobot {
     private final Elevator elevator = Elevator.getInstance();
     private final Hatch hatch = Hatch.getInstance();
     private final Jacks jacks = Jacks.getInstance();
-    private final Vision vision = Vision.getInstance();
+    //private final Vision vision = Vision.getInstance();
     private String m_autoSelected;
     private SubsystemTest subsystemTest;
     //public File trajectoryFile = Pathfinder.readFromCSV(EncodeTest.pf1.csv);
@@ -86,7 +87,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-
+        drive.outputTelemetry();
     }
 
     @Override
@@ -109,7 +110,7 @@ public class Robot extends TimedRobot {
         System.out.println("Auto selected: " + m_autoSelected);
         switch (m_autoSelected) {
             case LvlTwoRightCloseRKT:
-                autonomous = new ();
+                autonomous = new Lvl2RightCloseRKT();
                 break;
             case kDefaultAuto:
                 autonomous = null;
