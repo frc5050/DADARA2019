@@ -12,18 +12,16 @@ import frc.states.HatchStateMachine;
 
 import static frc.states.HatchStateMachine.PEAK_FORWARD_OUTPUT_STANDARD;
 import static frc.states.HatchStateMachine.PEAK_REVERSE_OUTPUT_STANDARD;
-import static frc.utils.Constants.HATCH;
-import static frc.utils.Constants.HATCH_SHUFFLEBOARD;
+import static frc.utils.Constants.*;
 
-public class Hatch extends Subsystem {
-    private static final int SETTINGS_TIMEOUT = 30;
+public final class Hatch extends Subsystem {
     private static final int PERIOD_MS = (int) (Looper.PERIOD * 1000);
-    private static final double EPSILON = 1E-5;
+    private static final double EPSILON = 1.0E-5;
     private static Hatch instance;
     private final WPI_TalonSRX hatch;
     private final DigitalInput upperLimitSwitch;
-    private HatchStateMachine hatchStateMachine = new HatchStateMachine();
-    private HatchState hatchState = new HatchState();
+    private final HatchStateMachine hatchStateMachine = new HatchStateMachine();
+    private final HatchState hatchState = new HatchState();
     private HatchState outputState = new HatchState();
 
     private Hatch() {
@@ -48,6 +46,7 @@ public class Hatch extends Subsystem {
         hatch.config_kP(0, 2.0); //todo
         hatch.config_kI(0, 0.0); //todo
         hatch.config_kD(0, 0.0); //todo
+        // TODO hatch.config_IntegralZone(0, 30);
 
         hatch.configMotionCruiseVelocity(6000, SETTINGS_TIMEOUT);
         hatch.configMotionAcceleration(6000, SETTINGS_TIMEOUT);
@@ -86,7 +85,7 @@ public class Hatch extends Subsystem {
         enabledLooper.registerLoop(loop);
     }
 
-    public synchronized void resetSensorPosition() {
+    private synchronized void resetSensorPosition() {
         hatch.setSelectedSensorPosition(0, 0, SETTINGS_TIMEOUT);
     }
 
@@ -125,7 +124,7 @@ public class Hatch extends Subsystem {
     }
 
     @Override
-    public void outputTelemetry() {
+    public synchronized void outputTelemetry() {
         HATCH_SHUFFLEBOARD.putBoolean("Limit Hit", hatchState.limitHit);
         HATCH_SHUFFLEBOARD.putNumber("Demand", outputState.demand);
         HATCH_SHUFFLEBOARD.putNumber("Peak Output Forward", hatchState.peakOutputForward);

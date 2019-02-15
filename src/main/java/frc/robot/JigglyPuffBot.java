@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,12 +10,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class JigglyPuffBot extends TimedRobot {
 
-    private DigitalInput dio0 = new DigitalInput(0);
-    private DigitalInput dio1 = new DigitalInput(1);
-    private DigitalInput dio2 = new DigitalInput(2);
-    private DigitalInput dio3 = new DigitalInput(3);
-    private DigitalInput dio4 = new DigitalInput(4);
-    private AnalogInput analogInput = new AnalogInput(0);
+    private final DigitalInput dio0 = new DigitalInput(0);
+    private final DigitalInput dio1 = new DigitalInput(1);
+    private final DigitalInput dio2 = new DigitalInput(2);
+    private final DigitalInput dio3 = new DigitalInput(3);
+    private final DigitalInput dio4 = new DigitalInput(4);
 
     @Override
     public void robotInit() {
@@ -24,10 +22,6 @@ public class JigglyPuffBot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        double rangeCm = analogInput.getVoltage() / 2.0;
-        double rangeIn = rangeCm / 2.54;
-        SmartDashboard.putNumber("Range (cm)", rangeCm);
-        SmartDashboard.putNumber("Range (in)", rangeIn);
         SmartDashboard.putBoolean("Dio 0", dio0.get());
         SmartDashboard.putBoolean("Dio 2", dio2.get());
         SmartDashboard.putBoolean("Dio 1", dio1.get());

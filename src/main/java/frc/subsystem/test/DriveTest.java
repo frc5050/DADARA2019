@@ -8,7 +8,7 @@ import static frc.utils.Constants.TEST_SHUFFLEBOARD;
 public class DriveTest implements SubsystemTest {
     private static final double BREAK_PERIOD = 0.30;
     private static final double SPEED = 0.4;
-    private Drive drive = Drive.getInstance();
+    private final Drive drive = Drive.getInstance();
     private DriveTestState state = DriveTestState.INIT_DISABLED;
     private double goalTimestamp = 0.0;
     private boolean initializedState = false;
@@ -77,22 +77,20 @@ public class DriveTest implements SubsystemTest {
         DRIVE_REVERSE("The robot should be moving in reverse", 2.0),
         END_DISABLED("The robot shouldn't be moving once disabled", 2.0);
 
-        private String information;
-        private double timeToRun;
+        private final String information;
+        private final double timeToRun;
 
         DriveTestState(String information, double timeToRun) {
             this.information = information;
             this.timeToRun = timeToRun;
         }
 
-        public String getInformation() {
+        String getInformation() {
             return information;
         }
 
-        public double getTimeToRun() {
+        double getTimeToRun() {
             return timeToRun;
         }
-
-
     }
 }

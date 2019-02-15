@@ -13,7 +13,8 @@ import static frc.utils.DpadHelper.LastDpadState;
  * together the driver and operator gamepad functions into one simpler
  * interface.
  */
-public class OperatorGamepad implements OperatorHid {
+public final class OperatorGamepad implements OperatorHid {
+    private static final double INTAKE_TILT_TRIGGER_MINIMUM_THRESHOLD = 0.03;
     private static OperatorGamepad instance;
     private final XboxController operatorGamepad;
     private boolean useCargoHeights = false;
@@ -47,7 +48,7 @@ public class OperatorGamepad implements OperatorHid {
         lastDpadState = DpadHelper.lastDpadUpdate(lastDpadState, pov);
 
         // XOR
-        useCargoHeights = useCargoHeights ^ operatorGamepad.getXButtonPressed();
+        useCargoHeights ^= operatorGamepad.getXButtonPressed();
 
         if (operatorGamepad.getStickButton(Hand.kRight)) {
             elevatorHeight = ElevatorHeight.NONE;
@@ -83,10 +84,6 @@ public class OperatorGamepad implements OperatorHid {
     @Override
     public boolean cargoOuttakeFront() {
         return lastDpadState == LastDpadState.UP;
-    }
-
-    private boolean invertLeftRight() {
-        return operatorGamepad.getRawButton(8);
     }
 
     @Override
@@ -147,7 +144,7 @@ public class OperatorGamepad implements OperatorHid {
     @Override
     public double intakeTilt() {
         double rightTrigger = operatorGamepad.getTriggerAxis(Hand.kRight);
-        if (rightTrigger > 0.03) {
+        if (rightTrigger > INTAKE_TILT_TRIGGER_MINIMUM_THRESHOLD) {
             return rightTrigger;
         } else {
             return -operatorGamepad.getTriggerAxis(Hand.kLeft);

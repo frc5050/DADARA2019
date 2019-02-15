@@ -10,7 +10,7 @@ import static frc.utils.Constants.*;
 import static frc.utils.UnitConversions.inchesToMeters;
 import static frc.utils.UnitConversions.metersToInches;
 
-public class Elevator extends Subsystem {
+public final class Elevator extends Subsystem {
     private static final double TOTAL_DELTA_ENCODER_VALUE = -181.22; // revolutions (given by: top value - bottom value)
     private static final double BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
     private static final double UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
@@ -28,17 +28,7 @@ public class Elevator extends Subsystem {
     private final CANEncoder encoder;
     private final CANPIDController controller;
     private ElevatorPosition desiredPosition = ElevatorPosition.HATCH_LOW;
-    private double height = 0.0;
-    private double encoderPosition = 0.0;
-    private double temperature = 0.0;
-    private double desiredManualOutputPower = 0.0;
-    private double encoderOffset = 0.0;
-    private double currentErrorMeters = 0.0;
-    private double lastReadTimestamp = Timer.getFPGATimestamp();
-    private double currentVelocity = 0.0;
-    private boolean hasZeroed = false;
-    private boolean usePID = false;
-    private boolean bottomLimitTriggered = false;
+    private PeriodicIo periodicIo = new PeriodicIo();
 
     /**
      * Constructor.
@@ -101,30 +91,30 @@ public class Elevator extends Subsystem {
         double timestamp = Timer.getFPGATimestamp();
 
         // If the bottom limit is hit, set the encoder offset and note that we have zeroed.
-        bottomLimitTriggered = bottomLimit.get();
-        encoderPosition = encoder.getPosition();
-        if (bottomLimitTriggered) {
-            if (!hasZeroed) {
-                hasZeroed = true;
+        periodicIo.bottomLimitTriggered = bottomLimit.get();
+        periodicIo.encoderPosition = encoder.getPosition();
+        if (periodicIo.bottomLimitTriggered) {
+            if (!periodicIo.hasZeroed) {
+                periodicIo.hasZeroed = true;
             }
-            encoderOffset = -encoderPosition;
+            periodicIo.encoderOffset = -periodicIo.encoderPosition;
         }
-        height = convertFilteredEncoderToRealHeight(encoderPosition + encoderOffset);
+        periodicIo.height = convertFilteredEncoderToRealHeight(periodicIo.encoderPosition + periodicIo.encoderOffset);
 
         // Warn the drivers if the elevator motor temperature gets too high.
-        temperature = motor.getMotorTemperature();
-        if (temperature > MAXIMUM_ELEVATOR_MOTOR_TEMPERATURE) {
+        periodicIo.temperature = motor.getMotorTemperature();
+        if (periodicIo.temperature > MAXIMUM_ELEVATOR_MOTOR_TEMPERATURE) {
             DriverStation.reportError("ELEVATOR TEMPERATURE TOO HIGH", false);
         }
 
         // Calculate the current error (meters) and the velocity of the elevator
-        double errorMeters = desiredPosition.getHeight() - height;
+        double errorMeters = desiredPosition.getHeight() - periodicIo.height;
         // TODO this should probably just be encoder.getVelocity() converted to meters/second + a different status
         //  frame period, but we should
         //  double check the accuracy and sign of that vs the current method
-        currentVelocity = (errorMeters - currentErrorMeters) / (timestamp - lastReadTimestamp);
-        currentErrorMeters = errorMeters;
-        lastReadTimestamp = timestamp;
+        periodicIo.currentVelocity = (errorMeters - periodicIo.currentErrorMeters) / (timestamp - periodicIo.lastReadTimestamp);
+        periodicIo.currentErrorMeters = errorMeters;
+        periodicIo.lastReadTimestamp = timestamp;
     }
 
     @Override
@@ -132,20 +122,20 @@ public class Elevator extends Subsystem {
         double value;
         ControlType controlType;
 
-        if (!usePID) {
-            desiredManualOutputPower = (Math.abs(desiredManualOutputPower) < MANUAL_MOVEMENT_DEADBAND) ? 0.0 : desiredManualOutputPower;
-            value = desiredManualOutputPower;
+        if (!periodicIo.usePID) {
+            periodicIo.desiredManualOutputPower = (Math.abs(periodicIo.desiredManualOutputPower) < MANUAL_MOVEMENT_DEADBAND) ? 0.0 : periodicIo.desiredManualOutputPower;
+            value = periodicIo.desiredManualOutputPower;
             controlType = ControlType.kDutyCycle;
-        } else if (hasZeroed) {
+        } else if (periodicIo.hasZeroed) {
             controlType = ControlType.kVelocity;
-            value = ((POSITION_LOOP_KP * currentErrorMeters) + (POSITION_LOOP_KV * currentVelocity)) * MAX_RPM;
+            value = ((POSITION_LOOP_KP * periodicIo.currentErrorMeters) + (POSITION_LOOP_KV * periodicIo.currentVelocity)) * MAX_RPM;
             value = Math.abs(value) > MAX_RPM ? Math.copySign(MAX_RPM, value) : value;
         } else {
             controlType = ControlType.kDutyCycle;
             value = ZEROING_PERCENT_OUTPUT;
         }
 
-        if (bottomLimitTriggered && value >= -1.0E-05) {
+        if (periodicIo.bottomLimitTriggered && value >= -1.0E-05) {
             controlType = ControlType.kDutyCycle;
             value = 0;
         }
@@ -154,27 +144,27 @@ public class Elevator extends Subsystem {
 
     @Override
     public void outputTelemetry() {
-        double encoderFilteredPosition = encoderPosition + encoderOffset;
+        double encoderFilteredPosition = periodicIo.encoderPosition + periodicIo.encoderOffset;
         double encVelocityMeasured = encoder.getVelocity();
-        ELEVATOR_SHUFFLEBOARD.putNumber("Height (m)", height);
-        ELEVATOR_SHUFFLEBOARD.putNumber("Height (in)", metersToInches(height));
-        ELEVATOR_SHUFFLEBOARD.putNumber("Velocity (rev/min)", encoder.getVelocity());
-        ELEVATOR_SHUFFLEBOARD.putNumber("Encoder (Raw)", encoderPosition);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Height (m)", periodicIo.height);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Height (in)", metersToInches(periodicIo.height));
+        ELEVATOR_SHUFFLEBOARD.putNumber("Velocity (rev/min)", encVelocityMeasured);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Encoder (Raw)", periodicIo.encoderPosition);
         ELEVATOR_SHUFFLEBOARD.putNumber("Encoder (Filtered)", encoderFilteredPosition);
         ELEVATOR_SHUFFLEBOARD.putNumber("Current", motor.getOutputCurrent());
-        ELEVATOR_SHUFFLEBOARD.putNumber("Desired Power", desiredManualOutputPower);
-        ELEVATOR_SHUFFLEBOARD.putNumber("Temperature", temperature);
-        ELEVATOR_SHUFFLEBOARD.putBoolean("Bottom Limit Triggered", bottomLimitTriggered);
-        ELEVATOR_SHUFFLEBOARD.putBoolean("Use PID", usePID);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Desired Power", periodicIo.desiredManualOutputPower);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Temperature", periodicIo.temperature);
+        ELEVATOR_SHUFFLEBOARD.putBoolean("Bottom Limit Triggered", periodicIo.bottomLimitTriggered);
+        ELEVATOR_SHUFFLEBOARD.putBoolean("Use PID", periodicIo.usePID);
         // If using PID
-        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Error (m)", currentErrorMeters);
-        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Velocity via error (rev/min)", currentVelocity);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Error (m)", periodicIo.currentErrorMeters);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Velocity via error (rev/min)", periodicIo.currentVelocity);
         // TODO remove this once we've figured out which method to use for getting velocity
-        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Velocity Differences", currentVelocity - encVelocityMeasured);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Velocity Differences", periodicIo.currentVelocity - encVelocityMeasured);
         ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Desired Height", desiredPosition.getHeight());
         final double desiredEncoderPositionFiltered = convertHeightToFilteredEncoder(desiredPosition.getHeight());
         ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Desired Encoder Filtered", desiredEncoderPositionFiltered);
-        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Desired Encoder Raw", desiredEncoderPositionFiltered - encoderOffset);
+        ELEVATOR_SHUFFLEBOARD.putNumber("Closed Loop/Desired Encoder Raw", desiredEncoderPositionFiltered - periodicIo.encoderOffset);
     }
 
     @Override
@@ -189,8 +179,8 @@ public class Elevator extends Subsystem {
      * @param dutyCycle the duty cycle to write to the motor on the range [-1.0, 1.0]
      */
     public synchronized void manualMovement(double dutyCycle) {
-        usePID = false;
-        desiredManualOutputPower = -dutyCycle;
+        periodicIo.usePID = false;
+        periodicIo.desiredManualOutputPower = -dutyCycle;
     }
 
     /**
@@ -201,7 +191,7 @@ public class Elevator extends Subsystem {
      * @param position the {@link ElevatorPosition} to try to move to.
      */
     public synchronized void pidToPosition(ElevatorPosition position) {
-        usePID = true;
+        periodicIo.usePID = true;
         desiredPosition = position;
     }
 
@@ -216,14 +206,31 @@ public class Elevator extends Subsystem {
         CARGO_MID(inchesToMeters(49.25)),
         CARGO_HIGH(inchesToMeters(73 + 0.25));
 
-        private double height;
+        private final double height;
 
-        ElevatorPosition(double height) {
+        ElevatorPosition(final double height) {
             this.height = height;
         }
 
-        public double getHeight() {
+        double getHeight() {
             return height;
         }
+    }
+
+    private static class PeriodicIo {
+        // Input
+        double height;
+        double encoderPosition;
+        double temperature;
+        double encoderOffset;
+        double currentErrorMeters;
+        double lastReadTimestamp;
+        double currentVelocity;
+        boolean hasZeroed = false;
+        boolean bottomLimitTriggered = false;
+
+        // Output
+        double desiredManualOutputPower;
+        boolean usePID = false;
     }
 }

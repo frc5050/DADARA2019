@@ -1,6 +1,6 @@
 package frc.utils;
 
-public class DpadHelper {
+public final class DpadHelper {
     private static final int POV_DPAD_UP = 0;
     private static final int POV_DPAD_UPPER_RIGHT = 45;
     private static final int POV_DPAD_LOWER_RIGHT = 135;
@@ -12,25 +12,26 @@ public class DpadHelper {
 
     public static LastDpadState lastDpadUpdate(LastDpadState lastDpadState, int pov) {
         if (pov == -1) {
-            lastDpadState = LastDpadState.NONE;
+            return LastDpadState.NONE;
         } else if (pov == POV_DPAD_DOWN) {
-            lastDpadState = LastDpadState.DOWN;
+            return LastDpadState.DOWN;
         } else if (pov == POV_DPAD_RIGHT) {
-            lastDpadState = LastDpadState.RIGHT;
+            return LastDpadState.RIGHT;
         } else if (pov == POV_DPAD_LEFT) {
-            lastDpadState = LastDpadState.LEFT;
+            return LastDpadState.LEFT;
         } else if (pov == POV_DPAD_UP) {
-            lastDpadState = LastDpadState.UP;
+            return LastDpadState.UP;
         } else if (pov == POV_DPAD_UPPER_RIGHT) {
-            lastDpadState = lastDpadState == LastDpadState.RIGHT ? LastDpadState.RIGHT : (lastDpadState == LastDpadState.UP ? LastDpadState.UP : LastDpadState.NONE);
+            return lastDpadState == LastDpadState.RIGHT ? LastDpadState.RIGHT : (lastDpadState == LastDpadState.UP ? LastDpadState.UP : LastDpadState.NONE);
         } else if (pov == POV_DPAD_LOWER_RIGHT) {
-            lastDpadState = lastDpadState == LastDpadState.RIGHT ? LastDpadState.RIGHT : (lastDpadState == LastDpadState.DOWN ? LastDpadState.DOWN : LastDpadState.NONE);
+            return lastDpadState == LastDpadState.RIGHT ? LastDpadState.RIGHT : (lastDpadState == LastDpadState.DOWN ? LastDpadState.DOWN : LastDpadState.NONE);
         } else if (pov == POV_DPAD_UPPER_LEFT) {
-            lastDpadState = lastDpadState == LastDpadState.LEFT ? LastDpadState.LEFT : (lastDpadState == LastDpadState.UP ? LastDpadState.UP : LastDpadState.NONE);
+            return lastDpadState == LastDpadState.LEFT ? LastDpadState.LEFT : (lastDpadState == LastDpadState.UP ? LastDpadState.UP : LastDpadState.NONE);
         } else if (pov == POV_DPAD_LOWER_LEFT) {
-            lastDpadState = lastDpadState == LastDpadState.LEFT ? LastDpadState.LEFT : (lastDpadState == LastDpadState.DOWN ? LastDpadState.DOWN : LastDpadState.NONE);
+            return lastDpadState == LastDpadState.LEFT ? LastDpadState.LEFT : (lastDpadState == LastDpadState.DOWN ? LastDpadState.DOWN : LastDpadState.NONE);
+        } else {
+            return lastDpadState;
         }
-        return lastDpadState;
     }
 
     /**

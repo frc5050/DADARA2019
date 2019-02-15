@@ -5,14 +5,14 @@ import frc.utils.DriveSignal;
 
 /**
  * Provides a skeleton for all of the functions that the driver's HID (human
- * interface device, e.g. a joystick or gamepad) must proivde.
+ * interface device, e.g. a joystick or gamepad) must provide.
  *
  * <p>
  * This allows for a very simple ability to switch which controllers are used
  * for controlling the robot, since the inputs are completely separated from the
  * robot's code.
  */
-public interface DriverHid {
+interface DriverHid {
     /**
      * Updates internal variables in the controller. Must be called every loop in {@link Robot#teleopPeriodic()}.
      */

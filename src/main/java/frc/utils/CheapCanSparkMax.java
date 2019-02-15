@@ -2,6 +2,8 @@ package frc.utils;
 
 import com.revrobotics.CANSparkMax;
 
+import static frc.utils.Constants.EPSILON_SMALL_DOUBLE;
+
 /**
  * Small wrapper around {@link CANSparkMax} to reduce CAN usage and overhead. Only flushes output when the
  * desired parameters are different than the current parameters.
@@ -22,7 +24,7 @@ public class CheapCanSparkMax extends CANSparkMax {
 
     @Override
     public void set(double speed) {
-        if (speed != lastSpeed) {
+        if (Math.abs(speed - lastSpeed) > EPSILON_SMALL_DOUBLE) {
             super.set(speed);
             lastSpeed = speed;
         }

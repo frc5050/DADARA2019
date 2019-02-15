@@ -19,7 +19,7 @@ import static frc.utils.Constants.*;
 /**
  * The Jack subsystem, includes the three jacks and the two wheels mounted to the rear jacks.
  */
-public class Jacks extends Subsystem {
+public final class Jacks extends Subsystem {
     // Motion magic parameters when lifting
     private static final int REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
     private static final int REAR_MOTION_MAGIC_ACCELERATION_LIFT = 500;
@@ -37,7 +37,6 @@ public class Jacks extends Subsystem {
 
     private static final DriveSignal RUN_JACK_WHEELS_HAB_CLIMB = new DriveSignal(1.0, 1.0);
     private static final double MAX_AMP_DRAW_ZEROING = 4.0;
-    private static final double HOLD_REAR_AND_RUN_FORWARD_TIME = 2.0;
     private static final double HAB_CLIMB_FINISH_DRIVING_TIME = 1.0;
     private static Jacks instance;
     private final CheapWpiTalonSrx rightRearJack;
@@ -48,14 +47,11 @@ public class Jacks extends Subsystem {
     private final DigitalInput forwardIrSensor;
     private final PowerDistributionPanel pdp;
     private final DigitalInput rearIrSensor;
+    private final Drive drive = Drive.getInstance();
+    private final PeriodicIO periodicIo = new PeriodicIO();
     private double finishTimestamp = Timer.getFPGATimestamp();
-    private Drive drive = Drive.getInstance();
     private JackSystem state = JackSystem.OPEN_LOOP;
-    private PeriodicIO periodicIo = new PeriodicIO();
     private GainsState lastConfiguredGainState = null;
-    private boolean frontHasZeroed = false;
-    private boolean leftHasZeroed = false;
-    private boolean rightHasZeroed = false;
     private double lastTimestampRead = Timer.getFPGATimestamp();
 
     /**
@@ -71,9 +67,7 @@ public class Jacks extends Subsystem {
         leftRearWheel.setInverted(true);
         forwardIrSensor = new DigitalInput(DRIVE_FRONT_IR_SENSOR);
         rearIrSensor = new DigitalInput(DRIVE_REAR_IR_SENSOR);
-//        configureTalon(rightRearJack, true, false, 1.0, 0.81, -1.0);
         configureTalon(rightRearJack, true, false, 1.0, 1.0, -1.0);
-//        configureTalon(leftRearJack, false, false, 1.0, 0.90, -1.0);
         configureTalon(leftRearJack, false, false, 1.0, 1.0, -1.0);
         configureTalon(frontJack, true, false, 1.0, 1.0, -1.0);
     }
@@ -101,14 +95,14 @@ public class Jacks extends Subsystem {
      *                    output, true if it is out of phase.
      * @param kp          the P gain parameter to set the Talon to use.
      */
-    private void configureTalon(WPI_TalonSRX talon, boolean inverted, boolean sensorPhase, double kp, double peakOutputForward, double peakOutputReverse) {
-        talon.setSelectedSensorPosition(0, 0, 30);
+    private void configureTalon(WPI_TalonSRX talon, boolean inverted, @SuppressWarnings("SameParameterValue") boolean sensorPhase, @SuppressWarnings("SameParameterValue") double kp, @SuppressWarnings("SameParameterValue") double peakOutputForward, @SuppressWarnings("SameParameterValue") double peakOutputReverse) {
+        talon.setSelectedSensorPosition(0, 0, SETTINGS_TIMEOUT);
         talon.setInverted(inverted);
         talon.setSensorPhase(sensorPhase);
-        talon.config_kP(0, kp, 30);
-        talon.config_kI(0, 0, 30);
-        talon.config_kD(0, 0, 30);
-        talon.config_kF(0, 0, 30);
+        talon.config_kP(0, kp, SETTINGS_TIMEOUT);
+        talon.config_kI(0, 0, SETTINGS_TIMEOUT);
+        talon.config_kD(0, 0, SETTINGS_TIMEOUT);
+        talon.config_kF(0, 0, SETTINGS_TIMEOUT);
         talon.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 10);
         talon.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10);
         talon.configPeakOutputForward(peakOutputForward);
@@ -156,9 +150,9 @@ public class Jacks extends Subsystem {
      * Resets the flags indicating whether each of the jacks have zeroed or not.
      */
     private synchronized void resetZeros(boolean startMovingUp) {
-        frontHasZeroed = false;
-        leftHasZeroed = false;
-        rightHasZeroed = false;
+        periodicIo.frontHasZeroed = false;
+        periodicIo.leftHasZeroed = false;
+        periodicIo.rightHasZeroed = false;
         periodicIo.frontJackCurrentDraw = 0.0;
         periodicIo.leftJackCurrentDraw = 0.0;
         periodicIo.rightJackCurrentDraw = 0.0;
@@ -189,6 +183,7 @@ public class Jacks extends Subsystem {
                         case ZEROING:
                             if (zero()) {
                                 setState(JackSystem.STOP);
+                                resetZeros(false);
                             }
                             break;
                         case DRIVER_LIFT:
@@ -236,7 +231,6 @@ public class Jacks extends Subsystem {
                             drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
                             setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
                             if (periodicIo.rearIrDetectsGround) {
-//                            if(timestamp - finishTimestamp >= HOLD_REAR_AND_RUN_FORWARD_TIME/*2.0 @ 30%*/){
                                 finishTimestamp = timestamp;
                                 setState(JackSystem.HAB_CLIMB_RETRACT_REAR_JACKS);
                             }
@@ -278,28 +272,28 @@ public class Jacks extends Subsystem {
     }
 
     private synchronized boolean zero() {
-        if (periodicIo.frontJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !frontHasZeroed) {
-            frontHasZeroed = true;
+        if (periodicIo.frontJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !periodicIo.frontHasZeroed) {
+            periodicIo.frontHasZeroed = true;
             frontJack.setSelectedSensorPosition(0, 0, 30);
             periodicIo.frontJackDemand = JackState.STOP.getDemand();
             periodicIo.frontJackControlMode = JackState.STOP.getControlMode();
         }
 
-        if (periodicIo.leftJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !leftHasZeroed) {
-            leftHasZeroed = true;
-            leftRearJack.setSelectedSensorPosition(0, 0, 30);
+        if (periodicIo.leftJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !periodicIo.leftHasZeroed) {
+            periodicIo.leftHasZeroed = true;
+            leftRearJack.setSelectedSensorPosition(0, 0, SETTINGS_TIMEOUT);
             periodicIo.leftJackDemand = JackState.STOP.getDemand();
             periodicIo.leftJackControlMode = JackState.STOP.getControlMode();
         }
 
-        if (periodicIo.rightJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !rightHasZeroed) {
-            rightHasZeroed = true;
-            rightRearJack.setSelectedSensorPosition(0, 0, 30);
+        if (periodicIo.rightJackCurrentDraw >= MAX_AMP_DRAW_ZEROING && !periodicIo.rightHasZeroed) {
+            periodicIo.rightHasZeroed = true;
+            rightRearJack.setSelectedSensorPosition(0, 0, SETTINGS_TIMEOUT);
             periodicIo.rightJackDemand = JackState.STOP.getDemand();
             periodicIo.rightJackControlMode = JackState.STOP.getControlMode();
         }
 
-        if (frontHasZeroed && rightHasZeroed && leftHasZeroed) {
+        if (periodicIo.frontHasZeroed && periodicIo.rightHasZeroed && periodicIo.leftHasZeroed) {
             System.out.println("Zeroing completed");
             return true;
         } else {
@@ -317,7 +311,6 @@ public class Jacks extends Subsystem {
     }
 
     private synchronized void setState(JackSystem desiredState) {
-        System.out.println("Desired State: " + desiredState.toString());
         if (state != desiredState) {
             state = desiredState;
             if (desiredState == JackSystem.ZEROING) {
@@ -339,8 +332,8 @@ public class Jacks extends Subsystem {
     }
 
     private synchronized void gyroCorrect() {
-        final double pitchCorrectionKp = 0.07; // %vbus per degree
-        final double rollCorrectionKp = 0.05; // %vbus per degree
+        final double pitchCorrectionKp = 0.07; // %output per degree
+        final double rollCorrectionKp = 0.05; // %output per degree
         final double pitchCorrectionOutput = pitchCorrectionKp * periodicIo.pitch;
         final double rollCorrectionOutput = rollCorrectionKp * periodicIo.roll;
         periodicIo.frontJackFeedForward += rollCorrectionOutput;
@@ -405,21 +398,6 @@ public class Jacks extends Subsystem {
         periodicIo.leftJackFeedForward = 0.0;
         periodicIo.rightJackFeedForward = 0.0;
 
-//        double currentFrontVelocity = frontJack.getSelectedSensorVelocity(0);
-//        double currentLeftVelocity = leftRearJack.getSelectedSensorVelocity(0);
-//        double currentRightVelocity = rightRearJack.getSelectedSensorVelocity(0);
-//        double dt = time - lastTimestampRead;
-//        periodicIo.frontAcceleration = (currentFrontVelocity - periodicIo.frontVelocity) / dt;
-//        periodicIo.leftAcceleration = (currentLeftVelocity - periodicIo.leftVelocity) / dt;
-//        periodicIo.rightAcceleration = (currentRightVelocity - periodicIo.rightVelocity) / dt;
-//        periodicIo.frontVelocity = currentFrontVelocity;
-//        periodicIo.leftVelocity = currentLeftVelocity;
-//        periodicIo.rightVelocity = currentRightVelocity;
-//
-//        periodicIo.frontDutyCycle = frontJack.getMotorOutputPercent();
-//        periodicIo.leftDutyCycle = frontJack.getMotorOutputPercent();
-//        periodicIo.rightDutyCycle = frontJack.getMotorOutputPercent();
-
         if (state == JackSystem.ZEROING || state == JackSystem.INIT_HAB_CLIMB) {
             periodicIo.frontJackCurrentDraw = pdp.getCurrent(FRONT_JACK_LIFT);
             periodicIo.leftJackCurrentDraw = pdp.getCurrent(LEFT_REAR_JACK_LIFT);
@@ -458,20 +436,11 @@ public class Jacks extends Subsystem {
     }
 
     @Override
-    public void outputTelemetry() {
+    public synchronized void outputTelemetry() {
         JACKS_SHUFFLEBOARD.putString("State", state.toString());
-//        JACKS_SHUFFLEBOARD.putNumber("Velocity Front", periodicIo.frontVelocity);
-//        JACKS_SHUFFLEBOARD.putNumber("Velocity Left", periodicIo.leftVelocity);
-//        JACKS_SHUFFLEBOARD.putNumber("Velocity Right", periodicIo.rightVelocity);
-//        JACKS_SHUFFLEBOARD.putNumber("Acceleration Front", periodicIo.frontAcceleration);
-//        JACKS_SHUFFLEBOARD.putNumber("Acceleration Left", periodicIo.leftAcceleration);
-//        JACKS_SHUFFLEBOARD.putNumber("Acceleration Right", periodicIo.rightAcceleration);
-//        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Front", periodicIo.frontDutyCycle);
-//        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Left", periodicIo.leftDutyCycle);
-//        JACKS_SHUFFLEBOARD.putNumber("Duty Cycle Right", periodicIo.rightDutyCycle);
-        JACKS_SHUFFLEBOARD.putBoolean("Front Jack Zeroed", frontHasZeroed);
-        JACKS_SHUFFLEBOARD.putBoolean("Left Jack Zeroed", leftHasZeroed);
-        JACKS_SHUFFLEBOARD.putBoolean("Right Jack Zeroed", rightHasZeroed);
+        JACKS_SHUFFLEBOARD.putBoolean("Front Jack Zeroed", periodicIo.frontHasZeroed);
+        JACKS_SHUFFLEBOARD.putBoolean("Left Jack Zeroed", periodicIo.leftHasZeroed);
+        JACKS_SHUFFLEBOARD.putBoolean("Right Jack Zeroed", periodicIo.rightHasZeroed);
         JACKS_SHUFFLEBOARD.putNumber("Front Jack Demand", periodicIo.frontJackDemand);
         JACKS_SHUFFLEBOARD.putNumber("Left Jack Demand", periodicIo.leftJackDemand);
         JACKS_SHUFFLEBOARD.putNumber("Right Jack Demand", periodicIo.rightJackDemand);
@@ -499,19 +468,19 @@ public class Jacks extends Subsystem {
         ZEROING(-0.3, ControlMode.PercentOutput),
         STOP(0.0, ControlMode.PercentOutput);
 
-        private double demand;
-        private ControlMode controlMode;
+        private final double demand;
+        private final ControlMode controlMode;
 
         JackState(double demand, ControlMode controlMode) {
             this.demand = demand;
             this.controlMode = controlMode;
         }
 
-        public double getDemand() {
+        double getDemand() {
             return demand;
         }
 
-        public ControlMode getControlMode() {
+        ControlMode getControlMode() {
             return controlMode;
         }
     }
@@ -523,21 +492,6 @@ public class Jacks extends Subsystem {
         LIFT,
         RETRACT,
         NONE
-    }
-
-    /**
-     * The control type for the jacks as a whole.
-     */
-    private enum JackControlMode {
-        /**
-         * Manually controlled mode, user manually controls the setpoints and/or power.
-         */
-        MANUAL_CONTROL,
-
-        /**
-         * Executes a fully autonomous climb up to the HAB platform.
-         */
-        HAB_CLIMB
     }
 
     public enum JackSystem {
@@ -562,26 +516,19 @@ public class Jacks extends Subsystem {
         double leftJackEncoder;
         double rightJackEncoder;
         double frontJackEncoder;
-        ControlMode frontJackControlMode = ControlMode.PercentOutput;
-        ControlMode leftJackControlMode = ControlMode.PercentOutput;
-        ControlMode rightJackControlMode = ControlMode.PercentOutput;
+        boolean frontHasZeroed;
+        boolean leftHasZeroed;
+        boolean rightHasZeroed;
         double frontJackCurrentDraw;
         double leftJackCurrentDraw;
         double rightJackCurrentDraw;
         double pitch;
         double roll;
-//        // TODO temporary
-//        double frontVelocity;
-//        double frontAcceleration;
-//        double leftVelocity;
-//        double leftAcceleration;
-//        double rightVelocity;
-//        double rightAcceleration;
-//        double frontDutyCycle;
-//        double leftDutyCycle;
-//        double rightDutyCycle;
 
         // Output
+        ControlMode frontJackControlMode = ControlMode.PercentOutput;
+        ControlMode leftJackControlMode = ControlMode.PercentOutput;
+        ControlMode rightJackControlMode = ControlMode.PercentOutput;
         double frontJackDemand;
         double leftJackDemand;
         double rightJackDemand;

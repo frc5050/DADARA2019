@@ -15,9 +15,9 @@ public class DriveSignal {
      */
     public static final DriveSignal BRAKE = new DriveSignal(0, 0, true);
 
-    private double leftOutput;
-    private double rightOutput;
-    private boolean brake;
+    private final double leftOutput;
+    private final double rightOutput;
+    private final boolean brake;
 
     /**
      * Constructor. Brakes are enabled by default.

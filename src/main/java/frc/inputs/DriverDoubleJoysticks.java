@@ -10,7 +10,7 @@ import static frc.utils.Constants.DRIVER_JOYSTICK_RIGHT_PORT;
 /**
  * Implements {@link DriverHid} with two flight sticks.
  */
-public class DriverDoubleJoysticks implements DriverHid {
+public final class DriverDoubleJoysticks implements DriverHid {
     private static DriverDoubleJoysticks instance;
 
     private final Joystick joystickLeft;
@@ -85,7 +85,7 @@ public class DriverDoubleJoysticks implements DriverHid {
 
     @Override
     public DriveSignal runJackWheels() {
-        return null;
+        return DriveSignal.BRAKE;
     }
 
     @Override

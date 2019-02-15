@@ -10,6 +10,6 @@ package frc.inputs;
  * This implementation provides a very simple and concise way to get all of the
  * data necessary for operating the robot.
  */
-public interface GameHid extends DriverHid, OperatorHid {
+interface GameHid extends DriverHid, OperatorHid {
 
 }
