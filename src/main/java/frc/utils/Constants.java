@@ -20,7 +20,7 @@ public class Constants {
     public static final int CARGO_CENTER = 10; // SRX
     public static final int CARGO_LEFT = 9; // SRX
     public static final int CARGO_RIGHT = 8; // SRX
-    public static final DriverHidOption DRIVER_HID_OPTION = DriverHidOption.GAMEPAD;
+    public static final DriverHidOption DRIVER_HID_OPTION = DriverHidOption.SINGLE_JOYSTICK;
 
     // HID ports
     public static final int DRIVER_JOYSTICK_PORT = 0;

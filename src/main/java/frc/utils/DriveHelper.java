@@ -177,6 +177,24 @@ public class DriveHelper {
         }
     }
 
+    private static double upperBoundForCurvature(double x){
+        x = Math.abs(x);
+        if(x > 0.0842){
+            return (x * 0.6) * (x * 0.6) + 0.02;
+        } else {
+            return Math.sin(Math.toRadians(20.0)) * x;
+        }
+    }
+
+    private static double lowerBoundForCurvature(double x){
+        return -upperBoundForCurvature(x);
+    }
+
+    public DriveSignal curvatureDrive(double xSpeed, double zRotation) {
+        boolean quickTurn = xSpeed <= upperBoundForCurvature(zRotation) && xSpeed >= lowerBoundForCurvature(zRotation);
+        return curvatureDrive(xSpeed, zRotation, 0.2, quickTurn);
+    }
+
     public DriveSignal curvatureDrive(double xSpeed, double zRotation, boolean quickTurn) {
         return curvatureDrive(xSpeed, zRotation, 0.2, quickTurn);
     }

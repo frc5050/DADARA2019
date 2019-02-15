@@ -52,34 +52,37 @@ public class DriverJoystick implements DriverHid {
     @Override
     public DriveSignal getDriveSignal() {
         // if less than 15 degrees left/right
-        boolean quickTurn = Math.abs((driverJoystick.getDirectionDegrees() % 180.0) - 90) <= 15.0;
-        return driveHelperForCurvature.curvatureDrive(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0), quickTurn);
+        double y = -driverJoystick.getRawAxis(1);
+        double x = driverJoystick.getRawAxis(0);
+        // double degrees = Math.atan(y / x) * 180.0 / Math.PI;
+        // boolean quickTurn = Math.abs((degrees % 180.0)) <= 15.0;
+        return driveHelperForCurvature.curvatureDrive(y, x);
 //        return DriveHelper.arcadeToDriveSignal(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0));
     }
 
     @Override
     public boolean liftAllJacks() {
-        return driverJoystick.getRawButton(1);
+        return false;
     }
 
     @Override
     public boolean retractAllJacks() {
-        return driverJoystick.getRawButton(4);
+        return false;
     }
 
     @Override
     public boolean initializeHabClimbing() {
-        return driverJoystick.getRawButton(8);
+        return driverJoystick.getRawButton(7);
     }
 
     @Override
     public boolean manualJackWheelOverride() {
-        return driverJoystick.getRawButton(9);
+        return false;
     }
 
     @Override
     public boolean zeroJacks() {
-        return driverJoystick.getRawButton(10);
+        return driverJoystick.getRawButton(2);
     }
 
     @Override
@@ -91,21 +94,35 @@ public class DriverJoystick implements DriverHid {
 
     @Override
     public boolean cargoOuttakeRight() {
-        return driverJoystick.getRawButton(6);
+        return driverJoystick.getPOV(0) == 90;
     }
 
     @Override
     public boolean cargoOuttakeLeft() {
-        return driverJoystick.getRawButton(5);
+        return driverJoystick.getPOV(0) == 270;
     }
 
     @Override
     public boolean cargoIntakeRight() {
-        return false;
+        return driverJoystick.getRawButton(1) && driverJoystick.getPOV(0) == 90;
     }
 
     @Override
     public boolean cargoIntakeLeft() {
-        return false;
+        return driverJoystick.getRawButton(1) && driverJoystick.getPOV(0) == 270;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
