@@ -109,7 +109,7 @@ public class Robot extends TimedRobot {
         System.out.println("Auto selected: " + m_autoSelected);
         switch (m_autoSelected) {
             case LvlTwoRightCloseRKT:
-                autonomous = new SampleAutoBase();
+                autonomous = new ();
                 break;
             case kDefaultAuto:
                 autonomous = null;
