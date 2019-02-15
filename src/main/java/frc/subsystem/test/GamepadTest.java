@@ -7,7 +7,7 @@ import static frc.utils.Constants.TEST_SHUFFLEBOARD;
 
 public class GamepadTest implements SubsystemTest {
     private static final String GAMEPAD_TEST_NETWORK_TABLES_PREFIX = "GamepadTest/";
-    private GameController gameController = GameController.getInstance();
+    private final GameController gameController = GameController.getInstance();
 
     private static void putNumber(String key, double num) {
         TEST_SHUFFLEBOARD.putNumber(GAMEPAD_TEST_NETWORK_TABLES_PREFIX + key, num);

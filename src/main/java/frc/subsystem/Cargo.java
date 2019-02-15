@@ -9,12 +9,13 @@ import frc.loops.Loop;
 import frc.loops.LooperInterface;
 import frc.states.CargoState;
 import frc.states.CargoStateMachine;
+import frc.states.IntakeState;
 import frc.utils.Constants;
 
 import static frc.utils.Constants.CARGO_SHUFFLEBOARD;
 
 // Creates variables for the cargo subsystem and initializes motors
-public class Cargo extends Subsystem {
+public final class Cargo extends Subsystem {
     private static final double MAXIMUM_VOLTAGE = 12.0;
     private static Cargo instance;
 
@@ -24,16 +25,15 @@ public class Cargo extends Subsystem {
     private final WPI_TalonSRX leftRear;
     private final WPI_TalonSRX intake;
     private final WPI_TalonSRX intakeTilt;
-    private final DigitalInput cargoSensor = new DigitalInput(Constants.CARGO_SENSOR);
-
+    private final DigitalInput cargoSensor;
+    private final CargoStateMachine cargoStateMachine = new CargoStateMachine();
     private CargoState currentState = new CargoState();
-    private CargoStateMachine cargoStateMachine = new CargoStateMachine();
-    private double intakeTiltPower = 0.0;
 
     /**
      * Constructor.
      */
     private Cargo() {
+        cargoSensor = new DigitalInput(Constants.CARGO_SENSOR);
         centerSide = new WPI_TalonSRX(Constants.CARGO_CENTER);
         rightRear = new WPI_TalonSRX(Constants.CARGO_LEFT);
         leftRear = new WPI_TalonSRX(Constants.CARGO_RIGHT);
@@ -76,7 +76,7 @@ public class Cargo extends Subsystem {
         return instance;
     }
 
-    public synchronized void setDesiredState(CargoState.IntakeState intakeState) {
+    public synchronized void setDesiredState(final IntakeState intakeState) {
         cargoStateMachine.setDesiredState(intakeState);
     }
 
@@ -96,28 +96,28 @@ public class Cargo extends Subsystem {
      */
     @Override
     public synchronized void stop() {
-        setDesiredState(CargoState.IntakeState.STOPPED);
+        setDesiredState(IntakeState.STOPPED);
     }
 
     @Override
-    public void registerEnabledLoops(LooperInterface enabledLooper) {
-        Loop loop = new Loop() {
+    public void registerEnabledLoops(final LooperInterface enabledLooper) {
+        final Loop loop = new Loop() {
             @Override
-            public void onStart(double timestamp) {
-                setDesiredState(CargoState.IntakeState.STOPPED);
+            public void onStart(final double timestamp) {
+                setDesiredState(IntakeState.STOPPED);
             }
 
             @Override
-            public void onLoop(double timestamp) {
+            public void onLoop(final double timestamp) {
                 synchronized (Cargo.this) {
                     currentState = cargoStateMachine.onUpdate(currentState);
                 }
             }
 
             @Override
-            public void onStop(double timestamp) {
+            public void onStop(final double timestamp) {
                 synchronized (Cargo.this) {
-                    setDesiredState(CargoState.IntakeState.STOPPED);
+                    setDesiredState(IntakeState.STOPPED);
                     stop();
                 }
             }
@@ -146,10 +146,10 @@ public class Cargo extends Subsystem {
         rightRear.set(ControlMode.PercentOutput, currentState.rightMotorOutput);
         leftRear.set(ControlMode.PercentOutput, currentState.leftMotorOutput);
         intake.set(ControlMode.PercentOutput, currentState.intakeOutput);
-        intakeTilt.set(ControlMode.PercentOutput, intakeTiltPower);
+        intakeTilt.set(ControlMode.PercentOutput, currentState.intakeTiltOutput);
     }
 
-    public void intakeTilt(double power) {
-        intakeTiltPower = 0.5 * power;
+    public synchronized void intakeTilt(final double power) {
+        currentState.intakeTiltOutput = 0.5 * power;
     }
 }

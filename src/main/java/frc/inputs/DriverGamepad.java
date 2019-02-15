@@ -12,9 +12,9 @@ import static frc.utils.DpadHelper.LastDpadState;
 /**
  * Implements {@link DriverHid} with an Xbox style gamepad.
  */
-public class DriverGamepad implements DriverHid {
+public final class DriverGamepad implements DriverHid {
     private static DriverGamepad instance;
-    private XboxController gamepad;
+    private final XboxController gamepad;
     private LastDpadState lastDpadState = LastDpadState.NONE;
 
     /**

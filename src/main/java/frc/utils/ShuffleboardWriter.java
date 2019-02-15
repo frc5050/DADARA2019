@@ -9,14 +9,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilderImpl;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-// Writes values to shuffleboard 
-public class ShuffleboardWriter {
-    public static Map<String, ShuffleboardWriter> instances = new HashMap<>();
+
+// Writes values to shuffleboard
+@SuppressWarnings({"UnusedReturnValue", "unused"})
+public final class ShuffleboardWriter {
+    private static final Map<String, ShuffleboardWriter> instances = new HashMap<>();
 
     static {
+        //noinspection MagicNumber
         HAL.report(43, 0);
     }
 
@@ -34,7 +36,9 @@ public class ShuffleboardWriter {
         return instances.get(tableKey);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public synchronized void putData(String key, Sendable data) {
+        @SuppressWarnings("SpellCheckingInspection")
         Data sddata = tablesToData.get(key);
         if (sddata == null || sddata.m_sendable != data) {
             if (sddata != null) {
@@ -66,6 +70,7 @@ public class ShuffleboardWriter {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     public NetworkTableEntry getEntry(String key) {
         return table.getEntry(key);
     }
@@ -110,6 +115,7 @@ public class ShuffleboardWriter {
         table.delete(key);
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public boolean putBoolean(String key, boolean value) {
         return getEntry(key).setBoolean(value);
     }
@@ -223,10 +229,7 @@ public class ShuffleboardWriter {
     }
 
     public synchronized void updateValues() {
-        Iterator var0 = tablesToData.values().iterator();
-
-        while (var0.hasNext()) {
-            Data data = (Data) var0.next();
+        for (Data data : tablesToData.values()) {
             data.m_builder.updateTable();
         }
     }

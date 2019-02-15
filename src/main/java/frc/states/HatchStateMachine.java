@@ -9,8 +9,11 @@ public class HatchStateMachine {
     public static final double PEAK_REVERSE_OUTPUT_STANDARD = -1.0;
     private static final double PEAK_FORWARD_OUTPUT_LIMIT_PRESSED = 1.0;
     private static final double PEAK_REVERSE_OUTPUT_LIMIT_PRESSED = 0.0;
+    private static final double ZEROING_SPEED = -0.2;
+    private static final int HATCH_PLACE_ENCODER_POSITION = 470;
+    private static final int HATCH_PULL_ENCODER_POSITION = 760;
 
-    private HatchState systemState = new HatchState();
+    private final HatchState systemState = new HatchState();
     private HatchState.ControlState desiredControlState = STOPPED;
     private int desiredEncoderPosition = 0;
     private double desiredOpenLoopPower = 0;
@@ -23,13 +26,13 @@ public class HatchStateMachine {
     public synchronized void setHatchPlace() {
         this.desiredOpenLoopPower = 0.0;
         this.desiredControlState = MOTION_MAGIC;
-        this.desiredEncoderPosition = 470;
+        this.desiredEncoderPosition = HATCH_PLACE_ENCODER_POSITION;
     }
 
     public synchronized void setHatchPull() {
         this.desiredOpenLoopPower = 0.0;
         this.desiredControlState = MOTION_MAGIC;
-        this.desiredEncoderPosition = 760;
+        this.desiredEncoderPosition = HATCH_PULL_ENCODER_POSITION;
     }
 
     public synchronized void setOpenLoop(double joystickPower) {
@@ -68,8 +71,8 @@ public class HatchStateMachine {
     private synchronized void handleUpdate() {
         switch (systemState.hatchState) {
             case ZEROING:
-                systemState.demand = systemState.encoder + 30 /* + TODO */;
-                systemState.controlMode = ControlMode.MotionMagic;
+                systemState.demand = ZEROING_SPEED;
+                systemState.controlMode = ControlMode.PercentOutput;
                 break;
             case MOTION_MAGIC:
                 systemState.demand = desiredEncoderPosition;

@@ -1,7 +1,8 @@
 package frc.utils;
 
-public class Constants {
-    public static final double EPSILON_SMALL_DOUBLE = 1E-11;
+public final class Constants {
+    public static final double EPSILON_SMALL_DOUBLE = 1.0E-11;
+    public static final int SETTINGS_TIMEOUT = 30;
 
     // Motor controller ports
     public static final int LEFT_DRIVE_1 = 15; // SRX
@@ -34,10 +35,6 @@ public class Constants {
     public static final int ELEVATOR_BOTTOM_LIMIT = 2; // dio
     public static final int DRIVE_FRONT_IR_SENSOR = 3; // dio
     public static final int DRIVE_REAR_IR_SENSOR = 4; // dio
-
-    // Network Tables Ports
-    public static final String DEFAULT_NETWORK_TABLE_KEY = "SmartDashboard";
-    public static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = true;
     public static final ShuffleboardWriter ROBOT_MAIN_SHUFFLEBOARD;
     public static final ShuffleboardWriter LOOPER_SHUFFLEBOARD;
     public static final ShuffleboardWriter DRIVE_SHUFFLEBOARD;
@@ -48,6 +45,9 @@ public class Constants {
     public static final ShuffleboardWriter HATCH_SHUFFLEBOARD;
     public static final int CAN_TIMEOUT_MS = 10; // ms
     public static final double DRIVE_VOLTAGE_RAMP_RATE = 0; // time from neutral to full power
+    // Network Tables Ports
+    private static final String DEFAULT_NETWORK_TABLE_KEY = "SmartDashboard";
+    private static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = true;
 
     static {
         if (USE_CUSTOM_NETWORK_TABLE_KEYS) {
@@ -70,7 +70,6 @@ public class Constants {
             HATCH_SHUFFLEBOARD = ShuffleboardWriter.getInstance(DEFAULT_NETWORK_TABLE_KEY);
         }
     }
-
 
     private Constants() {
 

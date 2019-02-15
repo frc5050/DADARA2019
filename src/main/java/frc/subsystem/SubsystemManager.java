@@ -11,7 +11,7 @@ import java.util.List;
 public class SubsystemManager implements LooperInterface {
     private final List<Subsystem> subsystems;
 
-    private List<Loop> loops = new ArrayList<>();
+    private final List<Loop> loops = new ArrayList<>();
 
     public SubsystemManager(List<Subsystem> subsystems) {
         this.subsystems = subsystems;
@@ -44,8 +44,6 @@ public class SubsystemManager implements LooperInterface {
     public void registerLoop(Loop loop) {
         if (loop == null) {
             DriverStation.reportWarning("Loop null", true);
-        } else if (loops == null) {
-            DriverStation.reportWarning("Loops are null", true);
         } else {
             loops.add(loop);
         }

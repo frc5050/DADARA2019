@@ -24,7 +24,7 @@ public class HatchState {
         OPEN_LOOP(false),
         STOPPED(false);
 
-        private boolean requiresZeroing;
+        private final boolean requiresZeroing;
 
         ControlState(boolean requiresZeroing){
             this.requiresZeroing = requiresZeroing;

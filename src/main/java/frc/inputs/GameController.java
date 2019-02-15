@@ -9,7 +9,7 @@ import static frc.utils.Constants.DRIVER_HID_OPTION;
  * An implementation of the Driver's controls for when the robot is being
  * operated with a gamepad.
  */
-public class GameController implements GameHid {
+public final class GameController implements GameHid {
     private static GameController instance;
     private final DriverHid driverHid;
     private final OperatorHid operatorHid;
