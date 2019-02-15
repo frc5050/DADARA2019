@@ -7,7 +7,6 @@ import frc.utils.DriveSignal;
 
 public class SampleAutoBase extends AutoBase {
     private final Drive drive = Drive.getInstance();
-    private final Elevator elevator = Elevator.getInstance();
     private double lastTimestamp = Timer.getFPGATimestamp();
     private State state = State.INIT;
 
@@ -24,14 +23,14 @@ public class SampleAutoBase extends AutoBase {
                 state = State.DRIVE_FORWARD_AND_LIFT_ELEVATOR;
                 break;
             case DRIVE_FORWARD_AND_LIFT_ELEVATOR:
-                drive.setOpenLoop(new DriveSignal(1.0, 1.0));
-                elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_MID);
+                drive.setOpenLoop(new DriveSignal(0.25, 0.25));
+//                elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_MID);
                 if (timestamp - lastTimestamp > 1.0) {
                     state = State.STOP;
                 }
                 break;
             case STOP:
-                elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_LOW);
+//                elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_LOW);
                 drive.setOpenLoop(DriveSignal.NEUTRAL);
                 break;
         }

@@ -11,6 +11,7 @@ import frc.loops.Loop;
 import frc.loops.LooperInterface;
 import frc.utils.DriveSignal;
 import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
 import static frc.utils.Constants.*;
@@ -23,6 +24,7 @@ public final class Drive extends Subsystem {
     private static final double DRIVE_WHEEL_DIAMETER = inchesToMeters(6.0);
     private static final int DRIVE_TICKS_PER_ROTATION = 4096;
     private static final double DRIVE_TICKS_PER_ROTATION_DOUBLE = DRIVE_TICKS_PER_ROTATION;
+    private static final double METERS_PER_SEC_TO_TICKS_PER_100_MS = (DRIVE_TICKS_PER_ROTATION_DOUBLE / DRIVE_WHEEL_DIAMETER) * 0.1;
     // TODO remeasure on a bot
     private static final double DRIVEBASE_WIDTH = 0.56515;
     private static Drive instance;
@@ -40,6 +42,8 @@ public final class Drive extends Subsystem {
     private Trajectory rightTrajectory = null;
     private int lastTrajectoryValue = 0;
     private int trajectoryValues = 0;
+    private EncoderFollower leftFollower;
+    private EncoderFollower rightFollower;
     private final Loop loop = new Loop() {
         @Override
         public void onStart(final double timestamp) {
@@ -76,7 +80,6 @@ public final class Drive extends Subsystem {
 
     private Drive() {
         periodicIo = new PeriodicIO();
-
         leftMaster = new WPI_TalonSRX(LEFT_DRIVE_1);
         configureMaster(leftMaster, true);
         leftSlave = new VictorSPX(LEFT_DRIVE_2);
@@ -91,7 +94,7 @@ public final class Drive extends Subsystem {
         rightSlave.setInverted(true);
 
         navX = new AHRS(SPI.Port.kMXP);
-
+        
 //        initGainsOnShuffleBoard();
     }
 
@@ -177,19 +180,19 @@ public final class Drive extends Subsystem {
     // Puts values on the Dashboard (Shuffleboard)
     @Override
     public synchronized void outputTelemetry() {
-//        DRIVE_SHUFFLEBOARD.putNumber("Left Drive Distance (m)", periodicIo.leftDistance);
-//        DRIVE_SHUFFLEBOARD.putNumber("Right Drive Distance (m)", periodicIo.rightDistance);
-//        DRIVE_SHUFFLEBOARD.putNumber("Left Drive Ticks", periodicIo.leftPositionTicks);
-//        DRIVE_SHUFFLEBOARD.putNumber("Right Drive Ticks", periodicIo.rightPositionTicks);
+       DRIVE_SHUFFLEBOARD.putNumber("Left Drive Distance (m)", periodicIo.leftDistance);
+       DRIVE_SHUFFLEBOARD.putNumber("Right Drive Distance (m)", periodicIo.rightDistance);
+       DRIVE_SHUFFLEBOARD.putNumber("Left Drive Ticks", periodicIo.leftPositionTicks);
+       DRIVE_SHUFFLEBOARD.putNumber("Right Drive Ticks", periodicIo.rightPositionTicks);
         DRIVE_SHUFFLEBOARD.putNumber("Left Demand", periodicIo.leftDemand);
         DRIVE_SHUFFLEBOARD.putNumber("Right Demand", periodicIo.rightDemand);
         DRIVE_SHUFFLEBOARD.putNumber("Left Feed Forward", periodicIo.leftFeedForward);
         DRIVE_SHUFFLEBOARD.putNumber("Right Feed Forward", periodicIo.rightFeedForward);
-//        DRIVE_SHUFFLEBOARD.putNumber("Left Velocity Ticks Per 100 ms", periodicIo.leftVelocityTicksPer100ms);
-//        DRIVE_SHUFFLEBOARD.putNumber("Right Velocity Ticks Per 100 ms", periodicIo.rightVelocityTicksPer100ms);
-//        DRIVE_SHUFFLEBOARD.putNumber("Right Velocity", periodicIo.rightVelocity);
-//        DRIVE_SHUFFLEBOARD.putNumber("Left Velocity", periodicIo.leftVelocity);
-//        DRIVE_SHUFFLEBOARD.putNumber("Gyro Heading", periodicIo.gyroHeading);
+       DRIVE_SHUFFLEBOARD.putNumber("Left Velocity Ticks Per 100 ms", periodicIo.leftVelocityTicksPer100ms);
+       DRIVE_SHUFFLEBOARD.putNumber("Right Velocity Ticks Per 100 ms", periodicIo.rightVelocityTicksPer100ms);
+       DRIVE_SHUFFLEBOARD.putNumber("Right Velocity", periodicIo.rightVelocity);
+       DRIVE_SHUFFLEBOARD.putNumber("Left Velocity", periodicIo.leftVelocity);
+    //    DRIVE_SHUFFLEBOARD.putNumber("Gyro Heading", periodicIo.gyroHeading);
         DRIVE_SHUFFLEBOARD.putNumber("Yaw", periodicIo.yaw);
         DRIVE_SHUFFLEBOARD.putNumber("Roll", periodicIo.roll);
         DRIVE_SHUFFLEBOARD.putNumber("Pitch", periodicIo.pitch);
@@ -202,8 +205,8 @@ public final class Drive extends Subsystem {
             leftMaster.set(ControlMode.PercentOutput, periodicIo.leftDemand, DemandType.ArbitraryFeedForward, 0.0);
             rightMaster.set(ControlMode.PercentOutput, periodicIo.rightDemand, DemandType.ArbitraryFeedForward, 0.0);
         } else if (state == DriveState.PATH_FOLLOWING) {
-            leftMaster.set(ControlMode.Velocity, periodicIo.leftDemand, DemandType.ArbitraryFeedForward, periodicIo.leftFeedForward);
-            rightMaster.set(ControlMode.Velocity, periodicIo.rightDemand, DemandType.ArbitraryFeedForward, periodicIo.rightFeedForward);
+            leftMaster.set(ControlMode.PercentOutput, periodicIo.leftDemand, DemandType.ArbitraryFeedForward, periodicIo.leftFeedForward);
+            rightMaster.set(ControlMode.PercentOutput, periodicIo.rightDemand, DemandType.ArbitraryFeedForward, periodicIo.rightFeedForward);
         }
     }
 
@@ -220,6 +223,12 @@ public final class Drive extends Subsystem {
             TankModifier modifier = new TankModifier(trajectory).modify(DRIVEBASE_WIDTH);
             leftTrajectory = modifier.getLeftTrajectory();
             rightTrajectory = modifier.getRightTrajectory();
+            rightFollower = new EncoderFollower(leftTrajectory);
+            leftFollower = new EncoderFollower(rightTrajectory);
+            leftFollower.configureEncoder((int) periodicIo.leftPositionTicks, DRIVE_TICKS_PER_ROTATION, DRIVE_WHEEL_DIAMETER);
+            rightFollower.configureEncoder((int) periodicIo.rightPositionTicks, DRIVE_TICKS_PER_ROTATION, DRIVE_WHEEL_DIAMETER);
+            leftFollower.configurePIDVA(1.0, 0.0, 0.0, 1.0 / 3.2, 0);
+            rightFollower.configurePIDVA(1.0, 0.0, 0.0, 1.0 / 3.2, 0);
             lastTrajectoryValue = 0;
             trajectoryValues = trajectory.length();
             state = DriveState.PATH_FOLLOWING;
@@ -231,7 +240,8 @@ public final class Drive extends Subsystem {
         if (trajectory == null || state != DriveState.PATH_FOLLOWING) {
             return false;
         }
-        return trajectoryValues > lastTrajectoryValue;
+        return leftFollower.isFinished() || rightFollower.isFinished();
+        // return trajectoryValues <= lastTrajectoryValue;
     }
 
     // Checks for path completion and resets the Path followers for the desired velocity if not.
@@ -239,9 +249,11 @@ public final class Drive extends Subsystem {
         if (state == DriveState.PATH_FOLLOWING) {
             lastTrajectoryValue++;
             if (!this.isDone()) {
-                double leftVelocity = leftTrajectory.get(lastTrajectoryValue).velocity;
-                double rightVelocity = rightTrajectory.get(lastTrajectoryValue).velocity;
-                setVelocity(new DriveSignal(leftVelocity, rightVelocity), DriveSignal.BRAKE);
+                double leftVelocity = leftTrajectory.get(lastTrajectoryValue).velocity * METERS_PER_SEC_TO_TICKS_PER_100_MS;
+                double rightVelocity = rightTrajectory.get(lastTrajectoryValue).velocity * METERS_PER_SEC_TO_TICKS_PER_100_MS;
+                double leftPower = leftFollower.calculate((int) periodicIo.leftPositionTicks);
+                double rightPower = leftFollower.calculate((int) periodicIo.rightPositionTicks);
+                setVelocity(new DriveSignal(leftPower, rightPower), DriveSignal.BRAKE);
             } else {
                 setVelocity(DriveSignal.BRAKE, DriveSignal.BRAKE);
             }
@@ -284,24 +296,24 @@ public final class Drive extends Subsystem {
     // Reads the inputs from the sensors, and sets variables
     @Override
     public synchronized void readPeriodicInputs() {
-//        double prevLeftTicks = periodicIo.leftPositionTicks;
-//        double prevRightTicks = periodicIo.rightPositionTicks;
-//        periodicIo.leftPositionTicks = leftMaster.getSelectedSensorPosition(0);
-//        periodicIo.rightPositionTicks = rightMaster.getSelectedSensorPosition(0);
-//        periodicIo.leftVelocityTicksPer100ms = leftMaster.getSelectedSensorVelocity(0);
-//        periodicIo.rightVelocityTicksPer100ms = rightMaster.getSelectedSensorVelocity(0);
-//        periodicIo.leftVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.leftVelocityTicksPer100ms);
-//        periodicIo.rightVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.rightVelocityTicksPer100ms);
+       double prevLeftTicks = periodicIo.leftPositionTicks;
+       double prevRightTicks = periodicIo.rightPositionTicks;
+       periodicIo.leftPositionTicks = leftMaster.getSelectedSensorPosition(0);
+       periodicIo.rightPositionTicks = rightMaster.getSelectedSensorPosition(0);
+       periodicIo.leftVelocityTicksPer100ms = leftMaster.getSelectedSensorVelocity(0);
+       periodicIo.rightVelocityTicksPer100ms = rightMaster.getSelectedSensorVelocity(0);
+       periodicIo.leftVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.leftVelocityTicksPer100ms);
+       periodicIo.rightVelocity = wheelVelocityTicksPer100msToVelocity(periodicIo.rightVelocityTicksPer100ms);
         periodicIo.yaw = navX.getYaw();
         periodicIo.roll = navX.getRoll();
         periodicIo.pitch = navX.getPitch();
 //        periodicIo.gyroHeading = handleGyroInput(periodicIo.yaw, headingOffset);
 
-//        double deltaLeftTicks = ((periodicIo.leftPositionTicks - prevLeftTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
-//        periodicIo.leftDistance += deltaLeftTicks * DRIVE_WHEEL_DIAMETER;
+       double deltaLeftTicks = ((periodicIo.leftPositionTicks - prevLeftTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
+       periodicIo.leftDistance += deltaLeftTicks * DRIVE_WHEEL_DIAMETER;
 
-//        double deltaRightTicks = ((periodicIo.rightPositionTicks - prevRightTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
-//        periodicIo.rightDistance += deltaRightTicks * DRIVE_WHEEL_DIAMETER;
+       double deltaRightTicks = ((periodicIo.rightPositionTicks - prevRightTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
+       periodicIo.rightDistance += deltaRightTicks * DRIVE_WHEEL_DIAMETER;
 
 //        // TODO remove this once we tune the gains properly
 //        double kP = DRIVE_SHUFFLEBOARD.getNumber("kP", 1.0);
@@ -342,8 +354,8 @@ public final class Drive extends Subsystem {
         }
         periodicIo.leftDemand = velocities.getLeftOutput();
         periodicIo.rightDemand = velocities.getRightOutput();
-        periodicIo.leftFeedForward = velocities.getLeftOutput();
-        periodicIo.rightFeedForward = velocities.getRightOutput();
+        periodicIo.leftFeedForward = feedForwards.getLeftOutput();
+        periodicIo.rightFeedForward = feedForwards.getRightOutput();
     }
 
     public synchronized void resetNavX() {
@@ -385,15 +397,15 @@ public final class Drive extends Subsystem {
     // All the periodic values
     private static class PeriodicIO {
         // Input
-//        double leftPositionTicks;
-//        double rightPositionTicks;
-//        double leftVelocityTicksPer100ms;
-//        double rightVelocityTicksPer100ms;
-//        double leftVelocity;
-//        double rightVelocity;
-//        double gyroHeading;
-//        double leftDistance;
-//        double rightDistance;
+       double leftPositionTicks;
+       double rightPositionTicks;
+       double leftVelocityTicksPer100ms;
+       double rightVelocityTicksPer100ms;
+       double leftVelocity;
+       double rightVelocity;
+    //    double gyroHeading;
+       double leftDistance;
+       double rightDistance;
         double yaw;
         double roll;
         double pitch;

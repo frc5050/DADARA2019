@@ -22,14 +22,7 @@ import frc.subsystem.test.DriveTest;
 import frc.subsystem.test.GamepadTest;
 import frc.subsystem.test.SubsystemTest;
 import frc.utils.DriveSignal;
-import jaci.pathfinder.*;
-import frc.subsystem.Hatch.*;
-import frc.subsystem.Vision;
-import frc.subsystem.Elevator.ElevatorPosition;
-import frc.subsystem.Drive.*;
-
-import java.io.*;
-
+import frc.autonomous.Lvl2RightCloseRKT;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -46,7 +39,6 @@ import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
 public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Test";
     private static final String LvlTwoRightCloseRKT = "Lvl 2 Right to Close Rocket";
-    private String m_autoSelected;
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     private final SendableChooser<String> testChooser = new SendableChooser<>();
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
@@ -59,24 +51,23 @@ public class Robot extends TimedRobot {
     private final LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
     private final Looper enabledLooper = new Looper();
     private final Looper disabledLooper = new Looper();
-
     private final GameController gameController = GameController.getInstance();
-
     private final Drive drive = Drive.getInstance();
     private final Cargo cargo = Cargo.getInstance();
     private final Elevator elevator = Elevator.getInstance();
     private final Hatch hatch = Hatch.getInstance();
     private final Jacks jacks = Jacks.getInstance();
-    private final Vision vision = Vision.getInstance();
+    //private final Vision vision = Vision.getInstance();
+    private String m_autoSelected;
     private SubsystemTest subsystemTest;
     //public File trajectoryFile = Pathfinder.readFromCSV(EncodeTest.pf1.csv);
+    private AutoBase autonomous = null;
 
     @Override
     public void robotInit() {
         m_chooser.setDefaultOption("Autoline", kDefaultAuto);
         m_chooser.addOption("Lvl 2 Right to Close Rocket", LvlTwoRightCloseRKT);
-        Shuffleboard.getTab("Auton")
-            .add("Auto choices", m_chooser);
+        Shuffleboard.getTab("Auton").add("Auto choices", m_chooser);
         tests.put(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST);
         testChooser.setDefaultOption(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST.getOption());
 
@@ -96,7 +87,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        
+        drive.outputTelemetry();
     }
 
     @Override
@@ -116,44 +107,46 @@ public class Robot extends TimedRobot {
         disabledLooper.stop();
         enabledLooper.start();
         m_autoSelected = m_chooser.getSelected();
-        // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
         System.out.println("Auto selected: " + m_autoSelected);
-        autonomous = new SampleAutoBase();
-        
+        switch (m_autoSelected) {
+            case LvlTwoRightCloseRKT:
+                autonomous = new Lvl2RightCloseRKT();
+                break;
+            case kDefaultAuto:
+                autonomous = null;
+                break;
+            default:
+                autonomous = null;
+                break;
+        }
     }
-    private enum LvlTwoRightCloseRKTState {
-        INIT,
-        LEVEL2_to_Rocket,
-        Right_RKT_Close_Backup,
-        Close_Right_Rkt_to_FEED
-    }
-    private LvlTwoRightCloseRKTState lvlTwoRightCloseRKTState = LvlTwoRightCloseRKTState.INIT;
-    private AutoBase autonomous = null;
 
     @Override
     public void autonomousPeriodic() {
-        switch (m_autoSelected) {
-            case LvlTwoRightCloseRKT:
-                autonomous.periodic(Timer.getFPGATimestamp());
-                File myFile = new File("LEVEL2_to_Rocket.pf1.csv");
-                hatch.setHatchPlace();
-                drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-                drive.updatePathFollower();
-                elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
-                hatch.setHatchPull();
-                myFile = new File("Right_RKT_Close_Backup.pf1.csv");
-                drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-                drive.updatePathFollower();
-                //Insert gyro-turn 180 here
-                myFile = new File("Close_Right_Rkt_to_FEED.pf1.csv");
-                drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-                drive.updatePathFollower();
-                hatch.setOpenLoop(100);
-            case kDefaultAuto:
-            default:
-            myFile = new File("EncodeTest.pf1.csv");
-            drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-        if(autonomous != null){
+//        switch (m_autoSelected) {
+//            case LvlTwoRightCloseRKT:
+//                switch LvlTwoRightCloseRKTState {
+//                    case PATH_FOLLOWING:
+//                    File myFile = new File("LEVEL2_to_Rocket.pf1.csv");
+//                    hatch.setHatchPlace();
+//                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+//                    drive.updatePathFollower();
+//                    elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
+//                    hatch.setHatchPull();
+//                    myFile = new File("Right_RKT_Close_Backup.pf1.csv");
+//                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+//                    drive.updatePathFollower();
+//                    Insert gyro-turn 180 here
+//                    myFile = new File("Close_Right_Rkt_to_FEED.pf1.csv");
+//                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+//                    drive.updatePathFollower();
+//                    hatch.setOpenLoop(100);
+//                    }
+//            case kDefaultAuto:
+//            default:
+//            myFile = new File("EncodeTest.pf1.csv");
+//            drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+        if (autonomous != null) {
             autonomous.periodic(Timer.getFPGATimestamp());
         }
     }
