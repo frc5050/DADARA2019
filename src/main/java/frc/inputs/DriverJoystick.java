@@ -9,7 +9,7 @@ import frc.utils.DriveSignal;
  * An implementation of the Driver's controls when the robot is being driven
  * with a joystick.
  */
-public class DriverJoystick implements DriverHid {
+public final class DriverJoystick implements DriverHid {
 
     private static DriverJoystick instance;
     private final Joystick driverJoystick;
@@ -47,17 +47,11 @@ public class DriverJoystick implements DriverHid {
 
     }
 
-    DriveHelper driveHelperForCurvature = new DriveHelper();
+    private final DriveHelper driveHelperForCurvature = new DriveHelper();
 
     @Override
     public DriveSignal getDriveSignal() {
-        // if less than 15 degrees left/right
-        double y = -driverJoystick.getRawAxis(1);
-        double x = driverJoystick.getRawAxis(0);
-        // double degrees = Math.atan(y / x) * 180.0 / Math.PI;
-        // boolean quickTurn = Math.abs((degrees % 180.0)) <= 15.0;
-        return driveHelperForCurvature.curvatureDrive(y, x);
-//        return DriveHelper.arcadeToDriveSignal(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0));
+        return driveHelperForCurvature.curvatureDrive(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0));
     }
 
     @Override
@@ -88,8 +82,6 @@ public class DriverJoystick implements DriverHid {
     @Override
     public DriveSignal runJackWheels() {
         return DriveSignal.NEUTRAL;
-//        double speed = driverJoystick.getRawAxis(3);
-//        return new DriveSignal(speed, speed);
     }
 
     @Override
@@ -112,17 +104,3 @@ public class DriverJoystick implements DriverHid {
         return driverJoystick.getRawButton(1) && (driverJoystick.getPOV(0) == 270 || driverJoystick.getPOV(0) == 315 || driverJoystick.getPOV(0) == 225);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -3,8 +3,10 @@ package frc.utils;
 /**
  * Helper functions for converting between units.
  */
-public class UnitConversions {
+public final class UnitConversions {
+    private static final double INCHES_TO_METERS = 0.0254;
     private static final double TAU = 2 * Math.PI; // 2 pi
+    private static final double SECONDS_PER_MINUTE = 60.0;
     private static final double RPM_TO_RAD_PER_SEC = TAU * secondsToMinutes(1);
 
     /**
@@ -21,7 +23,7 @@ public class UnitConversions {
      * @return the same distance, converted to meters, with the sign of the input preserved.
      */
     public static double inchesToMeters(double inches) {
-        return inches * 0.0254;
+        return inches * INCHES_TO_METERS;
     }
 
     /**
@@ -31,7 +33,7 @@ public class UnitConversions {
      * @return the same distance, converted to meters, with the sign of the input preserved.
      */
     public static double metersToInches(double meters) {
-        return meters / 0.0254;
+        return meters / INCHES_TO_METERS;
     }
 
     /**
@@ -62,9 +64,8 @@ public class UnitConversions {
      * @param minutes the value in minutes to convert to seconds.
      * @return the given time interval converted to seconds, with the sign of the input preserved.
      */
-
     public static double minutesToSeconds(double minutes) {
-        return minutes * 60.0;
+        return minutes * SECONDS_PER_MINUTE;
     }
 
     /**
@@ -74,7 +75,7 @@ public class UnitConversions {
      * @return the given time interval converted to minutes, with the sign of the input preserved.
      */
     public static double secondsToMinutes(double seconds) {
-        return seconds / 60.0;
+        return seconds / SECONDS_PER_MINUTE;
     }
 
     public static double encoderUnitsPerMinuteToDistancePerSecond(final double totalDeltaEncoder, final double totalDeltaDistance, final double encoderUnitsPerMinute) {

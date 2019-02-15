@@ -45,7 +45,6 @@ public class CheapCanPidController extends CANPIDController {
         return setReference(value, controlType, 0);
     }
 
-
     /**
      * Sets the desired reference point for the PID controller in a given slot. If any of the values are different than
      * the previous time that values were written, they will be written to the motor controller again. If, however,

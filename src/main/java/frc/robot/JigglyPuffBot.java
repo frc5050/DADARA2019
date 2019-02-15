@@ -26,10 +26,6 @@ public class JigglyPuffBot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        double rangeCm = analogInput.getVoltage() / 2.0;
-        double rangeIn = rangeCm / 2.54;
-        SmartDashboard.putNumber("Range (cm)", rangeCm);
-        SmartDashboard.putNumber("Range (in)", rangeIn);
         SmartDashboard.putBoolean("Dio 0", dio0.get());
         SmartDashboard.putBoolean("Dio 2", dio2.get());
         SmartDashboard.putBoolean("Dio 1", dio1.get());
@@ -37,7 +33,6 @@ public class JigglyPuffBot extends TimedRobot {
         SmartDashboard.putBoolean("Dio 4", dio4.get());
         digOutput.pulse(2000);
     }
-
     @Override
     public void disabledInit() {
     }

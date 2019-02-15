@@ -22,26 +22,26 @@ public class Looper implements LooperInterface {
     private boolean running;
     private double timestamp = 0.0;
     private double dt = 0.0;
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            synchronized (runningLock) {
-                if (running) {
-                    double now = Timer.getFPGATimestamp();
-                    for (Loop loop : loops) {
-                        loop.onLoop(now);
-                    }
-                    dt = now - timestamp;
-                    timestamp = now;
-                }
-            }
-        }
-    };
 
     /**
      * Constructor.
      */
     public Looper() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                synchronized (runningLock) {
+                    if (running) {
+                        double now = Timer.getFPGATimestamp();
+                        for (Loop loop : loops) {
+                            loop.onLoop(now);
+                        }
+                        dt = now - timestamp;
+                        timestamp = now;
+                    }
+                }
+            }
+        };
         notifier = new Notifier(runnable);
         running = false;
         loops = new ArrayList<>();
@@ -93,7 +93,7 @@ public class Looper implements LooperInterface {
     /**
      * Outputs telemetry to SmartDashboard/Shuffleboard about the current state of the looper.
      */
-    public void outputTelemetry() {
+    public synchronized void outputTelemetry() {
         LOOPER_SHUFFLEBOARD.putNumber("Looper dt", dt);
     }
 }

@@ -1,23 +1,28 @@
 package frc.utils;
 
+import static java.lang.Math.toRadians;
+
 /**
  * Helper functions for taking human inputs from the drivers and converting them to outputs to the robot.
  */
 public class DriveHelper {
-    public static final double kDefaultQuickStopThreshold = 0.2;
-    public static final double kDefaultQuickStopAlpha = 0.1;
     /**
      * The default deadband to use for tank drives.
      */
-    static double TANK_DEFAULT_DEADBAND = 0.02;
+    static final double TANK_DEFAULT_DEADBAND = 0.02;
     /**
      * The default deadband to use for arcade drive.
      */
-    static double ARCADE_DEFAULT_DEADBAND = 0.02;
+    static final double ARCADE_DEFAULT_DEADBAND = 0.02;
+    private static final double DEFAULT_QUICK_STOP_THRESHOLD = 0.2;
+    private static final double DEFAULT_QUICK_STOP_ALPHA = 0.1;
+    private static final double DEFAULT_CURVATURE_DRIVE_DEADBAND = 0.2;
+    private static final double ANGULAR_QUICK_TURN_AREA = 20; // degrees
+    private static final double ANGULAR_QUICK_TURN_LINE_SLOPE = Math.tan(toRadians(ANGULAR_QUICK_TURN_AREA));
     private double quickStopAccumulator;
 
     /**
-     * Constructor. Private to avoid instantiation.
+     * Constructor.
      */
     public DriveHelper() {
 
@@ -59,6 +64,7 @@ public class DriveHelper {
      * @return a new {@link DriveSignal} with the values to output to the motor, after limiting and deadbands are
      * applied.
      */
+    @SuppressWarnings("WeakerAccess")
     public static DriveSignal tankToDriveSignal(double leftSpeed, double rightSpeed, boolean squareInputs, double deadband) {
         leftSpeed = limit(leftSpeed);
         leftSpeed = applyDeadband(leftSpeed, deadband);
@@ -93,6 +99,7 @@ public class DriveHelper {
      * @return a new {@link DriveSignal} with the values to output to the motor, after limiting and deadbands are
      * applied.
      */
+    @SuppressWarnings("WeakerAccess")
     public static DriveSignal arcadeToDriveSignal(double x, double zRotation, boolean squareInputs) {
         return arcadeToDriveSignal(x, zRotation, squareInputs, ARCADE_DEFAULT_DEADBAND);
     }
@@ -108,6 +115,7 @@ public class DriveHelper {
      * @return a new {@link DriveSignal} with the values to output to the motor, after limiting and deadbands are
      * applied.
      */
+    @SuppressWarnings("WeakerAccess")
     public static DriveSignal arcadeToDriveSignal(double x, double zRotation, boolean squareInputs, double deadband) {
         x = applyDeadband(limit(x), deadband);
         zRotation = applyDeadband(limit(zRotation), deadband);
@@ -177,28 +185,23 @@ public class DriveHelper {
         }
     }
 
-    private static double upperBoundForCurvature(double x){
-        x = Math.abs(x);
-        if(x > 0.0842){
-            return (x * 0.6) * (x * 0.6) + 0.02;
-        } else {
-            return Math.sin(Math.toRadians(20.0)) * x;
-        }
-    }
-
-    private static double lowerBoundForCurvature(double x){
-        return -upperBoundForCurvature(x);
+    private static double upperBound(double horizontalComponent) {
+        horizontalComponent = Math.abs(horizontalComponent);
+        return Math.min((0.6 * horizontalComponent) * (0.6 * horizontalComponent) + 0.02, ANGULAR_QUICK_TURN_LINE_SLOPE * horizontalComponent);
     }
 
     public DriveSignal curvatureDrive(double xSpeed, double zRotation) {
-        boolean quickTurn = xSpeed <= upperBoundForCurvature(zRotation) && xSpeed >= lowerBoundForCurvature(zRotation);
-        return curvatureDrive(xSpeed, zRotation, 0.2, quickTurn);
+        double horizontalComponent = Math.abs(zRotation);
+        double verticalComponent = Math.abs(xSpeed);
+        final boolean quickTurn = verticalComponent < upperBound(horizontalComponent);
+        return curvatureDrive(xSpeed, zRotation, DEFAULT_CURVATURE_DRIVE_DEADBAND, quickTurn);
     }
 
     public DriveSignal curvatureDrive(double xSpeed, double zRotation, boolean quickTurn) {
-        return curvatureDrive(xSpeed, zRotation, 0.2, quickTurn);
+        return curvatureDrive(xSpeed, zRotation, DEFAULT_CURVATURE_DRIVE_DEADBAND, quickTurn);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public DriveSignal curvatureDrive(double xSpeed, double zRotation, double deadband, boolean isQuickTurn) {
         xSpeed = limit(xSpeed);
         xSpeed = applyDeadband(xSpeed, deadband);
@@ -210,9 +213,9 @@ public class DriveHelper {
         boolean overPower;
 
         if (isQuickTurn) {
-            if (Math.abs(xSpeed) < kDefaultQuickStopThreshold) {
-                quickStopAccumulator = (1 - kDefaultQuickStopAlpha) * quickStopAccumulator
-                        + kDefaultQuickStopAlpha * limit(zRotation) * 2;
+            if (Math.abs(xSpeed) < DEFAULT_QUICK_STOP_THRESHOLD) {
+                quickStopAccumulator = (1 - DEFAULT_QUICK_STOP_ALPHA) * quickStopAccumulator
+                        + DEFAULT_QUICK_STOP_ALPHA * limit(zRotation) * 2;
             }
             overPower = true;
             angularPower = zRotation;

@@ -1,6 +1,7 @@
 package frc.subsystem.test;
 
-import frc.states.CargoState.IntakeState;
+import frc.states.IntakeState;
+import frc.states.IntakeState;
 import frc.subsystem.Cargo;
 
 import static frc.utils.Constants.TEST_SHUFFLEBOARD;
@@ -8,7 +9,7 @@ import static frc.utils.Constants.TEST_SHUFFLEBOARD;
 public class CargoTest implements SubsystemTest {
 
     private static final double BREAK_PERIOD = 0.30;
-    private Cargo cargo = Cargo.getInstance();
+    private final Cargo cargo = Cargo.getInstance();
     private double goalTimestamp = 0.0;
     private boolean initializedState = false;
     private CargoTestState state = CargoTestState.INIT_DISABLED;
@@ -78,24 +79,24 @@ public class CargoTest implements SubsystemTest {
         INIT_DISABLED("The robot's intake should not move before setup", 1.0),
         INTAKE_FRONT("The robot should intake, and disable when a ball is introduced", 4.0),
         INTAKE_LEFT("The robot should intake from the left, and disable when a ball is introduced", 4.0),
-        INTAKE_RIGHT("The robot should intake from the left, and disable when a ball is introduced", 4.0),
+        INTAKE_RIGHT("The robot should intake from the right, and disable when a ball is introduced", 4.0),
         OUTTAKE_LEFT("The robot should be outtaking to the left", 2.0),
         OUTTAKE_RIGHT("The robot should be outtaking to the right", 2.0),
         STOPPED("The robot's intake should be stopped", 2.0);
 
-        private String information;
-        private double timeToRun;
+        private final String information;
+        private final double timeToRun;
 
         CargoTestState(String information, double timeToRun) {
             this.information = information;
             this.timeToRun = timeToRun;
         }
 
-        public String getInformation() {
+        String getInformation() {
             return information;
         }
 
-        public double getTimeToRun() {
+        double getTimeToRun() {
             return timeToRun;
         }
     }

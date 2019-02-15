@@ -9,10 +9,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.autonomous.AutoBase;
+import frc.autonomous.SampleAutoBase;
 import frc.inputs.GameController;
 import frc.loops.Looper;
-import frc.states.CargoState;
+import frc.states.IntakeState;
 import frc.subsystem.*;
 import frc.subsystem.test.CargoTest;
 import frc.subsystem.test.DriveTest;
@@ -31,6 +34,9 @@ import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
  * project.
  */
 public class Robot extends TimedRobot {
+    private static final String kDefaultAuto = "Test";
+    private static final String LvlTwoRightCloseRKT = "Lvl 2 Right to Close Rocket";
+    private final SendableChooser<String> m_chooser = new SendableChooser<>();
     private final SendableChooser<String> testChooser = new SendableChooser<>();
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
             Drive.getInstance(),
@@ -39,22 +45,26 @@ public class Robot extends TimedRobot {
             Hatch.getInstance(),
             Jacks.getInstance()
     ));
-    private LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
-    private Looper enabledLooper = new Looper();
-    private Looper disabledLooper = new Looper();
-
-    private GameController gameController = GameController.getInstance();
-
-    private Drive drive = Drive.getInstance();
-    private Cargo cargo = Cargo.getInstance();
-    private Elevator elevator = Elevator.getInstance();
-    private Hatch hatch = Hatch.getInstance();
-    private Jacks jacks = Jacks.getInstance();
-    private Vision vision = Vision.getInstance();
+    private final LinkedHashMap<String, Test> tests = new LinkedHashMap<>();
+    private final Looper enabledLooper = new Looper();
+    private final Looper disabledLooper = new Looper();
+    private final GameController gameController = GameController.getInstance();
+    private final Drive drive = Drive.getInstance();
+    private final Cargo cargo = Cargo.getInstance();
+    private final Elevator elevator = Elevator.getInstance();
+    private final Hatch hatch = Hatch.getInstance();
+    private final Jacks jacks = Jacks.getInstance();
+    private final Vision vision = Vision.getInstance();
+    private String m_autoSelected;
     private SubsystemTest subsystemTest;
+    //public File trajectoryFile = Pathfinder.readFromCSV(EncodeTest.pf1.csv);
+    private AutoBase autonomous = null;
 
     @Override
     public void robotInit() {
+        m_chooser.setDefaultOption("Autoline", kDefaultAuto);
+        m_chooser.addOption("Lvl 2 Right to Close Rocket", LvlTwoRightCloseRKT);
+        Shuffleboard.getTab("Auton").add("Auto choices", m_chooser);
         tests.put(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST);
         testChooser.setDefaultOption(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST.getOption());
 
@@ -74,6 +84,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+
     }
 
     @Override
@@ -92,11 +103,49 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         disabledLooper.stop();
         enabledLooper.start();
+        m_autoSelected = m_chooser.getSelected();
+        System.out.println("Auto selected: " + m_autoSelected);
+        switch (m_autoSelected) {
+            case LvlTwoRightCloseRKT:
+                autonomous = new SampleAutoBase();
+                break;
+            case kDefaultAuto:
+                autonomous = null;
+                break;
+            default:
+                autonomous = null;
+                break;
+        }
     }
 
     @Override
     public void autonomousPeriodic() {
-
+//        switch (m_autoSelected) {
+//            case LvlTwoRightCloseRKT:
+//                switch LvlTwoRightCloseRKTState {
+//                    case PATH_FOLLOWING:
+//                    File myFile = new File("LEVEL2_to_Rocket.pf1.csv");
+//                    hatch.setHatchPlace();
+//                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+//                    drive.updatePathFollower();
+//                    elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
+//                    hatch.setHatchPull();
+//                    myFile = new File("Right_RKT_Close_Backup.pf1.csv");
+//                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+//                    drive.updatePathFollower();
+//                    Insert gyro-turn 180 here
+//                    myFile = new File("Close_Right_Rkt_to_FEED.pf1.csv");
+//                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+//                    drive.updatePathFollower();
+//                    hatch.setOpenLoop(100);
+//                    }
+//            case kDefaultAuto:
+//            default:
+//            myFile = new File("EncodeTest.pf1.csv");
+//            drive.setTrajectory(Pathfinder.readFromCSV(myFile));
+        if (autonomous != null) {
+            autonomous.periodic(Timer.getFPGATimestamp());
+        }
     }
 
     @Override
@@ -113,28 +162,28 @@ public class Robot extends TimedRobot {
 
         if (gameController.placeHatch()) {
             hatch.setHatchPlace();
-        } else if(gameController.pullHatch()){
+        } else if (gameController.pullHatch()) {
             hatch.setHatchPull();
-        }else {
+        } else {
             hatch.setOpenLoop(gameController.hatchManual());
         }
         final double tHatch = Timer.getFPGATimestamp();
 
         cargo.intakeTilt(gameController.intakeTilt());
         if (gameController.cargoIntake()) {
-            cargo.setDesiredState(CargoState.IntakeState.INTAKE);
+            cargo.setDesiredState(IntakeState.INTAKE);
         } else if (gameController.cargoIntakeLeft()) {
-            cargo.setDesiredState(CargoState.IntakeState.INTAKE_LEFT);
+            cargo.setDesiredState(IntakeState.INTAKE_LEFT);
         } else if (gameController.cargoIntakeRight()) {
-            cargo.setDesiredState(CargoState.IntakeState.INTAKE_RIGHT);
+            cargo.setDesiredState(IntakeState.INTAKE_RIGHT);
         } else if (gameController.cargoOuttakeLeft()) {
-            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_LEFT);
+            cargo.setDesiredState(IntakeState.OUTTAKE_LEFT);
         } else if (gameController.cargoOuttakeRight()) {
-            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_RIGHT);
+            cargo.setDesiredState(IntakeState.OUTTAKE_RIGHT);
         } else if (gameController.cargoOuttakeFront()) {
-            cargo.setDesiredState(CargoState.IntakeState.OUTTAKE_FRONT);
+            cargo.setDesiredState(IntakeState.OUTTAKE_FRONT);
         } else {
-            cargo.setDesiredState(CargoState.IntakeState.STOPPED);
+            cargo.setDesiredState(IntakeState.STOPPED);
         }
         final double tCargo = Timer.getFPGATimestamp();
 
@@ -145,20 +194,15 @@ public class Robot extends TimedRobot {
         }
 
         if (gameController.liftAllJacks()) {
-            System.out.println("Should be lifting");
             jacks.lift();
         } else if (gameController.retractAllJacks()) {
-            System.out.println("Should be retracting");
             jacks.retract();
         } else if (gameController.initializeHabClimbing()) {
-            System.out.println("Should init hab climb...");
             jacks.beginHabClimb();
         } else if (gameController.zeroJacks()) {
-            System.out.println("Should be zeroing");
             jacks.beginZeroing();
         }
         final double tJacks = Timer.getFPGATimestamp();
-
 
         gameController.update();
         final double tController = Timer.getFPGATimestamp();
@@ -181,7 +225,7 @@ public class Robot extends TimedRobot {
         final double tElevator = Timer.getFPGATimestamp();
 
         elevator.outputTelemetry();
-        hatch.outputTelemetry();
+//        hatch.outputTelemetry();
         jacks.outputTelemetry();
         drive.outputTelemetry();
         final double tOutput = Timer.getFPGATimestamp();
@@ -234,11 +278,6 @@ public class Robot extends TimedRobot {
         }
     }
 
-    public void outputTelemetry() {
-//        subsystemManager.outputTelemetry();
-//        enabledLooper.outputTelemetry();
-    }
-
     /**
      * Test cases that can be executed in the test mode to confirm functionality of various subsystems.
      */
@@ -274,7 +313,7 @@ public class Robot extends TimedRobot {
          */
         JACKS_TEST("Test");
 
-        private String option;
+        private final String option;
 
         /**
          * Constructor.
@@ -290,7 +329,7 @@ public class Robot extends TimedRobot {
          *
          * @return the option to put on the dashboard chooser's list.
          */
-        public String getOption() {
+        String getOption() {
             return option;
         }
     }
