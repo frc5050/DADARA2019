@@ -49,7 +49,7 @@ public final class Constants {
     public static final int HATCH_PLACE_ENCODER_POSITION;
     public static final int HATCH_PULL_ENCODER_POSITION;
     public static final boolean ELEVATOR_LIMIT_SWITCH_INVERTED;
-    private static final Robot ROBOT = Robot.BBOT;
+    private static final Robot ROBOT = Robot.A_BOT;
     private static final String DEFAULT_NETWORK_TABLE_KEY = "SmartDashboard";
     private static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = true;
 
@@ -60,7 +60,7 @@ public final class Constants {
 
     static {
         switch (ROBOT) {
-            case ABOT:
+            case A_BOT:
                 HATCH_PLACE_ENCODER_POSITION = 470;
                 HATCH_PULL_ENCODER_POSITION = 760;
                 ELEVATOR_LIMIT_SWITCH_INVERTED = true;
@@ -77,13 +77,14 @@ public final class Constants {
                 UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
                 break;
             default:
-                // BBOT
+                // A bot
                 HATCH_PLACE_ENCODER_POSITION = 470;
                 HATCH_PULL_ENCODER_POSITION = 760;
                 ELEVATOR_LIMIT_SWITCH_INVERTED = true;
                 TOTAL_DELTA_ENCODER_VALUE = -181.22;
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
+                break;
         }
     }
 
@@ -121,7 +122,7 @@ public final class Constants {
     }
 
     private enum Robot {
-        ABOT,
+        A_BOT,
         BBOT
     }
 }
