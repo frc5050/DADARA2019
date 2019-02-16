@@ -274,8 +274,8 @@ public final class Drive extends Subsystem {
                 } else {
                     int leftEncoderValue = trajectoryStartLeftPosition - deltaLeft;
                     int rightEncoderValue = trajectoryStartRightPosition - deltaRight;
-                    leftPower = -leftFollower.calculate(periodicIo.leftPositionTicks);
-                    rightPower = -rightFollower.calculate(periodicIo.rightPositionTicks);
+                    leftPower = -leftFollower.calculate(leftEncoderValue);
+                    rightPower = -rightFollower.calculate(rightEncoderValue);
                 }
                 DRIVE_SHUFFLEBOARD.putBoolean("Left Is Finished", leftFollower.isFinished());
                 DRIVE_SHUFFLEBOARD.putBoolean("Right Is Finished", rightFollower.isFinished());
