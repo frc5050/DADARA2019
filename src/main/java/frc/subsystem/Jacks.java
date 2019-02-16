@@ -460,7 +460,7 @@ public final class Jacks extends Subsystem {
     }
 
     public enum JackState {
-        HAB3(20000, ControlMode.MotionMagic),
+        HAB3(HAB3_ENCODER_VALUE, ControlMode.MotionMagic),
         HAB2(5000, ControlMode.MotionMagic),
         RETRACT(0, ControlMode.MotionMagic),
         ZEROING(-0.3, ControlMode.PercentOutput),

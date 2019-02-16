@@ -56,7 +56,7 @@ public final class Constants {
     public static final double TOTAL_DELTA_ENCODER_VALUE; // revolutions (given by: top value - bottom value)
     public static final double BOTTOM_DIST_FROM_GROUND;
     public static final double UPPER_DIST_FROM_GROUND;
-
+    public static final int HAB3_ENCODER_VALUE;
 
     static {
         switch (ROBOT) {
@@ -67,6 +67,7 @@ public final class Constants {
                 TOTAL_DELTA_ENCODER_VALUE = -181.22;
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
+                HAB3_ENCODER_VALUE = 22000;
                 break;
             case BBOT:
                 HATCH_PLACE_ENCODER_POSITION = 470;
@@ -75,6 +76,7 @@ public final class Constants {
                 TOTAL_DELTA_ENCODER_VALUE = -181.22;
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
+                HAB3_ENCODER_VALUE = 20000;
                 break;
             default:
                 // A bot
@@ -84,6 +86,7 @@ public final class Constants {
                 TOTAL_DELTA_ENCODER_VALUE = -181.22;
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
+                HAB3_ENCODER_VALUE = 22000;
                 break;
         }
     }

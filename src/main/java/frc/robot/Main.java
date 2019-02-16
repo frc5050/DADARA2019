@@ -28,6 +28,6 @@ public final class Main {
      * @param args all arguments to be given when running for the first time, all are discarded and disregarded.
      */
     public static void main(String... args) {
-        RobotBase.startRobot(ElevatorBot::new);
+        RobotBase.startRobot(Robot::new);
     }
 }
