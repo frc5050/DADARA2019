@@ -96,11 +96,13 @@ public final class DriverJoystick implements DriverHid {
 
     @Override
     public boolean cargoIntakeRight() {
-        return driverJoystick.getRawButton(1) && (driverJoystick.getPOV(0) == 90 || driverJoystick.getPOV(0) == 45 || driverJoystick.getPOV(0) == 135);
+        int pov = driverJoystick.getPOV(0);
+        return driverJoystick.getRawButton(1) && (pov == 90 || pov == 45 || pov == 135);
     }
 
     @Override
     public boolean cargoIntakeLeft() {
-        return driverJoystick.getRawButton(1) && (driverJoystick.getPOV(0) == 270 || driverJoystick.getPOV(0) == 315 || driverJoystick.getPOV(0) == 225);
+        int pov = driverJoystick.getPOV(0);
+        return driverJoystick.getRawButton(1) && (pov == 270 || pov == 315 || pov == 225);
     }
 }

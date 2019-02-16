@@ -29,7 +29,7 @@ public class Lvl2RightCloseRKT extends AutoBase {
             case INIT:
                 System.out.println(state);
                 state = State.LEVEL2_to_Rocket;
-                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/LEVEL2_to_Rocket.pf1.csv"));
+                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/LEVEL2_to_Rocket.pf1.csv"), false);
                 elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
                 System.out.println(state);
                 break;
@@ -37,16 +37,24 @@ public class Lvl2RightCloseRKT extends AutoBase {
                 // hatch.setHatchPlace();
                 if (drive.isDone()){
                     state = State.Right_RKT_Close_Backup;
+<<<<<<< HEAD
                     System.out.println(state);
                     drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Right_RKT_Close_Backup.pf1.csv"));
+=======
+                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Right_RKT_Close_Backup.pf1.csv"), true);
+>>>>>>> 635f819c3107afee7fb8b5aa041c6f7ecedac86b
                 }
                 break;
             case Right_RKT_Close_Backup:
                 hatch.setHatchPull();
                   if (drive.isDone()){
                     state = State.Close_Right_Rkt_to_FEED;
+<<<<<<< HEAD
                     System.out.println(state);
                     drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Close_Right_Rkt_to_FEED.pf1.csv"));
+=======
+                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Close_Right_Rkt_to_FEED.pf1.csv"), false);
+>>>>>>> 635f819c3107afee7fb8b5aa041c6f7ecedac86b
                 }
                 break;
             //180 degree turn
