@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
     private final Elevator elevator = Elevator.getInstance();
     private final Hatch hatch = Hatch.getInstance();
     private final Jacks jacks = Jacks.getInstance();
-    //private final Vision vision = Vision.getInstance();
+    private final Vision vision = Vision.getInstance();
     private String m_autoSelected;
     private SubsystemTest subsystemTest;
     //public File trajectoryFile = Pathfinder.readFromCSV(EncodeTest.pf1.csv);
