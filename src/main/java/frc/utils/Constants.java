@@ -46,6 +46,7 @@ public final class Constants {
     public static final ShuffleboardWriter HATCH_SHUFFLEBOARD;
     public static final int HATCH_PLACE_ENCODER_POSITION;
     public static final int HATCH_PULL_ENCODER_POSITION;
+    public static final boolean ELEVATOR_LIMIT_SWITCH_INVERTED;
     private static final Robot ROBOT = Robot.BBOT;
     private static final String DEFAULT_NETWORK_TABLE_KEY = "SmartDashboard";
     private static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = true;
@@ -55,15 +56,18 @@ public final class Constants {
             case ABOT:
                 HATCH_PLACE_ENCODER_POSITION = 470;
                 HATCH_PULL_ENCODER_POSITION = 760;
+                ELEVATOR_LIMIT_SWITCH_INVERTED = true;
                 break;
             case BBOT:
                 HATCH_PLACE_ENCODER_POSITION = 470;
                 HATCH_PULL_ENCODER_POSITION = 760;
+                ELEVATOR_LIMIT_SWITCH_INVERTED = false;
                 break;
             default:
                 // BBOT
                 HATCH_PLACE_ENCODER_POSITION = 470;
                 HATCH_PULL_ENCODER_POSITION = 760;
+                ELEVATOR_LIMIT_SWITCH_INVERTED = true;
         }
     }
 

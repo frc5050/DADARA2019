@@ -91,7 +91,11 @@ public final class Elevator extends Subsystem {
         double timestamp = Timer.getFPGATimestamp();
 
         // If the bottom limit is hit, set the encoder offset and note that we have zeroed.
-        periodicIo.bottomLimitTriggered = bottomLimit.get();
+        if(ELEVATOR_LIMIT_SWITCH_INVERTED) {
+            periodicIo.bottomLimitTriggered = !bottomLimit.get();
+        } else {
+            periodicIo.bottomLimitTriggered = bottomLimit.get();
+        }
         periodicIo.encoderPosition = encoder.getPosition();
         if (periodicIo.bottomLimitTriggered) {
             if (!periodicIo.hasZeroed) {
