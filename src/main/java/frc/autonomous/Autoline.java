@@ -11,7 +11,7 @@ import frc.subsystem.Hatch;
 import frc.subsystem.Elevator.ElevatorPosition;
 import jaci.pathfinder.*;
 
-public class Lvl2RightCloseRKT extends AutoBase {
+public class Autoline extends AutoBase {
     private final Drive drive = Drive.getInstance();
     private final Hatch hatch = Hatch.getInstance();
     private final Elevator elevator = Elevator.getInstance();
@@ -21,40 +21,22 @@ public class Lvl2RightCloseRKT extends AutoBase {
     public void init() {
 
     }
-
     @Override
     public void periodic(double timestamp) {
         SmartDashboard.putString("Autostate", state.toString());
         switch (state) {
             case INIT:
                 System.out.println(state);
-                state = State.LEVEL2_to_Rocket;
-                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/LEVEL2_to_Rocket.pf1.csv"));
+                state = State.EncodeTest;
+                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/EncodeTest.pf1.csv"));
                 elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
-                System.out.println(state);
                 break;
-            case LEVEL2_to_Rocket:
+            case EncodeTest:
                 // hatch.setHatchPlace();
-                if (drive.isDone()){
-                    state = State.Right_RKT_Close_Backup;
-                    System.out.println(state);
-                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Right_RKT_Close_Backup.pf1.csv"));
-                }
-                break;
-            case Right_RKT_Close_Backup:
-                hatch.setHatchPull();
-                  if (drive.isDone()){
-                    state = State.Close_Right_Rkt_to_FEED;
-                    System.out.println(state);
-                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Close_Right_Rkt_to_FEED.pf1.csv"));
-                }
-                break;
-            //180 degree turn
-            case Close_Right_Rkt_to_FEED:
+                System.out.println(state);
                 if (drive.isDone()){
                     state = State.STOP;
-                    System.out.println(state);
-            }
+                }
                 break;
             case STOP:
                 System.out.println(state);
@@ -75,9 +57,7 @@ public class Lvl2RightCloseRKT extends AutoBase {
 
     private enum State {
         INIT,
-        LEVEL2_to_Rocket,
-        Right_RKT_Close_Backup,
-        Close_Right_Rkt_to_FEED,
+        EncodeTest,
         STOP
     }
 }

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.autonomous.AutoBase;
+import frc.autonomous.Autoline;
 import frc.autonomous.SampleAutoBase;
 import frc.inputs.GameController;
 import frc.loops.Looper;
@@ -112,7 +113,7 @@ public class Robot extends TimedRobot {
                 autonomous = new Lvl2RightCloseRKT();
                 break;
             case kDefaultAuto:
-                autonomous = null;
+                autonomous = new Autoline();
                 break;
             default:
                 autonomous = null;
@@ -159,7 +160,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         final double t0 = Timer.getFPGATimestamp();
-        drive.setOpenLoop(gameController.getDriveSignal());
+        DriveSignal driveSignal = gameController.getDriveSignal();
+        drive.setOpenLoop(driveSignal);
         final double tDrive = Timer.getFPGATimestamp();
 
         if (gameController.placeHatch()) {

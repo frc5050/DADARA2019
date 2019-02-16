@@ -200,6 +200,7 @@ public final class Drive extends Subsystem {
         DRIVE_SHUFFLEBOARD.putNumber("Yaw", periodicIo.yaw);
         DRIVE_SHUFFLEBOARD.putNumber("Roll", periodicIo.roll);
         DRIVE_SHUFFLEBOARD.putNumber("Pitch", periodicIo.pitch);
+        DRIVE_SHUFFLEBOARD.putString("State", state.toString());
     }
 
     // Outputs different values based on whether the robot is in teleop or autonomous
@@ -244,7 +245,8 @@ public final class Drive extends Subsystem {
         if (trajectory == null || state != DriveState.PATH_FOLLOWING) {
             return false;
         }
-        return leftFollower.isFinished() || rightFollower.isFinished();
+        return lastTrajectoryValue >= trajectoryValues;
+       // return leftFollower.isFinished() || rightFollower.isFinished();
         // return trajectoryValues <= lastTrajectoryValue;
     }
 
