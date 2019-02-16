@@ -97,7 +97,6 @@ public final class Drive extends Subsystem {
 
         navX = new AHRS(SPI.Port.kMXP);
 
-//        initGainsOnShuffleBoard();
     }
 
     // Creates an instance of drive. If there is already an instance, do nothing so it doesn't conflict
@@ -126,7 +125,6 @@ public final class Drive extends Subsystem {
         talon.config_kD(0, kD, timeout);
         talon.config_kF(0, kF, timeout);
         talon.config_IntegralZone(0, kIz, timeout);
-
     }
 
     private void configureMaster(WPI_TalonSRX talon, boolean left) {

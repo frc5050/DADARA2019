@@ -386,7 +386,6 @@ public final class Jacks extends Subsystem {
 
     @Override
     public synchronized void readPeriodicInputs() {
-        double time = Timer.getFPGATimestamp();
         periodicIo.frontIrDetectsGround = !forwardIrSensor.get();
         periodicIo.rearIrDetectsGround = !rearIrSensor.get();
         periodicIo.frontJackEncoder = frontJack.getSelectedSensorPosition(0);
@@ -403,7 +402,6 @@ public final class Jacks extends Subsystem {
             periodicIo.leftJackCurrentDraw = pdp.getCurrent(LEFT_REAR_JACK_LIFT);
             periodicIo.rightJackCurrentDraw = pdp.getCurrent(RIGHT_REAR_JACK_LIFT);
         }
-        lastTimestampRead = time;
     }
 
     /**
