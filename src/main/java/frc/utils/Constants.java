@@ -3,7 +3,6 @@ package frc.utils;
 public final class Constants {
     public static final double EPSILON_SMALL_DOUBLE = 1.0E-11;
     public static final int SETTINGS_TIMEOUT = 30;
-
     // Motor controller ports
     public static final int LEFT_DRIVE_1 = 15; // SRX
     public static final int LEFT_DRIVE_2 = 0; // SPX
@@ -22,19 +21,21 @@ public final class Constants {
     public static final int CARGO_LEFT = 9; // SRX
     public static final int CARGO_RIGHT = 8; // SRX
     public static final DriverHidOption DRIVER_HID_OPTION = DriverHidOption.SINGLE_JOYSTICK;
-
     // HID ports
     public static final int DRIVER_JOYSTICK_PORT = 0;
     public static final int DRIVER_GAMEPAD_PORT = 0;
     public static final int OPERATOR_GAMEPAD_PORT = 1;
     public static final int DRIVER_JOYSTICK_LEFT_PORT = 0;
     public static final int DRIVER_JOYSTICK_RIGHT_PORT = 2;
-
     // Sensor ports
     public static final int CARGO_SENSOR = 0; // dio
+    public static final int HATCH_UPPER_LIMIT_SWITCH = 1;
     public static final int ELEVATOR_BOTTOM_LIMIT = 2; // dio
     public static final int DRIVE_FRONT_IR_SENSOR = 3; // dio
     public static final int DRIVE_REAR_IR_SENSOR = 4; // dio
+    public static final int CAN_TIMEOUT_MS = 10; // ms
+    public static final double DRIVE_VOLTAGE_RAMP_RATE = 0; // time from neutral to full power
+    // Network Tables
     public static final ShuffleboardWriter ROBOT_MAIN_SHUFFLEBOARD;
     public static final ShuffleboardWriter LOOPER_SHUFFLEBOARD;
     public static final ShuffleboardWriter DRIVE_SHUFFLEBOARD;
@@ -43,11 +44,28 @@ public final class Constants {
     public static final ShuffleboardWriter CARGO_SHUFFLEBOARD;
     public static final ShuffleboardWriter TEST_SHUFFLEBOARD;
     public static final ShuffleboardWriter HATCH_SHUFFLEBOARD;
-    public static final int CAN_TIMEOUT_MS = 10; // ms
-    public static final double DRIVE_VOLTAGE_RAMP_RATE = 0; // time from neutral to full power
-    // Network Tables Ports
+    public static final int HATCH_PLACE_ENCODER_POSITION;
+    public static final int HATCH_PULL_ENCODER_POSITION;
+    private static final Robot ROBOT = Robot.BBOT;
     private static final String DEFAULT_NETWORK_TABLE_KEY = "SmartDashboard";
     private static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = true;
+
+    static {
+        switch (ROBOT) {
+            case ABOT:
+                HATCH_PLACE_ENCODER_POSITION = 470;
+                HATCH_PULL_ENCODER_POSITION = 760;
+                break;
+            case BBOT:
+                HATCH_PLACE_ENCODER_POSITION = 470;
+                HATCH_PULL_ENCODER_POSITION = 760;
+                break;
+            default:
+                // BBOT
+                HATCH_PLACE_ENCODER_POSITION = 470;
+                HATCH_PULL_ENCODER_POSITION = 760;
+        }
+    }
 
     static {
         if (USE_CUSTOM_NETWORK_TABLE_KEYS) {
@@ -71,6 +89,7 @@ public final class Constants {
         }
     }
 
+
     private Constants() {
 
     }
@@ -79,5 +98,10 @@ public final class Constants {
         SINGLE_JOYSTICK,
         DUAL_JOYSTICKS,
         GAMEPAD
+    }
+
+    private enum Robot {
+        ABOT,
+        BBOT
     }
 }

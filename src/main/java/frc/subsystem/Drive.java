@@ -7,11 +7,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.loops.Loop;
 import frc.loops.LooperInterface;
 import frc.utils.DriveSignal;
+import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
@@ -28,6 +29,7 @@ public final class Drive extends Subsystem {
     private static final double METERS_PER_SEC_TO_TICKS_PER_100_MS = (DRIVE_TICKS_PER_ROTATION_DOUBLE / DRIVE_WHEEL_DIAMETER) * 0.1;
     // TODO remeasure on a bot
     private static final double DRIVEBASE_WIDTH = 0.56515;
+    private static final Trajectory.Config CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.01, 3, 90, 3000);
     private static Drive instance;
     private final WPI_TalonSRX leftMaster;
     private final VictorSPX leftSlave;
@@ -50,7 +52,6 @@ public final class Drive extends Subsystem {
         public void onStart(final double timestamp) {
             synchronized (Drive.this) {
                 setOpenLoop(DriveSignal.BRAKE);
-                setBrakeMode(false);
                 setBrakeMode(true);
             }
         }
@@ -228,12 +229,12 @@ public final class Drive extends Subsystem {
             TankModifier modifier = new TankModifier(trajectory).modify(DRIVEBASE_WIDTH);
             leftTrajectory = modifier.getLeftTrajectory();
             rightTrajectory = modifier.getRightTrajectory();
-            leftFollower = new EncoderFollower(leftTrajectory);
-            rightFollower = new EncoderFollower(rightTrajectory);
+            leftFollower = new EncoderFollower(rightTrajectory);
+            rightFollower = new EncoderFollower(leftTrajectory);
             leftFollower.configureEncoder(periodicIo.leftPositionTicks, DRIVE_TICKS_PER_ROTATION, DRIVE_WHEEL_DIAMETER);
             rightFollower.configureEncoder(periodicIo.rightPositionTicks, DRIVE_TICKS_PER_ROTATION, DRIVE_WHEEL_DIAMETER);
-            leftFollower.configurePIDVA(2.0, 0.0, 0.0, 1.0 / 3.2, 0);
-            rightFollower.configurePIDVA(2.0, 0.0, 0.0, 1.0 / 3.2, 0);
+            leftFollower.configurePIDVA(2.0, 0.0, 0.0, 1.0 / 3.0, 0);
+            rightFollower.configurePIDVA(2.0, 0.0, 0.0, 1.0 / 3.0, 0);
             lastTrajectoryValue = 0;
             trajectoryValues = trajectory.length();
             state = DriveState.PATH_FOLLOWING;

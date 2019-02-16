@@ -1,9 +1,6 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -17,11 +14,14 @@ public class JigglyPuffBot extends TimedRobot {
     private DigitalInput dio2 = new DigitalInput(2);
     private DigitalInput dio3 = new DigitalInput(3);
     private DigitalInput dio4 = new DigitalInput(4);
-    private AnalogInput analogInput = new AnalogInput(0);
-    private DigitalOutput digOutput = new DigitalOutput(7);
+    private DigitalOutput dio5 = new DigitalOutput(5);
+//    private DigitalOutput dio6 = new DigitalOutput(6);
+//    private AnalogInput analogInput = new AnalogInput(0);
+//    private DigitalOutput digOutput = new DigitalOutput(7);
 
     @Override
     public void robotInit() {
+        dio5.enablePWM(1.0);
     }
 
     @Override
@@ -31,6 +31,9 @@ public class JigglyPuffBot extends TimedRobot {
         SmartDashboard.putBoolean("Dio 1", dio1.get());
         SmartDashboard.putBoolean("Dio 3", dio3.get());
         SmartDashboard.putBoolean("Dio 4", dio4.get());
+        SmartDashboard.putBoolean("Dio 5", dio5.get());
+//        dio6.enablePWM(1.00);
+//        SmartDashboard.putBoolean("Dio 6", dio6.get());
     }
     
     @Override

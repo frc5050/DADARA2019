@@ -3,6 +3,8 @@ package frc.states;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import static frc.states.HatchState.ControlState.*;
+import static frc.utils.Constants.HATCH_PLACE_ENCODER_POSITION;
+import static frc.utils.Constants.HATCH_PULL_ENCODER_POSITION;
 
 public class HatchStateMachine {
     public static final double PEAK_FORWARD_OUTPUT_STANDARD = 1.0;
@@ -10,8 +12,6 @@ public class HatchStateMachine {
     private static final double PEAK_FORWARD_OUTPUT_LIMIT_PRESSED = 1.0;
     private static final double PEAK_REVERSE_OUTPUT_LIMIT_PRESSED = 0.0;
     private static final double ZEROING_SPEED = -0.2;
-    private static final int HATCH_PLACE_ENCODER_POSITION = 470;
-    private static final int HATCH_PULL_ENCODER_POSITION = 760;
 
     private final HatchState systemState = new HatchState();
     private HatchState.ControlState desiredControlState = STOPPED;

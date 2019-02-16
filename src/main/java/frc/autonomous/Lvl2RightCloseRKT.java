@@ -29,7 +29,7 @@ public class Lvl2RightCloseRKT extends AutoBase {
             case INIT:
                 System.out.println(state);
                 state = State.LEVEL2_to_Rocket;
-                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Right_RKT_Close_Backup.pf1.csv"));
+                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/LEVEL2_to_Rocket.pf1.csv"));
                 elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
                 break;
             case LEVEL2_to_Rocket:

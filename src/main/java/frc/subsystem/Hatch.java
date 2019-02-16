@@ -25,7 +25,7 @@ public final class Hatch extends Subsystem {
     private HatchState outputState = new HatchState();
 
     private Hatch() {
-        upperLimitSwitch = new DigitalInput(1);
+        upperLimitSwitch = new DigitalInput(HATCH_UPPER_LIMIT_SWITCH);
         hatch = new WPI_TalonSRX(HATCH);
 
         hatch.configFactoryDefault();
