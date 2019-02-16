@@ -57,6 +57,12 @@ public final class Constants {
     public static final double BOTTOM_DIST_FROM_GROUND;
     public static final double UPPER_DIST_FROM_GROUND;
     public static final int HAB3_ENCODER_VALUE;
+    // Motion magic parameters when lifting
+    public static final int REAR_MOTION_MAGIC_VELOCITY_LIFT;
+    public static final int REAR_MOTION_MAGIC_ACCELERATION_LIFT;
+    public static final int FRONT_MOTION_MAGIC_VELOCITY_LIFT;
+    public static final int FRONT_MOTION_MAGIC_ACCELERATION_LIFT;
+
 
     static {
         switch (ROBOT) {
@@ -68,6 +74,10 @@ public final class Constants {
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
                 HAB3_ENCODER_VALUE = 22000;
+                REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
+                REAR_MOTION_MAGIC_ACCELERATION_LIFT = 400;
+                FRONT_MOTION_MAGIC_VELOCITY_LIFT = 700;
+                FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 650;
                 break;
             case BBOT:
                 HATCH_PLACE_ENCODER_POSITION = 470;
@@ -77,6 +87,10 @@ public final class Constants {
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
                 HAB3_ENCODER_VALUE = 20000;
+                REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
+                REAR_MOTION_MAGIC_ACCELERATION_LIFT = 500;
+                FRONT_MOTION_MAGIC_VELOCITY_LIFT = 1000;
+                FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 650;
                 break;
             default:
                 // A bot
@@ -87,6 +101,10 @@ public final class Constants {
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
                 HAB3_ENCODER_VALUE = 22000;
+                REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
+                REAR_MOTION_MAGIC_ACCELERATION_LIFT = 500;
+                FRONT_MOTION_MAGIC_VELOCITY_LIFT = 700;
+                FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 650;
                 break;
         }
     }
