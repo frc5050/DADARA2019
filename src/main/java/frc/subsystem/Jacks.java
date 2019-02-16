@@ -215,7 +215,7 @@ public final class Jacks extends Subsystem {
                             break;
                         case HAB_CLIMB_RETRACT_FRONT_JACK:
                             controlJacks(JackState.RETRACT, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
-                            drive.setOpenLoop(DriveSignal.NEUTRAL);
+                            drive.setOpenLoop(new DriveSignal(0.05, 0.05));
                             setWheels(new DriveSignal(0.20, 0.20));
                             if (checkEncoders((int) (LIFT_TOLERANCE / 1.3))) {
                                 finishTimestamp = timestamp;
@@ -233,7 +233,7 @@ public final class Jacks extends Subsystem {
                             break;
                         case HAB_CLIMB_RETRACT_REAR_JACKS:
                             controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
-                            drive.setOpenLoop(DriveSignal.NEUTRAL);
+                            drive.setOpenLoop(new DriveSignal(0.03, 0.03));
                             setWheels(DriveSignal.NEUTRAL);
                             if (checkEncoders((int) (LIFT_TOLERANCE / 1.4))) {
                                 finishTimestamp = timestamp;

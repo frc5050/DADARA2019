@@ -97,6 +97,7 @@ public final class Drive extends Subsystem {
 
         navX = new AHRS(SPI.Port.kMXP);
 
+        setBrakeMode(true);
     }
 
     // Creates an instance of drive. If there is already an instance, do nothing so it doesn't conflict
@@ -165,7 +166,7 @@ public final class Drive extends Subsystem {
     // Changes the mode to joystick input
     public synchronized void setOpenLoop(DriveSignal signal) {
         if (state != DriveState.OPEN_LOOP) {
-            setBrakeMode(false);
+            setBrakeMode(true);
             // TODO should this be in a constant?
             leftMaster.configNeutralDeadband(DRIVE_MASTER_DEADBAND, 0);
             rightMaster.configNeutralDeadband(DRIVE_MASTER_DEADBAND, 0);
