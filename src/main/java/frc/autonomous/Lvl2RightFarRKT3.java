@@ -10,7 +10,7 @@ import frc.subsystem.Hatch;
 import frc.subsystem.Elevator.ElevatorPosition;
 import jaci.pathfinder.*;
 
-public class Lvl2RightCloseRKT extends AutoBase {
+public class Lvl2RightFarRKT3 extends AutoBase {
     private final Drive drive = Drive.getInstance();
     private final Hatch hatch = Hatch.getInstance();
     private final Elevator elevator = Elevator.getInstance();
@@ -27,30 +27,30 @@ public class Lvl2RightCloseRKT extends AutoBase {
         switch (state) {
             case INIT:
                 System.out.println(state);
-                state = State.LEVEL2_to_Rocket;
-                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/LEVEL2_to_Rocket.pf1.csv"), false);
-                elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
+                state = State.LEVEL2_to_Rocket_Far;
+                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/LEVEL2_to_Rocket_Far.path.pf1.csv"), false);
+                elevator.pidToPosition(ElevatorPosition.HATCH_HIGH);
                 System.out.println(state);
                 break;
-            case LEVEL2_to_Rocket:
+            case LEVEL2_to_Rocket_Far:
                 hatch.setHatchPlace();
                 if (drive.isDone()){
-                    state = State.Right_RKT_Close_Backup;
+                    state = State.Right_RKT_Far_Backup;
                     System.out.println(state);
-                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Right_RKT_Close_Backup.pf1.csv"), true);
+                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Right_RKT_Far_Backup.pf1.csv"), true);
                 }
                 break;
-            case Right_RKT_Close_Backup:
+            case Right_RKT_Far_Backup:
                 hatch.setHatchPull();
                   if (drive.isDone()){
-                    state = State.Close_Right_Rkt_to_FEED;
+                    state = State.Far_Right_Rkt_to_FEED;
                     System.out.println(state);
-                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Close_Right_Rkt_to_FEED.pf1.csv"), false);
+                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Far_Right_Rkt_to_FEED.pf1.csv"), false);
                     
                 }
                 break;
             //180 degree turn
-            case Close_Right_Rkt_to_FEED:
+            case Far_Right_Rkt_to_FEED:
                 if (drive.isDone()){
                     state = State.STOP;
                     System.out.println(state);
@@ -75,9 +75,9 @@ public class Lvl2RightCloseRKT extends AutoBase {
 
     private enum State {
         INIT,
-        LEVEL2_to_Rocket,
-        Right_RKT_Close_Backup,
-        Close_Right_Rkt_to_FEED,
+        LEVEL2_to_Rocket_Far,
+        Right_RKT_Far_Backup,
+        Far_Right_Rkt_to_FEED,
         STOP
     }
 }

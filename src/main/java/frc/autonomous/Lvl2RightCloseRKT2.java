@@ -10,7 +10,7 @@ import frc.subsystem.Hatch;
 import frc.subsystem.Elevator.ElevatorPosition;
 import jaci.pathfinder.*;
 
-public class Lvl2RightCloseRKT extends AutoBase {
+public class Lvl2RightCloseRKT2 extends AutoBase {
     private final Drive drive = Drive.getInstance();
     private final Hatch hatch = Hatch.getInstance();
     private final Elevator elevator = Elevator.getInstance();
@@ -29,7 +29,7 @@ public class Lvl2RightCloseRKT extends AutoBase {
                 System.out.println(state);
                 state = State.LEVEL2_to_Rocket;
                 drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/LEVEL2_to_Rocket.pf1.csv"), false);
-                elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
+                elevator.pidToPosition(ElevatorPosition.HATCH_MID);
                 System.out.println(state);
                 break;
             case LEVEL2_to_Rocket:
@@ -42,6 +42,7 @@ public class Lvl2RightCloseRKT extends AutoBase {
                 break;
             case Right_RKT_Close_Backup:
                 hatch.setHatchPull();
+                elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
                   if (drive.isDone()){
                     state = State.Close_Right_Rkt_to_FEED;
                     System.out.println(state);

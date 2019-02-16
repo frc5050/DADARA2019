@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.autonomous.AutoBase;
+import frc.autonomous.Autoline;
 import frc.inputs.GameController;
 import frc.loops.Looper;
 import frc.states.IntakeState;
@@ -22,7 +23,11 @@ import frc.subsystem.test.GamepadTest;
 import frc.subsystem.test.SubsystemTest;
 import frc.utils.DriveSignal;
 import frc.autonomous.Lvl2RightCloseRKT;
-
+import frc.autonomous.Lvl2RightCloseRKT2;
+import frc.autonomous.Lvl2RightCloseRKT3;
+import frc.autonomous.Lvl2RightFarRKT;
+import frc.autonomous.Lvl2RightFarRKT2;
+import frc.autonomous.Lvl2RightFarRKT3;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
@@ -37,6 +42,11 @@ import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
 public class Robot extends TimedRobot {
     private static final String kDefaultAuto = "Test";
     private static final String LvlTwoRightCloseRKT = "Lvl 2 Right to Close Rocket";
+    private static final String LvlTwoRightCloseRKT2 = "Lvl 2 Right to Close Rocket Hatch 2";
+    private static final String LvlTwoRightCloseRKT3 = "Lvl 2 Right to Close Rocket Hatch 3";
+    private static final String Lvl2RightFarRKT = "Lvl 2 Right to Far Rocket";
+    private static final String Lvl2RightFarRKT2 = "Lvl 2 Right to Far Rocket Hatch 2";
+    private static final String Lvl2RightFarRKT3 = "Lvl 2 Right to Far Rocket Hatch 3";
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     private final SendableChooser<String> testChooser = new SendableChooser<>();
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
@@ -110,8 +120,23 @@ public class Robot extends TimedRobot {
             case LvlTwoRightCloseRKT:
                 autonomous = new Lvl2RightCloseRKT();
                 break;
+            case LvlTwoRightCloseRKT2:
+                autonomous = new Lvl2RightCloseRKT2();
+                break;
+            case LvlTwoRightCloseRKT3:
+                autonomous = new Lvl2RightCloseRKT3();
+                break;
+            case Lvl2RightFarRKT:
+                autonomous = new Lvl2RightFarRKT();
+                break;
+            case Lvl2RightFarRKT2:
+                autonomous = new Lvl2RightFarRKT2();
+                break;
+            case Lvl2RightFarRKT3:
+                autonomous = new Lvl2RightFarRKT3();
+                break;
             case kDefaultAuto:
-                autonomous = null;
+                autonomous = new Autoline();
                 break;
             default:
                 autonomous = null;
@@ -158,7 +183,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         final double t0 = Timer.getFPGATimestamp();
-        drive.setOpenLoop(gameController.getDriveSignal());
+        DriveSignal driveSignal = gameController.getDriveSignal();
+        drive.setOpenLoop(driveSignal);
         final double tDrive = Timer.getFPGATimestamp();
 
         if (gameController.placeHatch()) {
