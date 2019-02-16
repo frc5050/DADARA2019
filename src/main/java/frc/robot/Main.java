@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.subsystem.Elevator;
 
 /**
  * Do NOT add any static variables to this class, or any initialization at all.
@@ -27,6 +28,6 @@ public final class Main {
      * @param args all arguments to be given when running for the first time, all are discarded and disregarded.
      */
     public static void main(String... args) {
-        RobotBase.startRobot(JigglyPuffBot::new);
+        RobotBase.startRobot(ElevatorBot::new);
     }
 }

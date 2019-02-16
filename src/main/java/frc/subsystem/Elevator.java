@@ -11,9 +11,6 @@ import static frc.utils.UnitConversions.inchesToMeters;
 import static frc.utils.UnitConversions.metersToInches;
 
 public final class Elevator extends Subsystem {
-    private static final double TOTAL_DELTA_ENCODER_VALUE = -181.22; // revolutions (given by: top value - bottom value)
-    private static final double BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
-    private static final double UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
     private static final double TOTAL_DELTA_HEIGHT = UPPER_DIST_FROM_GROUND - BOTTOM_DIST_FROM_GROUND;
     private static final double MANUAL_MOVEMENT_DEADBAND = 0.02;
     private static final double MAX_RPM = 5000.0;
@@ -91,7 +88,7 @@ public final class Elevator extends Subsystem {
         double timestamp = Timer.getFPGATimestamp();
 
         // If the bottom limit is hit, set the encoder offset and note that we have zeroed.
-        if(ELEVATOR_LIMIT_SWITCH_INVERTED) {
+        if (ELEVATOR_LIMIT_SWITCH_INVERTED) {
             periodicIo.bottomLimitTriggered = !bottomLimit.get();
         } else {
             periodicIo.bottomLimitTriggered = bottomLimit.get();

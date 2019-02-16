@@ -1,5 +1,7 @@
 package frc.utils;
 
+import static frc.utils.UnitConversions.inchesToMeters;
+
 public final class Constants {
     public static final double EPSILON_SMALL_DOUBLE = 1.0E-11;
     public static final int SETTINGS_TIMEOUT = 30;
@@ -51,23 +53,37 @@ public final class Constants {
     private static final String DEFAULT_NETWORK_TABLE_KEY = "SmartDashboard";
     private static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = true;
 
+    public static final double TOTAL_DELTA_ENCODER_VALUE; // revolutions (given by: top value - bottom value)
+    public static final double BOTTOM_DIST_FROM_GROUND;
+    public static final double UPPER_DIST_FROM_GROUND;
+
+
     static {
         switch (ROBOT) {
             case ABOT:
                 HATCH_PLACE_ENCODER_POSITION = 470;
                 HATCH_PULL_ENCODER_POSITION = 760;
                 ELEVATOR_LIMIT_SWITCH_INVERTED = true;
+                TOTAL_DELTA_ENCODER_VALUE = -181.22;
+                BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
+                UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
                 break;
             case BBOT:
                 HATCH_PLACE_ENCODER_POSITION = 470;
                 HATCH_PULL_ENCODER_POSITION = 760;
                 ELEVATOR_LIMIT_SWITCH_INVERTED = false;
+                TOTAL_DELTA_ENCODER_VALUE = -181.22;
+                BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
+                UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
                 break;
             default:
                 // BBOT
                 HATCH_PLACE_ENCODER_POSITION = 470;
                 HATCH_PULL_ENCODER_POSITION = 760;
                 ELEVATOR_LIMIT_SWITCH_INVERTED = true;
+                TOTAL_DELTA_ENCODER_VALUE = -181.22;
+                BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
+                UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
         }
     }
 
