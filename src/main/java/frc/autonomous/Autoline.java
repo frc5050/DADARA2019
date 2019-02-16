@@ -2,7 +2,6 @@ package frc.autonomous;
 
 import java.io.File;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.subsystem.Drive;
 import frc.subsystem.Elevator;

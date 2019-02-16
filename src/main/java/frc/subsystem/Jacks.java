@@ -22,7 +22,7 @@ import static frc.utils.Constants.*;
 public final class Jacks extends Subsystem {
     // Motion magic parameters when lifting
     private static final int REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
-    private static final int REAR_MOTION_MAGIC_ACCELERATION_LIFT = 500;
+    private static final int REAR_MOTION_MAGIC_ACCELERATION_LIFT = 450;
     private static final int FRONT_MOTION_MAGIC_VELOCITY_LIFT = 1000;
     private static final int FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 650;
     // Motion magic parameters when retracting
@@ -53,6 +53,7 @@ public final class Jacks extends Subsystem {
     private JackSystem state = JackSystem.OPEN_LOOP;
     private GainsState lastConfiguredGainState = null;
     private double lastTimestampRead = Timer.getFPGATimestamp();
+    private JackState habLevelToClimbTo = JackState.RETRACT;
 
     /**
      * Constructor.
@@ -67,7 +68,7 @@ public final class Jacks extends Subsystem {
         leftRearWheel.setInverted(true);
         forwardIrSensor = new DigitalInput(DRIVE_FRONT_IR_SENSOR);
         rearIrSensor = new DigitalInput(DRIVE_REAR_IR_SENSOR);
-        configureTalon(rightRearJack, true, false, 1.0, 1.0, -1.0);
+        configureTalon(rightRearJack, true, false, 2.0, 1.0, -1.0);
         configureTalon(leftRearJack, false, false, 1.0, 1.0, -1.0);
         configureTalon(frontJack, true, false, 1.0, 1.0, -1.0);
     }
@@ -202,7 +203,7 @@ public final class Jacks extends Subsystem {
                             }
                             break;
                         case HAB_CLIMB_LIFT_ALL:
-                            controlJacks(JackState.HAB3, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
+                            controlJacks(habLevelToClimbTo, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
                             if (checkEncoders(LIFT_TOLERANCE)) {
                                 setState(JackSystem.HAB_CLIMB_RUN_FORWARD);
                                 leftRearJack.configPeakOutputForward(1.0);
@@ -210,7 +211,7 @@ public final class Jacks extends Subsystem {
                             }
                             break;
                         case HAB_CLIMB_RUN_FORWARD:
-                            controlJacks(JackState.HAB3, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
+                            controlJacks(habLevelToClimbTo, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
                             drive.setOpenLoop(RETRACT_FRONT_JACK_DRIVE_BASE);
                             setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
                             if (periodicIo.frontIrDetectsGround) {
@@ -218,7 +219,7 @@ public final class Jacks extends Subsystem {
                             }
                             break;
                         case HAB_CLIMB_RETRACT_FRONT_JACK:
-                            controlJacks(JackState.RETRACT, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
+                            controlJacks(JackState.RETRACT, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
                             drive.setOpenLoop(RETRACT_FRONT_JACK_DRIVE_BASE);
                             setWheels(DriveSignal.NEUTRAL);
                             if (checkEncoders((int) (LIFT_TOLERANCE / 1.3))) {
@@ -227,7 +228,7 @@ public final class Jacks extends Subsystem {
                             }
                             break;
                         case HAB_CLIMB_HOLD_REAR_AND_RUN_FORWARD:
-                            controlJacks(JackState.RETRACT, JackState.HAB3, JackState.HAB3, GainsState.LIFT);
+                            controlJacks(JackState.RETRACT, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
                             drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
                             setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
                             if (periodicIo.rearIrDetectsGround) {
@@ -306,8 +307,14 @@ public final class Jacks extends Subsystem {
         setState(JackSystem.ZEROING);
     }
 
-    public synchronized void beginHabClimb() {
+    public synchronized void beginHabClimbLevel3() {
         setState(JackSystem.INIT_HAB_CLIMB);
+        habLevelToClimbTo = JackState.HAB3;
+    }
+    public synchronized void beginHabClimbLevel2() {
+        setState(JackSystem.INIT_HAB_CLIMB);
+        habLevelToClimbTo = JackState.HAB2;
+
     }
 
     private synchronized void setState(JackSystem desiredState) {
@@ -460,7 +467,7 @@ public final class Jacks extends Subsystem {
     }
 
     public enum JackState {
-        HAB3(20000, ControlMode.MotionMagic),
+        HAB3(HAB3_ENCODER_VALUE, ControlMode.MotionMagic),
         HAB2(5000, ControlMode.MotionMagic),
         RETRACT(0, ControlMode.MotionMagic),
         ZEROING(-0.3, ControlMode.PercentOutput),

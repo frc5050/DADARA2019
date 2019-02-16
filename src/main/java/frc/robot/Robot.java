@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.autonomous.AutoBase;
 import frc.autonomous.Autoline;
-import frc.autonomous.SampleAutoBase;
 import frc.inputs.GameController;
 import frc.loops.Looper;
 import frc.states.IntakeState;
@@ -66,7 +65,7 @@ public class Robot extends TimedRobot {
     private final Elevator elevator = Elevator.getInstance();
     private final Hatch hatch = Hatch.getInstance();
     private final Jacks jacks = Jacks.getInstance();
-    //private final Vision vision = Vision.getInstance();
+    private final Vision vision = Vision.getInstance();
     private String m_autoSelected;
     private SubsystemTest subsystemTest;
     //public File trajectoryFile = Pathfinder.readFromCSV(EncodeTest.pf1.csv);
@@ -226,7 +225,7 @@ public class Robot extends TimedRobot {
         } else if (gameController.retractAllJacks()) {
             jacks.retract();
         } else if (gameController.initializeHabClimbing()) {
-            jacks.beginHabClimb();
+            jacks.beginHabClimbLevel3();
         } else if (gameController.zeroJacks()) {
             jacks.beginZeroing();
         }
