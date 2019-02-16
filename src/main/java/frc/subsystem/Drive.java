@@ -220,17 +220,23 @@ public final class Drive extends Subsystem {
         setOpenLoop(DriveSignal.NEUTRAL);
     }
 
+    private int trajectoryStartLeftPosition = 0;
+    private int trajectoryStartRightPosition = 0;
+    private boolean invertTrajectory = false;
     // Creates a trajectory and sets it to the motors, changing the case to Path following
-    public synchronized void setTrajectory(Trajectory trajectory) {
+    public synchronized void setTrajectory(Trajectory trajectory, boolean invert) {
         if (trajectory != null) {
             this.trajectory = trajectory;
+            this.invertTrajectory = invert;
             TankModifier modifier = new TankModifier(trajectory).modify(DRIVEBASE_WIDTH);
             leftTrajectory = modifier.getLeftTrajectory();
             rightTrajectory = modifier.getRightTrajectory();
             leftFollower = new EncoderFollower(rightTrajectory);
             rightFollower = new EncoderFollower(leftTrajectory);
-            leftFollower.configureEncoder(periodicIo.leftPositionTicks, DRIVE_TICKS_PER_ROTATION, DRIVE_WHEEL_DIAMETER);
-            rightFollower.configureEncoder(periodicIo.rightPositionTicks, DRIVE_TICKS_PER_ROTATION, DRIVE_WHEEL_DIAMETER);
+            trajectoryStartLeftPosition = periodicIo.leftPositionTicks;
+            trajectoryStartRightPosition = periodicIo.rightPositionTicks;
+            leftFollower.configureEncoder(trajectoryStartLeftPosition, DRIVE_TICKS_PER_ROTATION, DRIVE_WHEEL_DIAMETER);
+            rightFollower.configureEncoder(trajectoryStartRightPosition, DRIVE_TICKS_PER_ROTATION, DRIVE_WHEEL_DIAMETER);
             leftFollower.configurePIDVA(2.0, 0.0, 0.0, 1.0 / 3.0, 0);
             rightFollower.configurePIDVA(2.0, 0.0, 0.0, 1.0 / 3.0, 0);
             lastTrajectoryValue = 0;
@@ -244,7 +250,8 @@ public final class Drive extends Subsystem {
         if (trajectory == null || state != DriveState.PATH_FOLLOWING) {
             return false;
         }
-        return leftFollower.isFinished() || rightFollower.isFinished();
+        return lastTrajectoryValue >= trajectoryValues;
+//        return leftFollower.isFinished() || rightFollower.isFinished();
         // return trajectoryValues <= lastTrajectoryValue;
     }
 
@@ -255,8 +262,21 @@ public final class Drive extends Subsystem {
             if (!this.isDone()) {
                 double leftVelocity = leftTrajectory.get(lastTrajectoryValue).velocity * METERS_PER_SEC_TO_TICKS_PER_100_MS;
                 double rightVelocity = rightTrajectory.get(lastTrajectoryValue).velocity * METERS_PER_SEC_TO_TICKS_PER_100_MS;
-                double leftPower = leftFollower.calculate(periodicIo.leftPositionTicks);
-                double rightPower = rightFollower.calculate(periodicIo.rightPositionTicks);
+                int deltaLeft = periodicIo.leftPositionTicks - trajectoryStartLeftPosition;
+                int deltaRight = periodicIo.rightPositionTicks - trajectoryStartRightPosition;
+                final double leftPower;
+                final double rightPower;
+                if(!this.invertTrajectory) {
+                    int leftEncoderValue = trajectoryStartLeftPosition + deltaLeft;
+                    int rightEncoderValue = trajectoryStartRightPosition + deltaRight;
+                    leftPower = leftFollower.calculate(leftEncoderValue);
+                    rightPower = rightFollower.calculate(rightEncoderValue);
+                } else {
+                    int leftEncoderValue = trajectoryStartLeftPosition - deltaLeft;
+                    int rightEncoderValue = trajectoryStartRightPosition - deltaRight;
+                    leftPower = -leftFollower.calculate(periodicIo.leftPositionTicks);
+                    rightPower = -rightFollower.calculate(periodicIo.rightPositionTicks);
+                }
                 DRIVE_SHUFFLEBOARD.putBoolean("Left Is Finished", leftFollower.isFinished());
                 DRIVE_SHUFFLEBOARD.putBoolean("Right Is Finished", rightFollower.isFinished());
                 setVelocity(new DriveSignal(leftPower, rightPower), DriveSignal.BRAKE);

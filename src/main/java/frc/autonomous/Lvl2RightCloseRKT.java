@@ -29,7 +29,7 @@ public class Lvl2RightCloseRKT extends AutoBase {
             case INIT:
                 System.out.println(state);
                 state = State.LEVEL2_to_Rocket;
-                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/LEVEL2_to_Rocket.pf1.csv"));
+                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/LEVEL2_to_Rocket.pf1.csv"), false);
                 elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
                 break;
             case LEVEL2_to_Rocket:
@@ -37,7 +37,7 @@ public class Lvl2RightCloseRKT extends AutoBase {
                 System.out.println(state);
                 if (drive.isDone()){
                     state = State.Right_RKT_Close_Backup;
-                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Right_RKT_Close_Backup.pf1.csv"));
+                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Right_RKT_Close_Backup.pf1.csv"), true);
                 }
                 break;
             case Right_RKT_Close_Backup:
@@ -45,7 +45,7 @@ public class Lvl2RightCloseRKT extends AutoBase {
                 hatch.setHatchPull();
                 if (drive.isDone()){
                     state = State.Close_Right_Rkt_to_FEED;
-                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Close_Right_Rkt_to_FEED.pf1.csv"));
+                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Close_Right_Rkt_to_FEED.pf1.csv"), false);
                 }
                 break;
             //180 degree turn
