@@ -252,11 +252,7 @@ public final class Drive extends Subsystem {
             return false;
         }
         return lastTrajectoryValue >= trajectoryValues;
-<<<<<<< HEAD
-       // return leftFollower.isFinished() || rightFollower.isFinished();
-=======
 //        return leftFollower.isFinished() || rightFollower.isFinished();
->>>>>>> 635f819c3107afee7fb8b5aa041c6f7ecedac86b
         // return trajectoryValues <= lastTrajectoryValue;
     }
 

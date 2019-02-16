@@ -2,7 +2,6 @@ package frc.autonomous;
 
 import java.io.File;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.subsystem.Drive;
 import frc.subsystem.Elevator;
@@ -34,27 +33,20 @@ public class Lvl2RightCloseRKT extends AutoBase {
                 System.out.println(state);
                 break;
             case LEVEL2_to_Rocket:
-                // hatch.setHatchPlace();
+                hatch.setHatchPlace();
                 if (drive.isDone()){
                     state = State.Right_RKT_Close_Backup;
-<<<<<<< HEAD
                     System.out.println(state);
-                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Right_RKT_Close_Backup.pf1.csv"));
-=======
                     drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Right_RKT_Close_Backup.pf1.csv"), true);
->>>>>>> 635f819c3107afee7fb8b5aa041c6f7ecedac86b
                 }
                 break;
             case Right_RKT_Close_Backup:
                 hatch.setHatchPull();
                   if (drive.isDone()){
                     state = State.Close_Right_Rkt_to_FEED;
-<<<<<<< HEAD
                     System.out.println(state);
-                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Close_Right_Rkt_to_FEED.pf1.csv"));
-=======
                     drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Close_Right_Rkt_to_FEED.pf1.csv"), false);
->>>>>>> 635f819c3107afee7fb8b5aa041c6f7ecedac86b
+                    
                 }
                 break;
             //180 degree turn
