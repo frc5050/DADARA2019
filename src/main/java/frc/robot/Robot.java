@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.autonomous.AutoBase;
-import frc.autonomous.SampleAutoBase;
 import frc.inputs.GameController;
 import frc.loops.Looper;
 import frc.states.IntakeState;
@@ -200,7 +199,7 @@ public class Robot extends TimedRobot {
         } else if (gameController.retractAllJacks()) {
             jacks.retract();
         } else if (gameController.initializeHabClimbing()) {
-            jacks.beginHabClimb();
+            jacks.beginHabClimbLevel3();
         } else if (gameController.zeroJacks()) {
             jacks.beginZeroing();
         }
