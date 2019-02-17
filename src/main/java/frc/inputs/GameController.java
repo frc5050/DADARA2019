@@ -1,6 +1,7 @@
 package frc.inputs;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.states.IntakeState;
 import frc.utils.DriveSignal;
 
 import static frc.utils.Constants.DRIVER_HID_OPTION;
@@ -71,8 +72,13 @@ public final class GameController implements GameHid {
     }
 
     @Override
-    public boolean initializeHabClimbing() {
-        return driverHid.initializeHabClimbing();
+    public boolean initializeHabClimbingLevel3() {
+        return driverHid.initializeHabClimbingLevel3();
+    }
+
+    @Override
+    public boolean initializeHabClimbingLevel2() {
+        return driverHid.initializeHabClimbingLevel2();
     }
 
     @Override
@@ -207,5 +213,23 @@ public final class GameController implements GameHid {
     public void disabledPeriodic() {
         operatorHid.disabledPeriodic();
         driverHid.disabledPeriodic();
+    }
+
+    public IntakeState getDesiredCargoIntakeState() {
+        if (this.cargoIntake()) {
+            return IntakeState.INTAKE;
+        } else if (this.cargoIntakeLeft()) {
+            return IntakeState.INTAKE_LEFT;
+        } else if (this.cargoIntakeRight()) {
+            return IntakeState.INTAKE_RIGHT;
+        } else if (this.cargoOuttakeLeft()) {
+            return IntakeState.OUTTAKE_LEFT;
+        } else if (this.cargoOuttakeRight()) {
+            return IntakeState.OUTTAKE_RIGHT;
+        } else if (this.cargoOuttakeFront()) {
+            return IntakeState.OUTTAKE_FRONT;
+        } else {
+            return IntakeState.STOPPED;
+        }
     }
 }

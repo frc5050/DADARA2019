@@ -62,12 +62,12 @@ public final class OperatorGamepad implements OperatorHid {
         }
 
         // Hatch
-        if(operatorGamepad.getStickButton(Hand.kLeft)){
-            hatchPosition = HatchPosition.OPEN_LOOP;
-        } else if(operatorGamepad.getBumper(Hand.kRight)){
+        if(operatorGamepad.getBumper(Hand.kRight)){
             hatchPosition = HatchPosition.PLACE;
         } else if(operatorGamepad.getBumper(Hand.kLeft)){
             hatchPosition = HatchPosition.PULL;
+        } else {
+            hatchPosition = HatchPosition.OPEN_LOOP;
         }
     }
 

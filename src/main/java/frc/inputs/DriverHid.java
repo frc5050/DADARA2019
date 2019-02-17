@@ -54,7 +54,9 @@ interface DriverHid {
      *
      * @return true if the {@link frc.subsystem.Jacks} should initiate the hab climbing procedure, false otherwise.
      */
-    boolean initializeHabClimbing();
+    boolean initializeHabClimbingLevel3();
+
+    boolean initializeHabClimbingLevel2();
 
     /**
      * Returns true if manual control should override wheel control on the wheels on the rear

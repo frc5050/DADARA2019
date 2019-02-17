@@ -69,7 +69,12 @@ public final class DriverDoubleJoysticks implements DriverHid {
     }
 
     @Override
-    public boolean initializeHabClimbing() {
+    public boolean initializeHabClimbingLevel3() {
+        return false;
+    }
+
+    @Override
+    public boolean initializeHabClimbingLevel2() {
         return false;
     }
 

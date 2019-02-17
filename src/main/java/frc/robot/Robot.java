@@ -11,32 +11,19 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.autonomous.AutoBase;
-import frc.autonomous.Autoline;
+import frc.autonomous.*;
 import frc.inputs.GameController;
 import frc.loops.Looper;
-import frc.states.IntakeState;
 import frc.subsystem.*;
 import frc.subsystem.test.CargoTest;
 import frc.subsystem.test.DriveTest;
 import frc.subsystem.test.GamepadTest;
 import frc.subsystem.test.SubsystemTest;
 import frc.utils.DriveSignal;
-import frc.autonomous.Lvl2RightCloseRKT;
-import frc.autonomous.Lvl2RightCloseRKT2;
-import frc.autonomous.Lvl2RightCloseRKT3;
-import frc.autonomous.Lvl2RightFarRKT;
-import frc.autonomous.Lvl2RightFarRKT2;
-import frc.autonomous.Lvl2RightFarRKT3;
-import frc.autonomous.Lvl2LeftCloseRKT;
-import frc.autonomous.Lvl2LeftCloseRKT2;
-import frc.autonomous.Lvl2LeftCloseRKT3;
-import frc.autonomous.Lvl2LeftFarRKT;
-import frc.autonomous.Lvl2LeftFarRKT2;
-import frc.autonomous.Lvl2LeftFarRKT3;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+
 import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
 
 /**
@@ -136,84 +123,63 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        disabledLooper.stop();
-        enabledLooper.start();
-        m_autoSelected = m_chooser.getSelected();
-        System.out.println("Auto selected: " + m_autoSelected);
-        switch (m_autoSelected) {
-            case LvlTwoRightCloseRKT:
-                autonomous = new Lvl2RightCloseRKT();
-                break;
-            case LvlTwoRightCloseRKT2:
-                autonomous = new Lvl2RightCloseRKT2();
-                break;
-            case LvlTwoRightCloseRKT3:
-                autonomous = new Lvl2RightCloseRKT3();
-                break;
-            case Lvl2RightFarRKT:
-                autonomous = new Lvl2RightFarRKT();
-                break;
-            case Lvl2RightFarRKT2:
-                autonomous = new Lvl2RightFarRKT2();
-                break;
-            case Lvl2RightFarRKT3:
-                autonomous = new Lvl2RightFarRKT3();
-                break;
-            case Lvl2LeftCloseRKT:
-                autonomous = new Lvl2LeftCloseRKT();
-                break;
-            case Lvl2LeftCloseRKT2:
-                autonomous = new Lvl2LeftCloseRKT2();
-                break;
-            case Lvl2LeftCloseRKT3:
-                autonomous = new Lvl2LeftCloseRKT3();
-                break;
-            case Lvl2LeftFarRKT:
-                autonomous = new Lvl2LeftFarRKT();
-                break;
-            case Lvl2LeftFarRKT2:
-                autonomous = new Lvl2LeftFarRKT2();
-                break;
-            case Lvl2LeftFarRKT3:
-                autonomous = new Lvl2LeftFarRKT3();
-                break;
-            case kDefaultAuto:
-                autonomous = new Autoline();
-                break;
-            default:
-                autonomous = null;
-                break;
-        }
+        teleopInit();
+//        disabledLooper.stop();
+//        enabledLooper.start();
+//        m_autoSelected = m_chooser.getSelected();
+//        System.out.println("Auto selected: " + m_autoSelected);
+//        switch (m_autoSelected) {
+//            case LvlTwoRightCloseRKT:
+//                autonomous = new Lvl2RightCloseRKT();
+//                break;
+//            case LvlTwoRightCloseRKT2:
+//                autonomous = new Lvl2RightCloseRKT2();
+//                break;
+//            case LvlTwoRightCloseRKT3:
+//                autonomous = new Lvl2RightCloseRKT3();
+//                break;
+//            case Lvl2RightFarRKT:
+//                autonomous = new Lvl2RightFarRKT();
+//                break;
+//            case Lvl2RightFarRKT2:
+//                autonomous = new Lvl2RightFarRKT2();
+//                break;
+//            case Lvl2RightFarRKT3:
+//                autonomous = new Lvl2RightFarRKT3();
+//                break;
+//            case Lvl2LeftCloseRKT:
+//                autonomous = new Lvl2LeftCloseRKT();
+//                break;
+//            case Lvl2LeftCloseRKT2:
+//                autonomous = new Lvl2LeftCloseRKT2();
+//                break;
+//            case Lvl2LeftCloseRKT3:
+//                autonomous = new Lvl2LeftCloseRKT3();
+//                break;
+//            case Lvl2LeftFarRKT:
+//                autonomous = new Lvl2LeftFarRKT();
+//                break;
+//            case Lvl2LeftFarRKT2:
+//                autonomous = new Lvl2LeftFarRKT2();
+//                break;
+//            case Lvl2LeftFarRKT3:
+//                autonomous = new Lvl2LeftFarRKT3();
+//                break;
+//            case kDefaultAuto:
+//                autonomous = new Autoline();
+//                break;
+//            default:
+//                autonomous = null;
+//                break;
+//        }
     }
 
     @Override
     public void autonomousPeriodic() {
-//        switch (m_autoSelected) {
-//            case LvlTwoRightCloseRKT:
-//                switch LvlTwoRightCloseRKTState {
-//                    case PATH_FOLLOWING:
-//                    File myFile = new File("LEVEL2_to_Rocket.pf1.csv");
-//                    hatch.setHatchPlace();
-//                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-//                    drive.updatePathFollower();
-//                    elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
-//                    hatch.setHatchPull();
-//                    myFile = new File("Right_RKT_Close_Backup.pf1.csv");
-//                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-//                    drive.updatePathFollower();
-//                    Insert gyro-turn 180 here
-//                    myFile = new File("Close_Right_Rkt_to_FEED.pf1.csv");
-//                    drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-//                    drive.updatePathFollower();
-//                    hatch.setOpenLoop(100);
-//                    }
-//            case kDefaultAuto:
-//            default:
-//            myFile = new File("EncodeTest.pf1.csv");
-//            drive.setTrajectory(Pathfinder.readFromCSV(myFile));
-        if (autonomous != null) {
-            autonomous.periodic(Timer.getFPGATimestamp());
-        }
+//        if (autonomous != null) {
+//            autonomous.periodic(Timer.getFPGATimestamp());
+//        }
+        teleopPeriodic();
     }
 
     @Override
@@ -239,21 +205,23 @@ public class Robot extends TimedRobot {
         final double tHatch = Timer.getFPGATimestamp();
 
         cargo.intakeTilt(gameController.intakeTilt());
-        if (gameController.cargoIntake()) {
-            cargo.setDesiredState(IntakeState.INTAKE);
-        } else if (gameController.cargoIntakeLeft()) {
-            cargo.setDesiredState(IntakeState.INTAKE_LEFT);
-        } else if (gameController.cargoIntakeRight()) {
-            cargo.setDesiredState(IntakeState.INTAKE_RIGHT);
-        } else if (gameController.cargoOuttakeLeft()) {
-            cargo.setDesiredState(IntakeState.OUTTAKE_LEFT);
-        } else if (gameController.cargoOuttakeRight()) {
-            cargo.setDesiredState(IntakeState.OUTTAKE_RIGHT);
-        } else if (gameController.cargoOuttakeFront()) {
-            cargo.setDesiredState(IntakeState.OUTTAKE_FRONT);
-        } else {
-            cargo.setDesiredState(IntakeState.STOPPED);
-        }
+        cargo.setDesiredState(gameController.getDesiredCargoIntakeState());
+// TODO remove
+//        if (gameController.cargoIntake()) {
+//            cargo.setDesiredState(IntakeState.INTAKE);
+//        } else if (gameController.cargoIntakeLeft()) {
+//            cargo.setDesiredState(IntakeState.INTAKE_LEFT);
+//        } else if (gameController.cargoIntakeRight()) {
+//            cargo.setDesiredState(IntakeState.INTAKE_RIGHT);
+//        } else if (gameController.cargoOuttakeLeft()) {
+//            cargo.setDesiredState(IntakeState.OUTTAKE_LEFT);
+//        } else if (gameController.cargoOuttakeRight()) {
+//            cargo.setDesiredState(IntakeState.OUTTAKE_RIGHT);
+//        } else if (gameController.cargoOuttakeFront()) {
+//            cargo.setDesiredState(IntakeState.OUTTAKE_FRONT);
+//        } else {
+//            cargo.setDesiredState(IntakeState.STOPPED);
+//        }
         final double tCargo = Timer.getFPGATimestamp();
 
         if (!gameController.manualJackWheelOverride()) {
@@ -266,8 +234,10 @@ public class Robot extends TimedRobot {
             jacks.lift();
         } else if (gameController.retractAllJacks()) {
             jacks.retract();
-        } else if (gameController.initializeHabClimbing()) {
+        } else if (gameController.initializeHabClimbingLevel3()) {
             jacks.beginHabClimbLevel3();
+        } else if(gameController.initializeHabClimbingLevel2()) {
+            jacks.beginHabClimbLevel2();
         } else if (gameController.zeroJacks()) {
             jacks.beginZeroing();
         }
@@ -313,39 +283,42 @@ public class Robot extends TimedRobot {
     // TODO automate test validation
     @Override
     public void testInit() {
-        Test testSelected = tests.get(testChooser.getSelected());
-        disabledLooper.stop();
-        enabledLooper.stop();
-        switch (testSelected) {
-            case DEFAULT_TEST:
-                subsystemTest = null;
-                break;
-            case GAMEPAD_TEST:
-                subsystemTest = new GamepadTest();
-                break;
-            case DRIVE_TEST:
-                subsystemTest = new DriveTest();
-                break;
-            case CARGO_TEST:
-                subsystemTest = new CargoTest();
-                break;
-            case HATCH_MECHANISM_TEST:
-                subsystemTest = null;
-                break;
-            case ELEVATOR_TEST:
-                subsystemTest = null;
-                break;
-            case JACKS_TEST:
-                subsystemTest = null;
-                break;
-        }
+        teleopInit();
+//        Test testSelected = tests.get(testChooser.getSelected());
+//        disabledLooper.stop();
+//        enabledLooper.stop();
+//        switch (testSelected) {
+//            case DEFAULT_TEST:
+//                subsystemTest = null;
+//                break;
+//            case GAMEPAD_TEST:
+//                subsystemTest = new GamepadTest();
+//                break;
+//            case DRIVE_TEST:
+//                subsystemTest = new DriveTest();
+//                break;
+//            case CARGO_TEST:
+//                subsystemTest = new CargoTest();
+//                break;
+//            case HATCH_MECHANISM_TEST:
+//                subsystemTest = null;
+//                break;
+//            case ELEVATOR_TEST:
+//                subsystemTest = null;
+//                break;
+//            case JACKS_TEST:
+//                subsystemTest = null;
+//                break;
+//        }
     }
 
     @Override
     public void testPeriodic() {
-        if (subsystemTest != null) {
-            subsystemTest.periodic(Timer.getFPGATimestamp());
-        }
+        teleopPeriodic();
+        subsystemManager.outputTelemetry();
+//        if (subsystemTest != null) {
+//            subsystemTest.periodic(Timer.getFPGATimestamp());
+//        }
     }
 
     /**

@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 public class HatchState {
     // Input
     public boolean limitHit = false;
-    public double encoder = 0.0;
+    public int encoder = 0;
 
     // Output
     public double demand = 0.0;
@@ -27,11 +27,11 @@ public class HatchState {
 
         private final boolean requiresZeroing;
 
-        ControlState(boolean requiresZeroing){
+        ControlState(boolean requiresZeroing) {
             this.requiresZeroing = requiresZeroing;
         }
 
-        public boolean requiresZeroing(){
+        public boolean requiresZeroing() {
             return requiresZeroing;
         }
     }

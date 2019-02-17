@@ -8,11 +8,10 @@ import frc.utils.DriveHelper;
 import frc.utils.DriveSignal;
 
 import static frc.utils.Constants.*;
-import static frc.utils.Constants.RIGHT_DRIVE_2;
 
-public class SimpleRobot  extends TimedRobot {
+public class SimpleRobot extends TimedRobot {
     private final CANSparkMax leftMaster = new CANSparkMax(LEFT_DRIVE_1, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final CANSparkMax leftSlave = new CANSparkMax(LEFT_DRIVE_2, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax leftSlave = new CANSparkMax(16, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax rightMaster = new CANSparkMax(RIGHT_DRIVE_1, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax rightSlave = new CANSparkMax(RIGHT_DRIVE_2, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final Joystick joystick = new Joystick(0);
@@ -56,7 +55,9 @@ public class SimpleRobot  extends TimedRobot {
     public void teleopPeriodic() {
         DriveSignal driveSignal = DriveHelper.arcadeToDriveSignal(-joystick.getRawAxis(1), joystick.getRawAxis(0));
         leftMaster.set(driveSignal.getLeftOutput());
+//        leftSlave.set(driveSignal.getLeftOutput());
         rightMaster.set(driveSignal.getRightOutput());
+//        rightSlave.set(driveSignal.getRightOutput());
     }
 
     @Override

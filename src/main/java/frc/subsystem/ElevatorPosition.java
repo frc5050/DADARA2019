@@ -17,11 +17,11 @@ public class ElevatorPosition {
         this.height = height;
     }
 
-    public double getHeight() {
+    public final double getHeight() {
         return height;
     }
 
-    public void setHeight(double height){
+    public void setHeight(final double height) {
         this.height = height;
     }
 }

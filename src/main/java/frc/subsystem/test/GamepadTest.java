@@ -31,7 +31,7 @@ public class GamepadTest implements SubsystemTest {
         // Jacks
         putBoolean("Jacks/Lift All", gameController.liftAllJacks());
         putBoolean("Jacks/Retract All", gameController.retractAllJacks());
-        putBoolean("Jacks/Initialize Hab Climbing", gameController.initializeHabClimbing());
+        putBoolean("Jacks/Initialize Hab Climbing", gameController.initializeHabClimbingLevel3());
         putBoolean("Jacks/Zero Jacks", gameController.zeroJacks());
         final DriveSignal runJackWheelsDriveSignal = gameController.runJackWheels();
         putNumber("Jacks/Wheels/Signal Left", runJackWheelsDriveSignal.getLeftOutput());

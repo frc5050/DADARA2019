@@ -99,8 +99,8 @@ public final class NeoDrive extends DriveTrain {
 
         rightMaster.setInverted(true);
         rightSlave.setInverted(true);
-        leftMaster.setInverted(true);
-        leftSlave.setInverted(true);
+//        leftMaster.setInverted(true);
+//        leftSlave.setInverted(true);
 
         navX = new AHRS(SPI.Port.kMXP);
 

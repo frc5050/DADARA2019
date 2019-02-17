@@ -71,8 +71,13 @@ public final class DriverGamepad implements DriverHid {
     }
 
     @Override
-    public boolean initializeHabClimbing() {
+    public boolean initializeHabClimbingLevel3() {
         return gamepad.getXButtonPressed();
+    }
+
+    @Override
+    public boolean initializeHabClimbingLevel2() {
+        return false;
     }
 
     @Override

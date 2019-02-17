@@ -36,13 +36,15 @@ public class HatchStateMachine {
     }
 
     public synchronized void setOpenLoop(double joystickPower) {
-//        if(Math.abs(joystickPower) > 0.04) {
+        if (Math.abs(joystickPower) > 0.04) {
             this.desiredControlState = OPEN_LOOP;
             this.desiredOpenLoopPower = joystickPower;
-//        } else {
-//            this.desiredControlState = HOLD_POSITION;
-//            this.desiredOpenLoopPower = 0.0;
-//        }
+        } else {
+            if (this.desiredControlState != HOLD_POSITION) {
+                this.desiredControlState = HOLD_POSITION;
+                this.desiredEncoderPosition = systemState.encoder;
+            }
+        }
     }
 
     public synchronized HatchState update(HatchState currentState) {
@@ -60,6 +62,7 @@ public class HatchStateMachine {
         }
 
         limitHitOnLastUpdate = currentState.limitHit;
+        systemState.encoder = currentState.encoder;
 
         // If we haven't zeroed, the current state requires zeroing, and we haven't hit the limit, zero the mechanism
         if (!systemState.hasZeroed && desiredControlState.requiresZeroing()) {
@@ -87,10 +90,10 @@ public class HatchStateMachine {
                 systemState.demand = desiredOpenLoopPower;
                 systemState.controlMode = ControlMode.PercentOutput;
                 break;
-//            case HOLD_POSITION:
-//                systemState.demand = desiredOpenLoopPower;
-//                systemState.controlMode = ControlMode.Velocity;
-//                break;
+            case HOLD_POSITION:
+                systemState.demand = desiredEncoderPosition;
+                systemState.controlMode = ControlMode.MotionMagic;
+                break;
             case STOPPED:
                 systemState.demand = 0.0;
                 systemState.controlMode = ControlMode.PercentOutput;

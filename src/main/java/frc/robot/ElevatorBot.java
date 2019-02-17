@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import static frc.utils.Constants.ELEVATOR_NEO;
 
 public class ElevatorBot extends TimedRobot {
-    private final CANSparkMax motor = new CANSparkMax(ELEVATOR_NEO, CANSparkMaxLowLevel.MotorType.kBrushless);;
-    private final CANPIDController controller = motor.getPIDController();;
+    private final CANSparkMax motor = new CANSparkMax(ELEVATOR_NEO, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANPIDController controller = motor.getPIDController();
     private final Joystick joystick0 = new Joystick(0);
 
     @Override
