@@ -205,28 +205,6 @@ public final class Elevator extends Subsystem {
         desiredPosition = position;
     }
 
-    /**
-     * The positions that the elevator can be set to automatically go to.
-     */
-//    public enum ElevatorPosition {
-//        HATCH_LOW(BOTTOM_DIST_FROM_GROUND),
-//        HATCH_MID(inchesToMeters(38)),
-//        HATCH_HIGH(inchesToMeters(64 + 1)),
-//        CARGO_LOW(inchesToMeters(24)),
-//        CARGO_MID(inchesToMeters(49.25)),
-//        CARGO_HIGH(inchesToMeters(77.5));
-//
-//        private final double height;
-//
-//        ElevatorPosition(final double height) {
-//            this.height = height;
-//        }
-//
-//        double getHeight() {
-//            return height;
-//        }
-//    }
-
     private static class PeriodicIo {
         // Input
         double height;

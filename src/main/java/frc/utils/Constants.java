@@ -77,7 +77,7 @@ public final class Constants {
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (1.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(77.5);
                 HAB3_ENCODER_VALUE = 22000;
-                HAB2_ENCODER_VALUE = 9000;
+                HAB2_ENCODER_VALUE = 8500;
                 REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
                 REAR_MOTION_MAGIC_ACCELERATION_LIFT = 400;
                 FRONT_MOTION_MAGIC_VELOCITY_LIFT = 700;
@@ -108,7 +108,7 @@ public final class Constants {
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (1.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(77.5);
                 HAB3_ENCODER_VALUE = 22000;
-                HAB2_ENCODER_VALUE = 9000;
+                HAB2_ENCODER_VALUE = 8500;
                 REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
                 REAR_MOTION_MAGIC_ACCELERATION_LIFT = 400;
                 FRONT_MOTION_MAGIC_VELOCITY_LIFT = 700;

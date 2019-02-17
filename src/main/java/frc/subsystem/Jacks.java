@@ -32,7 +32,7 @@ public final class Jacks extends Subsystem {
 
     private static final DriveSignal RUN_JACK_WHEELS_HAB_CLIMB = new DriveSignal(1.0, 1.0);
     private static final double MAX_AMP_DRAW_ZEROING = 4.0;
-    private static final double HAB_CLIMB_FINISH_DRIVING_TIME = 1.0;
+    private static final double HAB_CLIMB_FINISH_DRIVING_TIME = 0.75;
     private static Jacks instance;
     private final CheapWpiTalonSrx rightRearJack;
     private final CheapWpiTalonSrx leftRearJack;
@@ -445,9 +445,6 @@ public final class Jacks extends Subsystem {
         JACKS_SHUFFLEBOARD.putBoolean("Front Jack Zeroed", periodicIo.frontHasZeroed);
         JACKS_SHUFFLEBOARD.putBoolean("Left Jack Zeroed", periodicIo.leftHasZeroed);
         JACKS_SHUFFLEBOARD.putBoolean("Right Jack Zeroed", periodicIo.rightHasZeroed);
-//        JACKS_SHUFFLEBOARD.putNumber("Front Jack Output", frontJack.getMotorOutputPercent());
-//        JACKS_SHUFFLEBOARD.putNumber("Left Jack Output", leftRearJack.getMotorOutputPercent());
-//        JACKS_SHUFFLEBOARD.putNumber("Right Jack Output", rightRearJack.getMotorOutputPercent());
         JACKS_SHUFFLEBOARD.putNumber("Front Jack Demand", periodicIo.frontJackDemand);
         JACKS_SHUFFLEBOARD.putNumber("Left Jack Demand", periodicIo.leftJackDemand);
         JACKS_SHUFFLEBOARD.putNumber("Right Jack Demand", periodicIo.rightJackDemand);
