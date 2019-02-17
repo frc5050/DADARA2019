@@ -11,7 +11,7 @@ import jaci.pathfinder.Trajectory;
 
 import java.io.File;
 
-public class Autoline extends AutoBase {
+public class Lvl2LeftCloseRKT extends AutoBase {
     private final DriveTrain drive = DriveTrain.getInstance();
     private final Hatch hatch = Hatch.getInstance();
     private final Elevator elevator = Elevator.getInstance();
@@ -32,14 +32,32 @@ public class Autoline extends AutoBase {
         switch (state) {
             case INIT:
                 System.out.println(state);
-                state = State.EncodeTest;
-                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/EncodeTest.pf1.csv"), false);
+                state = State.LEVEL2_to_RocketLEFT;
+                drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/LEVEL2_to_RocketLEFT.pf1.csv"), false);
                 elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
-                break;
-            case EncodeTest:
                 System.out.println(state);
+                break;
+            case LEVEL2_to_RocketLEFT:
+                hatch.setHatchPlace();
+                if (drive.isDone()) {
+                    state = State.Left_RKT_Close_Backup;
+                    System.out.println(state);
+                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Left_RKT_Close_Backup.pf1.csv"), true);
+                }
+                break;
+            case Left_RKT_Close_Backup:
+                hatch.setHatchPull();
+                if (drive.isDone()) {
+                    state = State.Close_Left_Rkt_to_FEED;
+                    System.out.println(state);
+                    drive.setTrajectory(loadTrajectory("/home/lvuser/deploy/paths/Close_Left_Rkt_to_FEED.pf1.csv"), false);
+
+                }
+                break;
+            case Close_Left_Rkt_to_FEED:
                 if (drive.isDone()) {
                     state = State.STOP;
+                    System.out.println(state);
                 }
                 break;
             case STOP:
@@ -56,7 +74,9 @@ public class Autoline extends AutoBase {
 
     private enum State {
         INIT,
-        EncodeTest,
+        LEVEL2_to_RocketLEFT,
+        Left_RKT_Close_Backup,
+        Close_Left_Rkt_to_FEED,
         STOP
     }
 }
