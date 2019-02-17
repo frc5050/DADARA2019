@@ -7,15 +7,13 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.utils.PidfConstants;
 
 import static frc.utils.Constants.*;
-import static frc.utils.UnitConversions.inchesToMeters;
 import static frc.utils.UnitConversions.metersToInches;
 
 public final class Elevator extends Subsystem {
     private static final double TOTAL_DELTA_HEIGHT = UPPER_DIST_FROM_GROUND - BOTTOM_DIST_FROM_GROUND;
     private static final double MANUAL_MOVEMENT_DEADBAND = 0.02;
     private static final double MAX_RPM = 5000.0;
-    private static final double POSITION_LOOP_KP = -5.0; // (revolutions / minute) / (meter)
-    private static final double POSITION_LOOP_KV = -0.66; // (revolutions / minute) / (meter / second)
+    private static final double ELEVATOR_POSITION_LOOP_KP = -5.0; // (revolutions / minute) / (meter)
     private static final double MAXIMUM_ELEVATOR_MOTOR_TEMPERATURE = 80.0; // Celsius
     private static final double ZEROING_PERCENT_OUTPUT = 0.2;
     private static final PidfConstants ELEVATOR_NEO_PIDF_PARAMETERS = new PidfConstants(3.0E-05, 1.0E-06, 0.0, 0.0, 0.0);
@@ -128,9 +126,14 @@ public final class Elevator extends Subsystem {
             value = periodicIo.desiredManualOutputPower;
             controlType = ControlType.kDutyCycle;
         } else if (periodicIo.hasZeroed) {
-            controlType = ControlType.kVelocity;
-            value = ((POSITION_LOOP_KP * periodicIo.currentErrorMeters) + (POSITION_LOOP_KV * periodicIo.currentVelocity)) * MAX_RPM;
-            value = Math.abs(value) > MAX_RPM ? Math.copySign(MAX_RPM, value) : value;
+            if (periodicIo.holdPosition) {
+                controlType = ControlType.kVelocity;
+                value = 0.0;
+            } else {
+                controlType = ControlType.kVelocity;
+                value = ((ELEVATOR_POSITION_LOOP_KP * periodicIo.currentErrorMeters) + (ELEVATOR_POSITION_LOOP_KV * periodicIo.currentVelocity)) * MAX_RPM;
+                value = Math.abs(value) > MAX_RPM ? Math.copySign(MAX_RPM, value) : value;
+            }
         } else {
             controlType = ControlType.kDutyCycle;
             value = ZEROING_PERCENT_OUTPUT;
@@ -180,8 +183,13 @@ public final class Elevator extends Subsystem {
      * @param dutyCycle the duty cycle to write to the motor on the range [-1.0, 1.0]
      */
     public synchronized void manualMovement(double dutyCycle) {
-        periodicIo.usePID = false;
-        periodicIo.desiredManualOutputPower = -dutyCycle;
+        if (Math.abs(dutyCycle) > 0.05) {
+            periodicIo.usePID = false;
+            periodicIo.desiredManualOutputPower = -dutyCycle;
+        } else {
+            periodicIo.usePID = true;
+            periodicIo.holdPosition = true;
+        }
     }
 
     /**
@@ -193,30 +201,31 @@ public final class Elevator extends Subsystem {
      */
     public synchronized void pidToPosition(ElevatorPosition position) {
         periodicIo.usePID = true;
+        periodicIo.holdPosition = false;
         desiredPosition = position;
     }
 
     /**
      * The positions that the elevator can be set to automatically go to.
      */
-    public enum ElevatorPosition {
-        HATCH_LOW(BOTTOM_DIST_FROM_GROUND),
-        HATCH_MID(inchesToMeters(38)),
-        HATCH_HIGH(inchesToMeters(64 + 1)),
-        CARGO_LOW(inchesToMeters(21)),
-        CARGO_MID(inchesToMeters(49.25)),
-        CARGO_HIGH(inchesToMeters(73 + 0.25));
-
-        private final double height;
-
-        ElevatorPosition(final double height) {
-            this.height = height;
-        }
-
-        double getHeight() {
-            return height;
-        }
-    }
+//    public enum ElevatorPosition {
+//        HATCH_LOW(BOTTOM_DIST_FROM_GROUND),
+//        HATCH_MID(inchesToMeters(38)),
+//        HATCH_HIGH(inchesToMeters(64 + 1)),
+//        CARGO_LOW(inchesToMeters(24)),
+//        CARGO_MID(inchesToMeters(49.25)),
+//        CARGO_HIGH(inchesToMeters(77.5));
+//
+//        private final double height;
+//
+//        ElevatorPosition(final double height) {
+//            this.height = height;
+//        }
+//
+//        double getHeight() {
+//            return height;
+//        }
+//    }
 
     private static class PeriodicIo {
         // Input
@@ -233,5 +242,6 @@ public final class Elevator extends Subsystem {
         // Output
         double desiredManualOutputPower;
         boolean usePID = false;
+        boolean holdPosition = false;
     }
 }

@@ -51,7 +51,7 @@ public final class DriverJoystick implements DriverHid {
 
     @Override
     public DriveSignal getDriveSignal() {
-        return driveHelperForCurvature.curvatureDrive(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0));
+        return DriveHelper.arcadeToDriveSignal(-driverJoystick.getRawAxis(1), driverJoystick.getRawAxis(0));
     }
 
     @Override

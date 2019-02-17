@@ -20,6 +20,7 @@ public final class OperatorGamepad implements OperatorHid {
     private boolean useCargoHeights = false;
     private LastDpadState lastDpadState = LastDpadState.NONE;
     private ElevatorHeight elevatorHeight = ElevatorHeight.NONE;
+    private HatchPosition hatchPosition = HatchPosition.OPEN_LOOP;
 
     /**
      * Constructor.
@@ -59,6 +60,15 @@ public final class OperatorGamepad implements OperatorHid {
         } else if (operatorGamepad.getYButtonPressed()) {
             elevatorHeight = ElevatorHeight.HIGH;
         }
+
+        // Hatch
+        if(operatorGamepad.getStickButton(Hand.kLeft)){
+            hatchPosition = HatchPosition.OPEN_LOOP;
+        } else if(operatorGamepad.getBumper(Hand.kRight)){
+            hatchPosition = HatchPosition.PLACE;
+        } else if(operatorGamepad.getBumper(Hand.kLeft)){
+            hatchPosition = HatchPosition.PULL;
+        }
     }
 
     @Override
@@ -66,6 +76,7 @@ public final class OperatorGamepad implements OperatorHid {
         lastDpadState = LastDpadState.NONE;
         useCargoHeights = false;
         elevatorHeight = ElevatorHeight.NONE;
+        hatchPosition = HatchPosition.OPEN_LOOP;
     }
 
     @Override
@@ -123,7 +134,7 @@ public final class OperatorGamepad implements OperatorHid {
 
     @Override
     public boolean useHatchOpenLoop() {
-        return operatorGamepad.getRawButton(7);
+        return operatorGamepad.getRawButton(9);
     }
 
     @Override
@@ -133,12 +144,12 @@ public final class OperatorGamepad implements OperatorHid {
 
     @Override
     public boolean placeHatch() {
-        return operatorGamepad.getBumper(Hand.kRight);
+        return hatchPosition == HatchPosition.PLACE;
     }
 
     @Override
     public boolean pullHatch() {
-        return operatorGamepad.getBumper(Hand.kLeft);
+        return hatchPosition == HatchPosition.PULL;
     }
 
     @Override
@@ -161,6 +172,12 @@ public final class OperatorGamepad implements OperatorHid {
         LOW,
         MID,
         HIGH
+    }
+
+    enum HatchPosition {
+        OPEN_LOOP,
+        PLACE,
+        PULL
     }
 
 }

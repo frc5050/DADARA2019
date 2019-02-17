@@ -1,25 +1,31 @@
 package frc.autonomous;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.subsystem.DriveTrain;
+import frc.subsystem.Elevator;
+import frc.subsystem.ElevatorPosition;
+import frc.subsystem.Hatch;
+import frc.utils.DriveSignal;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+
 import java.io.File;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.subsystem.Drive;
-import frc.subsystem.Elevator;
-import frc.utils.DriveSignal;
-import frc.subsystem.Hatch;
-import frc.subsystem.Elevator.ElevatorPosition;
-import jaci.pathfinder.*;
-
 public class Autoline extends AutoBase {
-    private final Drive drive = Drive.getInstance();
+    private final DriveTrain drive = DriveTrain.getInstance();
     private final Hatch hatch = Hatch.getInstance();
     private final Elevator elevator = Elevator.getInstance();
     private State state = State.INIT;
+
+    public static Trajectory loadTrajectory(String path) {
+        return Pathfinder.readFromCSV(new File(path));
+    }
 
     @Override
     public void init() {
 
     }
+
     @Override
     public void periodic(double timestamp) {
         SmartDashboard.putString("Autostate", state.toString());
@@ -33,7 +39,7 @@ public class Autoline extends AutoBase {
             case EncodeTest:
                 // hatch.setHatchPlace();
                 System.out.println(state);
-                if (drive.isDone()){
+                if (drive.isDone()) {
                     state = State.STOP;
                 }
                 break;
@@ -48,10 +54,6 @@ public class Autoline extends AutoBase {
     @Override
     public boolean isDone() {
         return state == State.STOP;
-    }
-
-    public static Trajectory loadTrajectory(String path) {
-        return Pathfinder.readFromCSV(new File(path));
     }
 
     private enum State {

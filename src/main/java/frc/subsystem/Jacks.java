@@ -42,7 +42,7 @@ public final class Jacks extends Subsystem {
     private final DigitalInput forwardIrSensor;
     private final PowerDistributionPanel pdp;
     private final DigitalInput rearIrSensor;
-    private final Drive drive = Drive.getInstance();
+    private final DriveTrain drive = DriveTrain.getInstance();
     private final PeriodicIO periodicIo = new PeriodicIO();
     private double finishTimestamp = Timer.getFPGATimestamp();
     private JackSystem state = JackSystem.OPEN_LOOP;

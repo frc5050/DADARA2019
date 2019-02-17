@@ -1,5 +1,7 @@
 package frc.utils;
 
+import frc.subsystem.DriveTrain;
+
 import static frc.utils.UnitConversions.inchesToMeters;
 
 public final class Constants {
@@ -49,7 +51,7 @@ public final class Constants {
     public static final int HATCH_PLACE_ENCODER_POSITION;
     public static final int HATCH_PULL_ENCODER_POSITION;
     public static final boolean ELEVATOR_LIMIT_SWITCH_INVERTED;
-    private static final Robot ROBOT = Robot.A_BOT;
+    public static final Robot ROBOT = Robot.A_BOT;
     private static final String DEFAULT_NETWORK_TABLE_KEY = "SmartDashboard";
     private static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = true;
 
@@ -62,24 +64,25 @@ public final class Constants {
     public static final int REAR_MOTION_MAGIC_ACCELERATION_LIFT;
     public static final int FRONT_MOTION_MAGIC_VELOCITY_LIFT;
     public static final int FRONT_MOTION_MAGIC_ACCELERATION_LIFT;
-
+    public static final double ELEVATOR_POSITION_LOOP_KV; // (revolutions / minute) / (meter / second)
 
     static {
         switch (ROBOT) {
             case A_BOT:
-                HATCH_PLACE_ENCODER_POSITION = 470;
-                HATCH_PULL_ENCODER_POSITION = 760;
+                HATCH_PLACE_ENCODER_POSITION = 400;
+                HATCH_PULL_ENCODER_POSITION = 700;
                 ELEVATOR_LIMIT_SWITCH_INVERTED = true;
-                TOTAL_DELTA_ENCODER_VALUE = -181.22;
-                BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
-                UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
+                TOTAL_DELTA_ENCODER_VALUE = -189.8478;
+                BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (1.0 / 8.0));
+                UPPER_DIST_FROM_GROUND = inchesToMeters(77.5);
                 HAB3_ENCODER_VALUE = 22000;
                 REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
                 REAR_MOTION_MAGIC_ACCELERATION_LIFT = 400;
                 FRONT_MOTION_MAGIC_VELOCITY_LIFT = 700;
                 FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 650;
+                ELEVATOR_POSITION_LOOP_KV = -0.68;
                 break;
-            case BBOT:
+            case B_BOT:
                 HATCH_PLACE_ENCODER_POSITION = 470;
                 HATCH_PULL_ENCODER_POSITION = 760;
                 ELEVATOR_LIMIT_SWITCH_INVERTED = false;
@@ -91,6 +94,7 @@ public final class Constants {
                 REAR_MOTION_MAGIC_ACCELERATION_LIFT = 500;
                 FRONT_MOTION_MAGIC_VELOCITY_LIFT = 1000;
                 FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 650;
+                ELEVATOR_POSITION_LOOP_KV = -0.66;
                 break;
             default:
                 // A bot
@@ -98,13 +102,14 @@ public final class Constants {
                 HATCH_PULL_ENCODER_POSITION = 760;
                 ELEVATOR_LIMIT_SWITCH_INVERTED = true;
                 TOTAL_DELTA_ENCODER_VALUE = -181.22;
-                BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
+                BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (1.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
                 HAB3_ENCODER_VALUE = 22000;
                 REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
                 REAR_MOTION_MAGIC_ACCELERATION_LIFT = 500;
                 FRONT_MOTION_MAGIC_VELOCITY_LIFT = 700;
                 FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 650;
+                ELEVATOR_POSITION_LOOP_KV = -0.68;
                 break;
         }
     }
@@ -142,8 +147,8 @@ public final class Constants {
         GAMEPAD
     }
 
-    private enum Robot {
+    public enum Robot {
         A_BOT,
-        BBOT
+        B_BOT
     }
 }

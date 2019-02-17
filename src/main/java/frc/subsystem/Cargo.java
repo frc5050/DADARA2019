@@ -150,6 +150,6 @@ public final class Cargo extends Subsystem {
     }
 
     public synchronized void intakeTilt(final double power) {
-        currentState.intakeTiltOutput = 0.5 * power;
+        currentState.intakeTiltOutput = 0.8 * power;
     }
 }

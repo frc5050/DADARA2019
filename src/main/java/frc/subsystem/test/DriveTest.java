@@ -1,6 +1,8 @@
 package frc.subsystem.test;
 
 import frc.subsystem.Drive;
+import frc.subsystem.DriveTrain;
+import frc.subsystem.NeoDrive;
 import frc.utils.DriveSignal;
 
 import static frc.utils.Constants.TEST_SHUFFLEBOARD;
@@ -8,7 +10,7 @@ import static frc.utils.Constants.TEST_SHUFFLEBOARD;
 public class DriveTest implements SubsystemTest {
     private static final double BREAK_PERIOD = 0.30;
     private static final double SPEED = 0.4;
-    private final Drive drive = Drive.getInstance();
+    private final DriveTrain drive = DriveTrain.getInstance();
     private DriveTestState state = DriveTestState.INIT_DISABLED;
     private double goalTimestamp = 0.0;
     private boolean initializedState = false;

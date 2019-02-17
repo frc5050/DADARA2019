@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     private final SendableChooser<String> testChooser = new SendableChooser<>();
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
-            Drive.getInstance(),
+            DriveTrain.getInstance(),
             Cargo.getInstance(),
             Elevator.getInstance(),
             Hatch.getInstance(),
@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
     private final Looper enabledLooper = new Looper();
     private final Looper disabledLooper = new Looper();
     private final GameController gameController = GameController.getInstance();
-    private final Drive drive = Drive.getInstance();
+    private final DriveTrain drive = DriveTrain.getInstance();
     private final Cargo cargo = Cargo.getInstance();
     private final Elevator elevator = Elevator.getInstance();
     private final Hatch hatch = Hatch.getInstance();
@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        drive.outputTelemetry();
+//        drive.outputTelemetry();
     }
 
     @Override
@@ -235,26 +235,26 @@ public class Robot extends TimedRobot {
         final double tController = Timer.getFPGATimestamp();
 
         if (gameController.setElevatorPositionLowHatch()) {
-            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_LOW);
+            elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
         } else if (gameController.setElevatorPositionMidHatch()) {
-            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_MID);
+            elevator.pidToPosition(ElevatorPosition.HATCH_MID);
         } else if (gameController.setElevatorPositionHighHatch()) {
-            elevator.pidToPosition(Elevator.ElevatorPosition.HATCH_HIGH);
+            elevator.pidToPosition(ElevatorPosition.HATCH_HIGH);
         } else if (gameController.setElevatorPositionLowCargo()) {
-            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_LOW);
+            elevator.pidToPosition(ElevatorPosition.CARGO_LOW);
         } else if (gameController.setElevatorPositionMidCargo()) {
-            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_MID);
+            elevator.pidToPosition(ElevatorPosition.CARGO_MID);
         } else if (gameController.setElevatorPositionHighCargo()) {
-            elevator.pidToPosition(Elevator.ElevatorPosition.CARGO_HIGH);
+            elevator.pidToPosition(ElevatorPosition.CARGO_HIGH);
         } else {
             elevator.manualMovement(gameController.elevateManual());
         }
         final double tElevator = Timer.getFPGATimestamp();
 
-        elevator.outputTelemetry();
+//        elevator.outputTelemetry();
 //        hatch.outputTelemetry();
-        jacks.outputTelemetry();
-        drive.outputTelemetry();
+//        jacks.outputTelemetry();
+//        drive.outputTelemetry();
         final double tOutput = Timer.getFPGATimestamp();
 
         ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Drive", tDrive - t0);
@@ -264,6 +264,7 @@ public class Robot extends TimedRobot {
         ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Controller", tController - tJacks);
         ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Elevator", tElevator - tController);
         ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Output", tOutput - tElevator);
+        ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/TOTAL", tOutput - t0);
     }
 
     // TODO add more tests

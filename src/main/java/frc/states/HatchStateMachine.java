@@ -36,8 +36,13 @@ public class HatchStateMachine {
     }
 
     public synchronized void setOpenLoop(double joystickPower) {
-        this.desiredControlState = OPEN_LOOP;
-        this.desiredOpenLoopPower = joystickPower;
+//        if(Math.abs(joystickPower) > 0.04) {
+            this.desiredControlState = OPEN_LOOP;
+            this.desiredOpenLoopPower = joystickPower;
+//        } else {
+//            this.desiredControlState = HOLD_POSITION;
+//            this.desiredOpenLoopPower = 0.0;
+//        }
     }
 
     public synchronized HatchState update(HatchState currentState) {
@@ -82,6 +87,10 @@ public class HatchStateMachine {
                 systemState.demand = desiredOpenLoopPower;
                 systemState.controlMode = ControlMode.PercentOutput;
                 break;
+//            case HOLD_POSITION:
+//                systemState.demand = desiredOpenLoopPower;
+//                systemState.controlMode = ControlMode.Velocity;
+//                break;
             case STOPPED:
                 systemState.demand = 0.0;
                 systemState.controlMode = ControlMode.PercentOutput;

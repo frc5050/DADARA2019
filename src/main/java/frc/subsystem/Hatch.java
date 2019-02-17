@@ -90,7 +90,7 @@ public final class Hatch extends Subsystem {
     }
 
     public synchronized void setOpenLoop(double power) {
-        hatchStateMachine.setOpenLoop(-power / 2.0);
+        hatchStateMachine.setOpenLoop(-power);
     }
 
     public synchronized void setHatchPlace() {

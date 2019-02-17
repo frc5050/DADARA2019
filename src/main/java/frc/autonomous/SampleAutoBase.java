@@ -1,12 +1,11 @@
 package frc.autonomous;
 
 import edu.wpi.first.wpilibj.Timer;
-import frc.subsystem.Drive;
-import frc.subsystem.Elevator;
+import frc.subsystem.DriveTrain;
 import frc.utils.DriveSignal;
 
 public class SampleAutoBase extends AutoBase {
-    private final Drive drive = Drive.getInstance();
+    private final DriveTrain drive = DriveTrain.getInstance();
     private double lastTimestamp = Timer.getFPGATimestamp();
     private State state = State.INIT;
 

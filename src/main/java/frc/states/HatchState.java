@@ -22,6 +22,7 @@ public class HatchState {
         ZEROING(true),
         MOTION_MAGIC(true),
         OPEN_LOOP(false),
+        HOLD_POSITION(false),
         STOPPED(false);
 
         private final boolean requiresZeroing;
