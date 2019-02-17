@@ -20,11 +20,6 @@ import static frc.utils.Constants.*;
  * The Jack subsystem, includes the three jacks and the two wheels mounted to the rear jacks.
  */
 public final class Jacks extends Subsystem {
-    // Motion magic parameters when lifting
-    private static final int REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
-    private static final int REAR_MOTION_MAGIC_ACCELERATION_LIFT = 450;
-    private static final int FRONT_MOTION_MAGIC_VELOCITY_LIFT = 1000;
-    private static final int FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 650;
     // Motion magic parameters when retracting
     private static final int REAR_MOTION_MAGIC_VELOCITY_RETRACT = 2000;
     private static final int REAR_MOTION_MAGIC_ACCELERATION_RETRACT = 600;
@@ -68,9 +63,9 @@ public final class Jacks extends Subsystem {
         leftRearWheel.setInverted(true);
         forwardIrSensor = new DigitalInput(DRIVE_FRONT_IR_SENSOR);
         rearIrSensor = new DigitalInput(DRIVE_REAR_IR_SENSOR);
-        configureTalon(rightRearJack, true, false, 2.0, 1.0, -1.0);
+        configureTalon(rightRearJack, true, false, 1.0, 1.0, -1.0);
         configureTalon(leftRearJack, false, false, 1.0, 1.0, -1.0);
-        configureTalon(frontJack, true, false, 1.0, 1.0, -1.0);
+        configureTalon(frontJack, true, false, 1.1, 1.0, -1.0);
     }
 
     /**
@@ -212,7 +207,7 @@ public final class Jacks extends Subsystem {
                             break;
                         case HAB_CLIMB_RUN_FORWARD:
                             controlJacks(habLevelToClimbTo, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
-                            drive.setOpenLoop(RETRACT_FRONT_JACK_DRIVE_BASE);
+                            drive.setOpenLoop(DriveSignal.NEUTRAL);
                             setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
                             if (periodicIo.frontIrDetectsGround) {
                                 setState(JackSystem.HAB_CLIMB_RETRACT_FRONT_JACK);
@@ -220,8 +215,8 @@ public final class Jacks extends Subsystem {
                             break;
                         case HAB_CLIMB_RETRACT_FRONT_JACK:
                             controlJacks(JackState.RETRACT, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
-                            drive.setOpenLoop(RETRACT_FRONT_JACK_DRIVE_BASE);
-                            setWheels(DriveSignal.NEUTRAL);
+                            drive.setOpenLoop(DriveSignal.NEUTRAL);
+                            setWheels(new DriveSignal(0.20, 0.20));
                             if (checkEncoders((int) (LIFT_TOLERANCE / 1.3))) {
                                 finishTimestamp = timestamp;
                                 setState(JackSystem.HAB_CLIMB_HOLD_REAR_AND_RUN_FORWARD);
@@ -370,7 +365,11 @@ public final class Jacks extends Subsystem {
             case NONE:
                 break;
         }
-        periodicIo.frontJackDemand = front.getDemand();
+        if(periodicIo.frontJackControlMode == ControlMode.MotionMagic) {
+            periodicIo.frontJackDemand = front.getDemand() + 100;
+        } else {
+            periodicIo.frontJackDemand = front.getDemand();
+        }
         periodicIo.frontJackControlMode = front.getControlMode();
         periodicIo.leftJackDemand = left.getDemand();
         periodicIo.leftJackControlMode = left.getControlMode();
@@ -446,6 +445,9 @@ public final class Jacks extends Subsystem {
         JACKS_SHUFFLEBOARD.putBoolean("Front Jack Zeroed", periodicIo.frontHasZeroed);
         JACKS_SHUFFLEBOARD.putBoolean("Left Jack Zeroed", periodicIo.leftHasZeroed);
         JACKS_SHUFFLEBOARD.putBoolean("Right Jack Zeroed", periodicIo.rightHasZeroed);
+//        JACKS_SHUFFLEBOARD.putNumber("Front Jack Output", frontJack.getMotorOutputPercent());
+//        JACKS_SHUFFLEBOARD.putNumber("Left Jack Output", leftRearJack.getMotorOutputPercent());
+//        JACKS_SHUFFLEBOARD.putNumber("Right Jack Output", rightRearJack.getMotorOutputPercent());
         JACKS_SHUFFLEBOARD.putNumber("Front Jack Demand", periodicIo.frontJackDemand);
         JACKS_SHUFFLEBOARD.putNumber("Left Jack Demand", periodicIo.leftJackDemand);
         JACKS_SHUFFLEBOARD.putNumber("Right Jack Demand", periodicIo.rightJackDemand);
