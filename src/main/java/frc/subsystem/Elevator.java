@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.utils.PidfConstants;
 
 import static frc.utils.Constants.*;
+import static frc.utils.UnitConversions.inchesToMeters;
 import static frc.utils.UnitConversions.metersToInches;
 
 public final class Elevator extends Subsystem {
@@ -17,6 +18,9 @@ public final class Elevator extends Subsystem {
     private static final double MAXIMUM_ELEVATOR_MOTOR_TEMPERATURE = 80.0; // Celsius
     private static final double ZEROING_PERCENT_OUTPUT = 0.2;
     private static final PidfConstants ELEVATOR_NEO_PIDF_PARAMETERS = new PidfConstants(3.0E-05, 1.0E-06, 0.0, 0.0, 0.0);
+    private static final double LOWER_HATCH_ROLLER_INTERACTION_HEIGHT = inchesToMeters(12) + BOTTOM_DIST_FROM_GROUND;
+    private static final double UPPER_HATCH_ROLLER_INTERACTION_HEIGHT = inchesToMeters(18) + BOTTOM_DIST_FROM_GROUND;
+    private static final double HATCH_ROLLER_INTERACTION_TOLERANCE = inchesToMeters(2);
     private static Elevator instance;
     private final DigitalInput bottomLimit;
     private final CANSparkMax motor;
@@ -24,6 +28,7 @@ public final class Elevator extends Subsystem {
     private final CANPIDController controller;
     private ElevatorPosition desiredPosition = ElevatorPosition.HATCH_LOW;
     private PeriodicIo periodicIo = new PeriodicIo();
+    private boolean ensureHatchIsOut = false;
 
     /**
      * Constructor.
@@ -81,6 +86,29 @@ public final class Elevator extends Subsystem {
         return ((height - BOTTOM_DIST_FROM_GROUND) / TOTAL_DELTA_HEIGHT) * TOTAL_DELTA_ENCODER_VALUE;
     }
 
+    private static boolean ensureHatchOut(double currentHeight, double desiredHeight) {
+        // If in the interation range, make sure that it is out
+        if (currentHeight < UPPER_HATCH_ROLLER_INTERACTION_HEIGHT + HATCH_ROLLER_INTERACTION_TOLERANCE) {
+            return true;
+        } else if (currentHeight > LOWER_HATCH_ROLLER_INTERACTION_HEIGHT - HATCH_ROLLER_INTERACTION_TOLERANCE) {
+            return true;
+        }
+
+        if (desiredHeight >= currentHeight) {
+            // If trying to go above the current height, return true if the current height is within the interaction
+            // range
+            return currentHeight <= UPPER_HATCH_ROLLER_INTERACTION_HEIGHT;
+        } else {
+            // If trying to go below the current height, return true if the current height is within the interaction
+            // range
+            return currentHeight >= LOWER_HATCH_ROLLER_INTERACTION_HEIGHT;
+        }
+    }
+
+    public boolean ensureHatchStatysOut(){
+        return ensureHatchIsOut;
+    }
+
     @Override
     public synchronized void readPeriodicInputs() {
         double timestamp = Timer.getFPGATimestamp();
@@ -114,6 +142,7 @@ public final class Elevator extends Subsystem {
         periodicIo.currentVelocity = (errorMeters - periodicIo.currentErrorMeters) / (timestamp - periodicIo.lastReadTimestamp);
         periodicIo.currentErrorMeters = errorMeters;
         periodicIo.lastReadTimestamp = timestamp;
+//        ensureHatchIsOut = ensureHatchOut(periodicIo.height, desiredPosition.getHeight());
     }
 
     @Override

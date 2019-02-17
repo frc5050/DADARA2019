@@ -66,12 +66,12 @@ public final class DriverJoystick implements DriverHid {
 
     @Override
     public boolean initializeHabClimbingLevel3() {
-        return driverJoystick.getRawButton(7);
+        return driverJoystick.getRawButton(6);
     }
 
     @Override
     public boolean initializeHabClimbingLevel2() {
-        return driverJoystick.getRawButton(8);
+        return driverJoystick.getRawButton(4);
     }
 
     @Override

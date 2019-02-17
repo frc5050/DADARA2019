@@ -190,6 +190,10 @@ public final class NeoDrive extends DriveTrain {
     // Puts values on the Dashboard (Shuffleboard)
     @Override
     public synchronized void outputTelemetry() {
+        DRIVE_SHUFFLEBOARD.putNumber("Left Master Temp", leftMaster.getMotorTemperature());
+        DRIVE_SHUFFLEBOARD.putNumber("Left Slave Temp", leftSlave.getMotorTemperature());
+        DRIVE_SHUFFLEBOARD.putNumber("Right Master Temp", rightMaster.getMotorTemperature());
+        DRIVE_SHUFFLEBOARD.putNumber("Right Slave Temp", rightSlave.getMotorTemperature());
         DRIVE_SHUFFLEBOARD.putNumber("Left Drive Distance (m)", periodicIo.leftDistance);
         DRIVE_SHUFFLEBOARD.putNumber("Right Drive Distance (m)", periodicIo.rightDistance);
         DRIVE_SHUFFLEBOARD.putNumber("Left Drive Ticks", periodicIo.leftPositionTicks);
