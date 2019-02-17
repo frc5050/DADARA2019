@@ -28,6 +28,13 @@ import frc.autonomous.Lvl2RightCloseRKT3;
 import frc.autonomous.Lvl2RightFarRKT;
 import frc.autonomous.Lvl2RightFarRKT2;
 import frc.autonomous.Lvl2RightFarRKT3;
+import frc.autonomous.Lvl2LeftCloseRKT;
+import frc.autonomous.Lvl2LeftCloseRKT2;
+import frc.autonomous.Lvl2LeftCloseRKT3;
+import frc.autonomous.Lvl2LeftFarRKT;
+import frc.autonomous.Lvl2LeftFarRKT2;
+import frc.autonomous.Lvl2LeftFarRKT3;
+
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import static frc.utils.Constants.ROBOT_MAIN_SHUFFLEBOARD;
@@ -47,6 +54,12 @@ public class Robot extends TimedRobot {
     private static final String Lvl2RightFarRKT = "Lvl 2 Right to Far Rocket";
     private static final String Lvl2RightFarRKT2 = "Lvl 2 Right to Far Rocket Hatch 2";
     private static final String Lvl2RightFarRKT3 = "Lvl 2 Right to Far Rocket Hatch 3";
+    private static final String Lvl2LeftFarRKT = "Lvl 2 Left to Far Rocket";
+    private static final String Lvl2LeftFarRKT2 = "Lvl 2 Left to Far Rocket Hatch 2";
+    private static final String Lvl2LeftFarRKT3 = "Lvl 2 Left to Far Rocket Hatch 3";
+    private static final String Lvl2LeftCloseRKT = "Lvl 2 Left to Close Rocket";
+    private static final String Lvl2LeftCloseRKT2 = "Lvl 2 Left to Close Rocket Hatch 2";
+    private static final String Lvl2LeftCloseRKT3 = "Lvl 2 Left to Close Rocket Hatch 3";
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
     private final SendableChooser<String> testChooser = new SendableChooser<>();
     private final SubsystemManager subsystemManager = new SubsystemManager(Arrays.asList(
@@ -74,7 +87,18 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_chooser.setDefaultOption("Autoline", kDefaultAuto);
-        m_chooser.addOption("Lvl 2 Right to Close Rocket", LvlTwoRightCloseRKT);
+        m_chooser.addOption(LvlTwoRightCloseRKT, LvlTwoRightCloseRKT);
+        m_chooser.addOption("Lvl 2 Right to Close Rocket Hatch 2", LvlTwoRightCloseRKT2);
+        m_chooser.addOption("Lvl 2 Right to Close Rocket Hatch 3", LvlTwoRightCloseRKT3);
+        m_chooser.addOption("Lvl 2 Right to Far Rocket", Lvl2RightFarRKT);
+        m_chooser.addOption("Lvl 2 Right to Far Rocket Hatch 2", Lvl2RightFarRKT2);
+        m_chooser.addOption("Lvl 2 Right to Far Rocket Hatch 3", Lvl2RightFarRKT3);
+        m_chooser.addOption(Lvl2LeftCloseRKT, Lvl2LeftCloseRKT);
+        m_chooser.addOption("Lvl 2 Left to Close Rocket Hatch 2", Lvl2LeftCloseRKT2);
+        m_chooser.addOption("Lvl 2 Left to Close Rocket Hatch 3", Lvl2LeftCloseRKT3);
+        m_chooser.addOption("Lvl 2 Left to Far Rocket", Lvl2LeftFarRKT);
+        m_chooser.addOption("Lvl 2 Left to Far Rocket Hatch 2", Lvl2LeftFarRKT2);
+        m_chooser.addOption("Lvl 2 Left to Far Rocket Hatch 3", Lvl2LeftFarRKT3);
         Shuffleboard.getTab("Auton").add("Auto choices", m_chooser);
         tests.put(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST);
         testChooser.setDefaultOption(Test.DEFAULT_TEST.getOption(), Test.DEFAULT_TEST.getOption());
@@ -134,6 +158,24 @@ public class Robot extends TimedRobot {
                 break;
             case Lvl2RightFarRKT3:
                 autonomous = new Lvl2RightFarRKT3();
+                break;
+            case Lvl2LeftCloseRKT:
+                autonomous = new Lvl2LeftCloseRKT();
+                break;
+            case Lvl2LeftCloseRKT2:
+                autonomous = new Lvl2LeftCloseRKT2();
+                break;
+            case Lvl2LeftCloseRKT3:
+                autonomous = new Lvl2LeftCloseRKT3();
+                break;
+            case Lvl2LeftFarRKT:
+                autonomous = new Lvl2LeftFarRKT();
+                break;
+            case Lvl2LeftFarRKT2:
+                autonomous = new Lvl2LeftFarRKT2();
+                break;
+            case Lvl2LeftFarRKT3:
+                autonomous = new Lvl2LeftFarRKT3();
                 break;
             case kDefaultAuto:
                 autonomous = new Autoline();
