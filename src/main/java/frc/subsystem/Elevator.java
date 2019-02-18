@@ -86,6 +86,7 @@ public final class Elevator extends Subsystem {
         return ((height - BOTTOM_DIST_FROM_GROUND) / TOTAL_DELTA_HEIGHT) * TOTAL_DELTA_ENCODER_VALUE;
     }
 
+    // TODO actually use this?
     private static boolean ensureHatchOut(double currentHeight, double desiredHeight) {
         // If in the interation range, make sure that it is out
         if (currentHeight < UPPER_HATCH_ROLLER_INTERACTION_HEIGHT + HATCH_ROLLER_INTERACTION_TOLERANCE) {
@@ -105,7 +106,7 @@ public final class Elevator extends Subsystem {
         }
     }
 
-    public boolean ensureHatchStatysOut(){
+    public synchronized boolean ensureHatchStatysOut(){
         return ensureHatchIsOut;
     }
 

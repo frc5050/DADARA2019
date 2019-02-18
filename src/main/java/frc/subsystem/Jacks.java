@@ -306,7 +306,6 @@ public final class Jacks extends Subsystem {
         setState(JackSystem.INIT_HAB_CLIMB);
         habLevelToClimbTo = JackState.HAB3;
     }
-
     public synchronized void beginHabClimbLevel2() {
         setState(JackSystem.INIT_HAB_CLIMB);
         habLevelToClimbTo = JackState.HAB2;
@@ -404,11 +403,11 @@ public final class Jacks extends Subsystem {
         periodicIo.leftJackFeedForward = 0.0;
         periodicIo.rightJackFeedForward = 0.0;
 
-//        if (state == JackSystem.ZEROING || state == JackSystem.INIT_HAB_CLIMB) {
+        if (state == JackSystem.ZEROING || state == JackSystem.INIT_HAB_CLIMB) {
             periodicIo.frontJackCurrentDraw = pdp.getCurrent(FRONT_JACK_LIFT);
             periodicIo.leftJackCurrentDraw = pdp.getCurrent(LEFT_REAR_JACK_LIFT);
             periodicIo.rightJackCurrentDraw = pdp.getCurrent(RIGHT_REAR_JACK_LIFT);
-//        }
+        }
     }
 
     /**
@@ -471,7 +470,6 @@ public final class Jacks extends Subsystem {
         HAB2(HAB2_ENCODER_VALUE, ControlMode.MotionMagic),
         RETRACT(0, ControlMode.MotionMagic),
         ZEROING(-0.3, ControlMode.PercentOutput),
-        INSANITY(-1.0, ControlMode.PercentOutput),
         STOP(0.0, ControlMode.PercentOutput);
 
         private final double demand;

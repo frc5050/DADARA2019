@@ -23,7 +23,6 @@ public final class Hatch extends Subsystem {
     private final HatchStateMachine hatchStateMachine = new HatchStateMachine();
     private final HatchState hatchState = new HatchState();
     private HatchState outputState = new HatchState();
-    private Elevator elevator = Elevator.getInstance();
 
     private Hatch() {
         upperLimitSwitch = new DigitalInput(HATCH_UPPER_LIMIT_SWITCH);
