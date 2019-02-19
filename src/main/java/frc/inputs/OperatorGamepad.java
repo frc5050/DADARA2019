@@ -66,9 +66,11 @@ public final class OperatorGamepad implements OperatorHid {
             hatchPosition = HatchPosition.PLACE;
         } else if(operatorGamepad.getBumper(Hand.kLeft)){
             hatchPosition = HatchPosition.PULL;
-        } else {
+        } else if (this.useHatchOpenLoop()){
             hatchPosition = HatchPosition.OPEN_LOOP;
         }
+        else {}
+
     }
 
     @Override
@@ -134,7 +136,8 @@ public final class OperatorGamepad implements OperatorHid {
 
     @Override
     public boolean useHatchOpenLoop() {
-        return operatorGamepad.getRawButton(9);
+      return Math.abs(operatorGamepad.getRawAxis(1)) >= 0.1;
+       //return operatorGamepad.getRawButton(9);
     }
 
     @Override

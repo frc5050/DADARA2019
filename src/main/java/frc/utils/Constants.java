@@ -70,8 +70,8 @@ public final class Constants {
     static {
         switch (ROBOT) {
             case A_BOT:
-                HATCH_PLACE_ENCODER_POSITION = 180;
-                HATCH_PULL_ENCODER_POSITION = 400;
+                HATCH_PLACE_ENCODER_POSITION = 400;
+                HATCH_PULL_ENCODER_POSITION = 650;
                 ELEVATOR_LIMIT_SWITCH_INVERTED = true;
                 TOTAL_DELTA_ENCODER_VALUE = -189.8478;
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (1.0 / 8.0));

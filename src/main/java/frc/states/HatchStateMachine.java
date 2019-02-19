@@ -12,6 +12,7 @@ public class HatchStateMachine {
     private static final double PEAK_FORWARD_OUTPUT_LIMIT_PRESSED = 1.0;
     private static final double PEAK_REVERSE_OUTPUT_LIMIT_PRESSED = 0.0;
     private static final double ZEROING_SPEED = -0.2;
+    public String state = "open";
 
     private final HatchState systemState = new HatchState();
     private HatchState.ControlState desiredControlState = STOPPED;
@@ -41,8 +42,9 @@ public class HatchStateMachine {
             this.desiredOpenLoopPower = joystickPower;
         } else {
             if (this.desiredControlState != HOLD_POSITION) {
-                this.desiredControlState = HOLD_POSITION;
-                this.desiredEncoderPosition = systemState.encoder;
+              this.desiredEncoderPosition = systemState.encoder;
+              this.desiredControlState = HOLD_POSITION;
+
             }
         }
     }

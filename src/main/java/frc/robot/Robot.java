@@ -186,6 +186,8 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         disabledLooper.stop();
         enabledLooper.start();
+        hatch.setOpenLoop(0.0);
+
     }
 
     @Override
@@ -199,8 +201,10 @@ public class Robot extends TimedRobot {
             hatch.setHatchPlace();
         } else if (gameController.pullHatch()) {
             hatch.setHatchPull();
-        } else {
+        } else if (gameController.useHatchOpenLoop()){
             hatch.setOpenLoop(gameController.hatchManual());
+        } else{
+            hatch.setOpenLoop(0.0);
         }
         final double tHatch = Timer.getFPGATimestamp();
 

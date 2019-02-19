@@ -12,7 +12,7 @@ import frc.utils.DriveSignal;
 public final class DriverJoystick implements DriverHid {
 
     private static DriverJoystick instance;
-    private final Joystick driverJoystick;
+    private Joystick driverJoystick;
 
     private DriverJoystick() {
         driverJoystick = new Joystick(Constants.DRIVER_JOYSTICK_PORT);
@@ -91,12 +91,14 @@ public final class DriverJoystick implements DriverHid {
 
     @Override
     public boolean cargoOuttakeRight() {
-        return driverJoystick.getPOV(0) == 90;
+      int pov = driverJoystick.getPOV(0);
+      return pov == 90 || pov == 45 || pov == 135;
     }
 
     @Override
     public boolean cargoOuttakeLeft() {
-        return driverJoystick.getPOV(0) == 270;
+      int pov = driverJoystick.getPOV(0);
+      return pov == 270 || pov == 315 || pov == 225;
     }
 
     @Override
