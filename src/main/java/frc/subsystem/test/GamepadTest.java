@@ -43,7 +43,7 @@ public class GamepadTest implements SubsystemTest {
         putBoolean("Cargo/Outtake Right", gameController.cargoOuttakeRight());
         putBoolean("Cargo/Intake", gameController.cargoIntake());
         putBoolean("Cargo/Intake Left", gameController.cargoOuttakeLeft());
-        putBoolean("Cargo/Intake Right", gameController.cargoOuttakeLeft());
+        putBoolean("Cargo/Intake Right", gameController.cargoOuttakeRight());
         putNumber("Cargo/Intake Tilt", gameController.intakeTilt());
         // Elevator
         putBoolean("Elevator/Cargo Low", gameController.setElevatorPositionLowCargo());

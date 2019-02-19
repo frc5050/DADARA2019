@@ -1,18 +1,21 @@
 package frc.states;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import frc.subsystem.ElevatorPosition;
 
 import static frc.states.HatchState.ControlState.*;
-import static frc.utils.Constants.HATCH_PLACE_ENCODER_POSITION;
-import static frc.utils.Constants.HATCH_PULL_ENCODER_POSITION;
+import static frc.utils.Constants.*;
+import static frc.utils.UnitConversions.inchesToMeters;
 
 public class HatchStateMachine {
     public static final double PEAK_FORWARD_OUTPUT_STANDARD = 1.0;
     public static final double PEAK_REVERSE_OUTPUT_STANDARD = -1.0;
     private static final double PEAK_FORWARD_OUTPUT_LIMIT_PRESSED = 1.0;
     private static final double PEAK_REVERSE_OUTPUT_LIMIT_PRESSED = 0.0;
+    private static final double PEAK_FORWARD_OUTPUT_ELEVATOR_TOO_HIGH = 0.5;
+    private static final double PEAK_REVERSE_OUTPUT_ELEVATOR_TOO_HIGH = -0.5;
     private static final double ZEROING_SPEED = -0.2;
-    public String state = "open";
+    private static final double MAXIMUM_ELEVATOR_POSITION = ElevatorPosition.CARGO_MID.getHeight();
 
     private final HatchState systemState = new HatchState();
     private HatchState.ControlState desiredControlState = STOPPED;
@@ -37,14 +40,13 @@ public class HatchStateMachine {
     }
 
     public synchronized void setOpenLoop(double joystickPower) {
-        if (Math.abs(joystickPower) > 0.04) {
+        if (Math.abs(joystickPower) > 0.1) {
             this.desiredControlState = OPEN_LOOP;
             this.desiredOpenLoopPower = joystickPower;
         } else {
             if (this.desiredControlState != HOLD_POSITION) {
               this.desiredEncoderPosition = systemState.encoder;
               this.desiredControlState = HOLD_POSITION;
-
             }
         }
     }
@@ -61,6 +63,10 @@ public class HatchStateMachine {
             systemState.resetSensor = false;
             systemState.peakOutputForward = PEAK_FORWARD_OUTPUT_STANDARD;
             systemState.peakOutputReverse = PEAK_REVERSE_OUTPUT_STANDARD;
+            if(currentState.elevatorPosition > MAXIMUM_ELEVATOR_POSITION){
+                systemState.peakOutputForward = PEAK_FORWARD_OUTPUT_ELEVATOR_TOO_HIGH;
+                systemState.peakOutputReverse = PEAK_REVERSE_OUTPUT_ELEVATOR_TOO_HIGH;
+            }
         }
 
         limitHitOnLastUpdate = currentState.limitHit;

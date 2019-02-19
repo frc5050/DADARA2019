@@ -24,7 +24,7 @@ public final class Elevator extends Subsystem {
     private static Elevator instance;
     private final DigitalInput bottomLimit;
     private final CANSparkMax motor;
-    public final CANEncoder encoder;
+    private final CANEncoder encoder;
     private final CANPIDController controller;
     private ElevatorPosition desiredPosition = ElevatorPosition.HATCH_LOW;
     private PeriodicIo periodicIo = new PeriodicIo();
@@ -106,7 +106,7 @@ public final class Elevator extends Subsystem {
         }
     }
 
-    public synchronized boolean ensureHatchStatysOut(){
+    public synchronized boolean ensureHatchStatysOut() {
         return ensureHatchIsOut;
     }
 
@@ -144,7 +144,11 @@ public final class Elevator extends Subsystem {
         periodicIo.currentErrorMeters = errorMeters;
         periodicIo.lastReadTimestamp = timestamp;
 //        ensureHatchIsOut = ensureHatchOut(periodicIo.height, desiredPosition.getHeight());
-    
+
+    }
+
+    public double getHeightMeters() {
+        return periodicIo.height;
     }
 
     @Override

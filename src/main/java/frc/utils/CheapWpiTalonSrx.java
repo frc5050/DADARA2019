@@ -42,6 +42,7 @@ public class CheapWpiTalonSrx extends WPI_TalonSRX {
             lastControlMode = controlMode;
             lastDemand = demand;
         }
+        feed();
     }
 
     /**
@@ -65,5 +66,6 @@ public class CheapWpiTalonSrx extends WPI_TalonSRX {
             lastControlMode = controlMode;
             lastDemandType = demandType;
         }
+        feed();
     }
 }

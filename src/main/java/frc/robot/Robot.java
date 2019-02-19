@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.autonomous.*;
+import frc.autonomous.AutoBase;
 import frc.inputs.GameController;
 import frc.loops.Looper;
 import frc.subsystem.*;
@@ -20,7 +20,7 @@ import frc.subsystem.test.DriveTest;
 import frc.subsystem.test.GamepadTest;
 import frc.subsystem.test.SubsystemTest;
 import frc.utils.DriveSignal;
-import static frc.utils.UnitConversions.inchesToMeters;
+
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 
@@ -106,10 +106,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-//        drive.outputTelemetry();
-        if (elevator.encoder.getVelocity() > inchesToMeters(50)){
-            hatch.slow();
-        }
+        // Nothing
     }
 
     @Override
@@ -189,8 +186,6 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         disabledLooper.stop();
         enabledLooper.start();
-        hatch.setOpenLoop(0.0);
-
     }
 
     @Override
@@ -204,31 +199,14 @@ public class Robot extends TimedRobot {
             hatch.setHatchPlace();
         } else if (gameController.pullHatch()) {
             hatch.setHatchPull();
-        } else if (gameController.useHatchOpenLoop()){
+        } else {
             hatch.setOpenLoop(gameController.hatchManual());
-        } else{
-            hatch.setOpenLoop(0.0);
         }
         final double tHatch = Timer.getFPGATimestamp();
 
         cargo.intakeTilt(gameController.intakeTilt());
         cargo.setDesiredState(gameController.getDesiredCargoIntakeState());
-// TODO remove
-//        if (gameController.cargoIntake()) {
-//            cargo.setDesiredState(IntakeState.INTAKE);
-//        } else if (gameController.cargoIntakeLeft()) {
-//            cargo.setDesiredState(IntakeState.INTAKE_LEFT);
-//        } else if (gameController.cargoIntakeRight()) {
-//            cargo.setDesiredState(IntakeState.INTAKE_RIGHT);
-//        } else if (gameController.cargoOuttakeLeft()) {
-//            cargo.setDesiredState(IntakeState.OUTTAKE_LEFT);
-//        } else if (gameController.cargoOuttakeRight()) {
-//            cargo.setDesiredState(IntakeState.OUTTAKE_RIGHT);
-//        } else if (gameController.cargoOuttakeFront()) {
-//            cargo.setDesiredState(IntakeState.OUTTAKE_FRONT);
-//        } else {
-//            cargo.setDesiredState(IntakeState.STOPPED);
-//        }
+
         final double tCargo = Timer.getFPGATimestamp();
 
         if (!gameController.manualJackWheelOverride()) {
@@ -243,7 +221,7 @@ public class Robot extends TimedRobot {
             jacks.retract();
         } else if (gameController.initializeHabClimbingLevel3()) {
             jacks.beginHabClimbLevel3();
-        } else if(gameController.initializeHabClimbingLevel2()) {
+        } else if (gameController.initializeHabClimbingLevel2()) {
             jacks.beginHabClimbLevel2();
         } else if (gameController.zeroJacks()) {
             jacks.beginZeroing();

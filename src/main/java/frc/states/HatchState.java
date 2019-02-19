@@ -13,6 +13,7 @@ public class HatchState {
     public double peakOutputForward = 0.0;
     public double peakOutputReverse = 0.0;
     public boolean resetSensor = false;
+    public double elevatorPosition = 0.0;
 
     // Non-IO
     ControlState hatchState = ControlState.STOPPED;

@@ -15,133 +15,129 @@ import static frc.states.HatchStateMachine.PEAK_REVERSE_OUTPUT_STANDARD;
 import static frc.utils.Constants.*;
 
 public final class Hatch extends Subsystem {
-  private static final int PERIOD_MS = (int) (Looper.PERIOD * 1000);
-  private static final double EPSILON = 1.0E-5;
-  private static Hatch instance;
-  private final WPI_TalonSRX hatch;
-  private final DigitalInput upperLimitSwitch;
-  private final HatchStateMachine hatchStateMachine = new HatchStateMachine();
-  private final HatchState hatchState = new HatchState();
-  private HatchState outputState = new HatchState();
-  private double percentOut = 0.5;
+    private static final int PERIOD_MS = (int) (Looper.PERIOD * 1000);
+    private static final double EPSILON = 1.0E-5;
+    private static Hatch instance;
+    private final WPI_TalonSRX hatch;
+    private final DigitalInput upperLimitSwitch;
+    private final HatchStateMachine hatchStateMachine = new HatchStateMachine();
+    private final HatchState hatchState = new HatchState();
+    private final Elevator elevator = Elevator.getInstance();
+    private HatchState outputState = new HatchState();
 
-  private Hatch() {
-    upperLimitSwitch = new DigitalInput(HATCH_UPPER_LIMIT_SWITCH);
-    hatch = new WPI_TalonSRX(HATCH);
+    private Hatch() {
+        upperLimitSwitch = new DigitalInput(HATCH_UPPER_LIMIT_SWITCH);
+        hatch = new WPI_TalonSRX(HATCH);
 
-    hatch.configFactoryDefault();
+        hatch.configFactoryDefault();
 
-    hatch.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, SETTINGS_TIMEOUT);
-    hatch.setInverted(false);
-    hatch.setSensorPhase(false);
+        hatch.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, SETTINGS_TIMEOUT);
+        hatch.setInverted(false);
+        hatch.setSensorPhase(false);
 
-    hatch.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, PERIOD_MS, SETTINGS_TIMEOUT);
-    hatch.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, PERIOD_MS, SETTINGS_TIMEOUT);
+        hatch.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, PERIOD_MS, SETTINGS_TIMEOUT);
+        hatch.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, PERIOD_MS, SETTINGS_TIMEOUT);
 
-    hatch.configNominalOutputReverse(0.0, SETTINGS_TIMEOUT);
-    hatch.configNominalOutputForward(0.0, SETTINGS_TIMEOUT);
-    hatch.configPeakOutputForward(PEAK_FORWARD_OUTPUT_STANDARD);
-    hatch.configPeakOutputReverse(PEAK_REVERSE_OUTPUT_STANDARD);
+        hatch.configNominalOutputReverse(0.0, SETTINGS_TIMEOUT);
+        hatch.configNominalOutputForward(0.0, SETTINGS_TIMEOUT);
+        hatch.configPeakOutputForward(PEAK_FORWARD_OUTPUT_STANDARD);
+        hatch.configPeakOutputReverse(PEAK_REVERSE_OUTPUT_STANDARD);
 
-    hatch.config_kF(0, 0.0); //todo
-    hatch.config_kP(0, 2.0); //todo
-    hatch.config_kI(0, 0.0); //todo
-    hatch.config_kD(0, 0.0); //todo
-    // TODO hatch.config_IntegralZone(0, 30);
+        hatch.config_kF(0, 0.0); //todo
+        hatch.config_kP(0, 2.0); //todo
+        hatch.config_kI(0, 0.0); //todo
+        hatch.config_kD(0, 0.0); //todo
+        // TODO hatch.config_IntegralZone(0, 30);
 
-    hatch.configMotionCruiseVelocity(500, SETTINGS_TIMEOUT);
-    hatch.configMotionAcceleration(500, SETTINGS_TIMEOUT);
+        hatch.configMotionCruiseVelocity(500, SETTINGS_TIMEOUT);
+        hatch.configMotionAcceleration(500, SETTINGS_TIMEOUT);
 
-    resetSensorPosition();
-  }
-
-  public static Hatch getInstance() {
-    if (instance == null) {
-      instance = new Hatch();
+        resetSensorPosition();
     }
-    return instance;
-  }
 
-  @Override
-  public void registerEnabledLoops(LooperInterface enabledLooper) {
-    Loop loop = new Loop() {
-      @Override
-      public void onStart(double timestamp) {
-        stop();
-      }
-
-      @Override
-      public void onLoop(double timestamp) {
-        synchronized (Hatch.this) {
-          outputState = hatchStateMachine.update(hatchState);
+    public static Hatch getInstance() {
+        if (instance == null) {
+            instance = new Hatch();
         }
-      }
+        return instance;
+    }
 
-      @Override
-      public void onStop(double timestamp) {
-        stop();
-      }
-    };
+    @Override
+    public void registerEnabledLoops(LooperInterface enabledLooper) {
+        Loop loop = new Loop() {
+            @Override
+            public void onStart(double timestamp) {
+                stop();
+            }
 
-    enabledLooper.registerLoop(loop);
-  }
+            @Override
+            public void onLoop(double timestamp) {
+                synchronized (Hatch.this) {
+                    outputState = hatchStateMachine.update(hatchState);
+                }
+            }
 
-  private synchronized void resetSensorPosition() {
-    hatch.setSelectedSensorPosition(0, 0, SETTINGS_TIMEOUT);
-  }
+            @Override
+            public void onStop(double timestamp) {
+                stop();
+            }
+        };
 
-  public synchronized void setOpenLoop(double power) {
-    hatchStateMachine.setOpenLoop(-power);
-  }
+        enabledLooper.registerLoop(loop);
+    }
 
-  public synchronized void setHatchPlace() {
-    hatchStateMachine.setHatchPlace();
-  }
+    private synchronized void resetSensorPosition() {
+        hatch.setSelectedSensorPosition(0, 0, SETTINGS_TIMEOUT);
+    }
 
-  public synchronized void setHatchPull() {
-    hatchStateMachine.setHatchPull();
-  }
+    public synchronized void setOpenLoop(double power) {
+        hatchStateMachine.setOpenLoop(-power);
+    }
 
-  @Override
-  public synchronized void readPeriodicInputs() {
-    hatchState.limitHit = !upperLimitSwitch.get();
-    hatchState.encoder = hatch.getSelectedSensorPosition(0);
+    public synchronized void setHatchPlace() {
+        hatchStateMachine.setHatchPlace();
+    }
+
+    public synchronized void setHatchPull() {
+        hatchStateMachine.setHatchPull();
+    }
+
+    @Override
+    public synchronized void readPeriodicInputs() {
+        hatchState.limitHit = !upperLimitSwitch.get();
+        hatchState.encoder = hatch.getSelectedSensorPosition(0);
+        hatchState.elevatorPosition = elevator.getHeightMeters();
 //        hatchState.ensureHatchIsOut = elevator.ensureHatchStatysOut();
-  }
-
-  @Override
-  public synchronized void writePeriodicOutputs() {
-    if (outputState.resetSensor) {
-      resetSensorPosition();
     }
-    if (Math.abs(outputState.peakOutputReverse - hatchState.peakOutputReverse) > EPSILON) {
-      hatchState.peakOutputReverse = outputState.peakOutputReverse;
-      hatch.configPeakOutputReverse(outputState.peakOutputReverse, SETTINGS_TIMEOUT);
+
+    @Override
+    public synchronized void writePeriodicOutputs() {
+        if (outputState.resetSensor) {
+            resetSensorPosition();
+        }
+        if (Math.abs(outputState.peakOutputReverse - hatchState.peakOutputReverse) > EPSILON) {
+            hatchState.peakOutputReverse = outputState.peakOutputReverse;
+            hatch.configPeakOutputReverse(outputState.peakOutputReverse, SETTINGS_TIMEOUT);
+        }
+        if (Math.abs(outputState.peakOutputForward - hatchState.peakOutputForward) > EPSILON) {
+            hatchState.peakOutputForward = outputState.peakOutputForward;
+            hatch.configPeakOutputForward(outputState.peakOutputForward, SETTINGS_TIMEOUT);
+        }
+        hatch.set(outputState.controlMode, outputState.demand);
     }
-    if (Math.abs(outputState.peakOutputForward - hatchState.peakOutputForward) > EPSILON) {
-      hatchState.peakOutputForward = outputState.peakOutputForward;
-      hatch.configPeakOutputForward(outputState.peakOutputForward, SETTINGS_TIMEOUT);
+
+    @Override
+    public synchronized void outputTelemetry() {
+        HATCH_SHUFFLEBOARD.putBoolean("Limit Hit", hatchState.limitHit);
+        HATCH_SHUFFLEBOARD.putNumber("Demand", outputState.demand);
+        HATCH_SHUFFLEBOARD.putNumber("Peak Output Forward", hatchState.peakOutputForward);
+        HATCH_SHUFFLEBOARD.putNumber("Peak Output Reverse", hatchState.peakOutputReverse);
+        HATCH_SHUFFLEBOARD.putString("Control Mode", hatchState.controlMode.toString());
+        HATCH_SHUFFLEBOARD.putNumber("Encoder", hatchState.encoder);
     }
-    hatch.set(outputState.controlMode, outputState.demand);
-  }
 
-  @Override
-  public synchronized void outputTelemetry() {
-    HATCH_SHUFFLEBOARD.putBoolean("Limit Hit", hatchState.limitHit);
-    HATCH_SHUFFLEBOARD.putNumber("Demand", outputState.demand);
-    HATCH_SHUFFLEBOARD.putNumber("Peak Output Forward", hatchState.peakOutputForward);
-    HATCH_SHUFFLEBOARD.putNumber("Peak Output Reverse", hatchState.peakOutputReverse);
-    HATCH_SHUFFLEBOARD.putString("Control Mode", hatchState.controlMode.toString());
-    HATCH_SHUFFLEBOARD.putNumber("Encoder", hatchState.encoder);
-  }
-
-  @Override
-  public synchronized void stop() {
-    setOpenLoop(0.0);
-  }
-
-  public synchronized void slow(){
-    hatch.configPeakOutputForward(percentOut);
-    hatch.configPeakOutputReverse(percentOut);
-  }
+    @Override
+    public synchronized void stop() {
+        setOpenLoop(0.0);
+    }
 }

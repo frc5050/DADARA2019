@@ -69,8 +69,6 @@ public final class OperatorGamepad implements OperatorHid {
         } else if (this.useHatchOpenLoop()){
             hatchPosition = HatchPosition.OPEN_LOOP;
         }
-        else {}
-
     }
 
     @Override
