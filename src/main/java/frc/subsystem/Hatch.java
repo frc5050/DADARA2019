@@ -23,6 +23,7 @@ public final class Hatch extends Subsystem {
   private final HatchStateMachine hatchStateMachine = new HatchStateMachine();
   private final HatchState hatchState = new HatchState();
   private HatchState outputState = new HatchState();
+  private double percentOut = 0.5;
 
   private Hatch() {
     upperLimitSwitch = new DigitalInput(HATCH_UPPER_LIMIT_SWITCH);
@@ -137,5 +138,10 @@ public final class Hatch extends Subsystem {
   @Override
   public synchronized void stop() {
     setOpenLoop(0.0);
+  }
+
+  public synchronized void slow(){
+    hatch.configPeakOutputForward(percentOut);
+    hatch.configPeakOutputReverse(percentOut);
   }
 }

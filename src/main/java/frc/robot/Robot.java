@@ -20,7 +20,7 @@ import frc.subsystem.test.DriveTest;
 import frc.subsystem.test.GamepadTest;
 import frc.subsystem.test.SubsystemTest;
 import frc.utils.DriveSignal;
-
+import static frc.utils.UnitConversions.inchesToMeters;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 
@@ -107,6 +107,9 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
 //        drive.outputTelemetry();
+        if (elevator.encoder.getVelocity() > inchesToMeters(50)){
+            hatch.slow();
+        }
     }
 
     @Override
