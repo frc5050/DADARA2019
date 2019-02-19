@@ -147,7 +147,7 @@ public final class Elevator extends Subsystem {
 
     }
 
-    public double getHeightMeters() {
+    public synchronized double getHeightMeters() {
         return periodicIo.height;
     }
 
