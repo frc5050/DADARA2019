@@ -51,22 +51,22 @@ public final class OperatorGamepad implements OperatorHid {
         // XOR
         useCargoHeights ^= operatorGamepad.getXButtonPressed();
 
-        if (operatorGamepad.getStickButton(Hand.kRight)) {
-            elevatorHeight = ElevatorHeight.NONE;
-        } else if (operatorGamepad.getAButtonPressed()) {
+        if (operatorGamepad.getAButtonPressed()) {
             elevatorHeight = ElevatorHeight.LOW;
         } else if (operatorGamepad.getBButtonPressed()) {
             elevatorHeight = ElevatorHeight.MID;
         } else if (operatorGamepad.getYButtonPressed()) {
             elevatorHeight = ElevatorHeight.HIGH;
+        } else {
+            elevatorHeight = ElevatorHeight.NONE;
         }
 
         // Hatch
-        if(operatorGamepad.getBumper(Hand.kRight)){
+        if (operatorGamepad.getBumper(Hand.kRight)) {
             hatchPosition = HatchPosition.PLACE;
-        } else if(operatorGamepad.getBumper(Hand.kLeft)){
+        } else if (operatorGamepad.getBumper(Hand.kLeft)) {
             hatchPosition = HatchPosition.PULL;
-        } else if (this.useHatchOpenLoop()){
+        } else if (this.useHatchOpenLoop()) {
             hatchPosition = HatchPosition.OPEN_LOOP;
         }
     }
@@ -134,8 +134,8 @@ public final class OperatorGamepad implements OperatorHid {
 
     @Override
     public boolean useHatchOpenLoop() {
-      return Math.abs(operatorGamepad.getRawAxis(1)) >= 0.1;
-       //return operatorGamepad.getRawButton(9);
+        return Math.abs(operatorGamepad.getRawAxis(1)) >= 0.1;
+        //return operatorGamepad.getRawButton(9);
     }
 
     @Override

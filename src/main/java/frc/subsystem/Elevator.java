@@ -219,11 +219,12 @@ public final class Elevator extends Subsystem {
      */
     public synchronized void manualMovement(double dutyCycle) {
         if (Math.abs(dutyCycle) > 0.05) {
+            periodicIo.previousStatePidToPosition = false;
             periodicIo.usePID = false;
             periodicIo.desiredManualOutputPower = -dutyCycle;
         } else {
             periodicIo.usePID = true;
-            periodicIo.holdPosition = true;
+            periodicIo.holdPosition = !periodicIo.previousStatePidToPosition;
         }
     }
 
@@ -238,6 +239,7 @@ public final class Elevator extends Subsystem {
         periodicIo.usePID = true;
         periodicIo.holdPosition = false;
         desiredPosition = position;
+        periodicIo.previousStatePidToPosition = true;
     }
 
     private static class PeriodicIo {
@@ -251,6 +253,7 @@ public final class Elevator extends Subsystem {
         double currentVelocity;
         boolean hasZeroed = false;
         boolean bottomLimitTriggered = false;
+        boolean previousStatePidToPosition = false;
 
         // Output
         double desiredManualOutputPower;
