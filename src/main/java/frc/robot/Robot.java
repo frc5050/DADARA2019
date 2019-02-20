@@ -190,6 +190,92 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        DriveSignal driveSignal = gameController.getDriveSignal();
+        drive.setOpenLoop(driveSignal);
+
+        if (gameController.placeHatch()) {
+            hatch.setHatchPlace();
+        } else if (gameController.pullHatch()) {
+            hatch.setHatchPull();
+        } else {
+            hatch.setOpenLoop(gameController.hatchManual());
+        }
+
+        cargo.intakeTilt(gameController.intakeTilt());
+        cargo.setDesiredState(gameController.getDesiredCargoIntakeState());
+
+        if (!gameController.manualJackWheelOverride()) {
+            jacks.setWheels(gameController.runJackWheels());
+        } else {
+            jacks.setWheels(DriveSignal.NEUTRAL);
+        }
+
+        if (gameController.liftAllJacks()) {
+            jacks.lift();
+        } else if (gameController.retractAllJacks()) {
+            jacks.retract();
+        } else if (gameController.initializeHabClimbingLevel3()) {
+            jacks.beginHabClimbLevel3();
+        } else if (gameController.initializeHabClimbingLevel2()) {
+            jacks.beginHabClimbLevel2();
+        } else if (gameController.zeroJacks()) {
+            jacks.beginZeroing();
+        }
+
+        gameController.update();
+
+        if (gameController.setElevatorPositionLowHatch()) {
+            elevator.pidToPosition(ElevatorPosition.HATCH_LOW);
+        } else if (gameController.setElevatorPositionMidHatch()) {
+            elevator.pidToPosition(ElevatorPosition.HATCH_MID);
+        } else if (gameController.setElevatorPositionHighHatch()) {
+            elevator.pidToPosition(ElevatorPosition.HATCH_HIGH);
+        } else if (gameController.setElevatorPositionLowCargo()) {
+            elevator.pidToPosition(ElevatorPosition.CARGO_LOW);
+        } else if (gameController.setElevatorPositionMidCargo()) {
+            elevator.pidToPosition(ElevatorPosition.CARGO_MID);
+        } else if (gameController.setElevatorPositionHighCargo()) {
+            elevator.pidToPosition(ElevatorPosition.CARGO_HIGH);
+        } else {
+            elevator.manualMovement(gameController.elevateManual());
+        }
+    }
+
+    // TODO add more tests
+    // TODO automate test validation
+    @Override
+    public void testInit() {
+        teleopInit();
+//        Test testSelected = tests.get(testChooser.getSelected());
+//        disabledLooper.stop();
+//        enabledLooper.stop();
+//        switch (testSelected) {
+//            case DEFAULT_TEST:
+//                subsystemTest = null;
+//                break;
+//            case GAMEPAD_TEST:
+//                subsystemTest = new GamepadTest();
+//                break;
+//            case DRIVE_TEST:
+//                subsystemTest = new DriveTest();
+//                break;
+//            case CARGO_TEST:
+//                subsystemTest = new CargoTest();
+//                break;
+//            case HATCH_MECHANISM_TEST:
+//                subsystemTest = null;
+//                break;
+//            case ELEVATOR_TEST:
+//                subsystemTest = null;
+//                break;
+//            case JACKS_TEST:
+//                subsystemTest = null;
+//                break;
+//        }
+    }
+
+    @Override
+    public void testPeriodic() {
         final double t0 = Timer.getFPGATimestamp();
         DriveSignal driveSignal = gameController.getDriveSignal();
         drive.setOpenLoop(driveSignal);
@@ -262,44 +348,6 @@ public class Robot extends TimedRobot {
         ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Elevator", tElevator - tController);
         ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/Output", tOutput - tElevator);
         ROBOT_MAIN_SHUFFLEBOARD.putNumber("TeleopPeriodicTimes/TOTAL", tOutput - t0);
-    }
-
-    // TODO add more tests
-    // TODO automate test validation
-    @Override
-    public void testInit() {
-        teleopInit();
-//        Test testSelected = tests.get(testChooser.getSelected());
-//        disabledLooper.stop();
-//        enabledLooper.stop();
-//        switch (testSelected) {
-//            case DEFAULT_TEST:
-//                subsystemTest = null;
-//                break;
-//            case GAMEPAD_TEST:
-//                subsystemTest = new GamepadTest();
-//                break;
-//            case DRIVE_TEST:
-//                subsystemTest = new DriveTest();
-//                break;
-//            case CARGO_TEST:
-//                subsystemTest = new CargoTest();
-//                break;
-//            case HATCH_MECHANISM_TEST:
-//                subsystemTest = null;
-//                break;
-//            case ELEVATOR_TEST:
-//                subsystemTest = null;
-//                break;
-//            case JACKS_TEST:
-//                subsystemTest = null;
-//                break;
-//        }
-    }
-
-    @Override
-    public void testPeriodic() {
-        teleopPeriodic();
         subsystemManager.outputTelemetry();
 //        if (subsystemTest != null) {
 //            subsystemTest.periodic(Timer.getFPGATimestamp());

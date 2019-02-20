@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import frc.loops.Loop;
 import frc.loops.Looper;
 import frc.loops.LooperInterface;
+import frc.statemachines.HatchStateMachine;
 import frc.states.HatchState;
-import frc.states.HatchStateMachine;
 
-import static frc.states.HatchStateMachine.PEAK_FORWARD_OUTPUT_STANDARD;
-import static frc.states.HatchStateMachine.PEAK_REVERSE_OUTPUT_STANDARD;
+import static frc.statemachines.HatchStateMachine.PEAK_FORWARD_OUTPUT_STANDARD;
+import static frc.statemachines.HatchStateMachine.PEAK_REVERSE_OUTPUT_STANDARD;
 import static frc.utils.Constants.*;
 
 public final class Hatch extends Subsystem {
@@ -22,8 +22,8 @@ public final class Hatch extends Subsystem {
     private final DigitalInput upperLimitSwitch;
     private final HatchStateMachine hatchStateMachine = new HatchStateMachine();
     private final HatchState hatchState = new HatchState();
-    private final Elevator elevator = Elevator.getInstance();
     private HatchState outputState = new HatchState();
+    private final Elevator elevator = Elevator.getInstance();
 
     private Hatch() {
         upperLimitSwitch = new DigitalInput(HATCH_UPPER_LIMIT_SWITCH);
@@ -91,23 +91,23 @@ public final class Hatch extends Subsystem {
     }
 
     public synchronized void setOpenLoop(double power) {
-        hatchStateMachine.setOpenLoop(-power);
+        hatchState.desiredControlState = HatchState.ControlState.OPEN_LOOP;
+        hatchState.desiredDemand = -power;
     }
 
     public synchronized void setHatchPlace() {
-        hatchStateMachine.setHatchPlace();
+        hatchState.desiredControlState = HatchState.ControlState.HATCH_PLACE_POSITION;
     }
 
     public synchronized void setHatchPull() {
-        hatchStateMachine.setHatchPull();
+        hatchState.desiredControlState = HatchState.ControlState.HATCH_PULL_POSITION;
     }
 
     @Override
     public synchronized void readPeriodicInputs() {
         hatchState.limitHit = !upperLimitSwitch.get();
         hatchState.encoder = hatch.getSelectedSensorPosition(0);
-        hatchState.elevatorPosition = elevator.getHeightMeters();
-//        hatchState.ensureHatchIsOut = elevator.ensureHatchStatysOut();
+        hatchState.elevatorHeight = elevator.getHeightMeters();
     }
 
     @Override

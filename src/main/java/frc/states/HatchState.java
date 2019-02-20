@@ -6,6 +6,9 @@ public class HatchState {
     // Input
     public boolean limitHit = false;
     public int encoder = 0;
+    public ControlState desiredControlState = ControlState.STOPPED;
+    public double desiredDemand = 0.0;
+    public double elevatorHeight = 0.0;
 
     // Output
     public double demand = 0.0;
@@ -13,15 +16,15 @@ public class HatchState {
     public double peakOutputForward = 0.0;
     public double peakOutputReverse = 0.0;
     public boolean resetSensor = false;
-    public double elevatorPosition = 0.0;
 
     // Non-IO
-    ControlState hatchState = ControlState.STOPPED;
-    boolean hasZeroed = false;
+    public ControlState hatchState = ControlState.STOPPED;
+    public boolean hasZeroed = false;
 
     public enum ControlState {
         ZEROING(true),
-        MOTION_MAGIC(true),
+        HATCH_PLACE_POSITION(true),
+        HATCH_PULL_POSITION(true),
         OPEN_LOOP(false),
         HOLD_POSITION(false),
         STOPPED(false);
