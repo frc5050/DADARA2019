@@ -12,8 +12,8 @@ public class HatchStateMachine {
     public static final double PEAK_REVERSE_OUTPUT_STANDARD = -1.0;
     private static final double PEAK_FORWARD_OUTPUT_LIMIT_PRESSED = 1.0;
     private static final double PEAK_REVERSE_OUTPUT_LIMIT_PRESSED = 0.0;
-    private static final double PEAK_FORWARD_OUTPUT_ELEVATOR_TOO_HIGH = 0.5;
-    private static final double PEAK_REVERSE_OUTPUT_ELEVATOR_TOO_HIGH = -0.5;
+    private static final double PEAK_FORWARD_OUTPUT_ELEVATOR_TOO_HIGH = 0.25;
+    private static final double PEAK_REVERSE_OUTPUT_ELEVATOR_TOO_HIGH = -0.25;
     private static final double ZEROING_SPEED = -0.2;
     private static final double MAXIMUM_ELEVATOR_POSITION = ElevatorPosition.CARGO_MID.getHeight();
 
