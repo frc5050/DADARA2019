@@ -14,7 +14,7 @@ public abstract class DriveTrain extends Subsystem {
                     instance = NeoDrive.getInstance();
                     break;
                 case B_BOT:
-                    instance = DriveTrain.getInstance();
+                    instance = Drive.getInstance();
                     break;
                 default:
                     instance = NeoDrive.getInstance();
