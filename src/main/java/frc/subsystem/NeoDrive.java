@@ -23,6 +23,7 @@ public final class NeoDrive extends DriveTrain {
     private static final int DRIVE_TICKS_PER_ROTATION = 4096;
     private static final double DRIVE_TICKS_PER_ROTATION_DOUBLE = DRIVE_TICKS_PER_ROTATION;
     private static final double METERS_PER_SEC_TO_TICKS_PER_100_MS = (DRIVE_TICKS_PER_ROTATION_DOUBLE / DRIVE_WHEEL_DIAMETER) * 0.1;
+    private static final double MAXIMUM_MOTOR_TEMPERATURE = 80.0;
     // TODO remeasure on a bot
     private static final double DRIVEBASE_WIDTH = 0.56515;
     private static final Trajectory.Config CONFIG = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.01, 3, 90, 3000);
@@ -337,6 +338,26 @@ public final class NeoDrive extends DriveTrain {
 
         double deltaRightTicks = ((periodicIo.rightPositionTicks - prevRightTicks) / DRIVE_TICKS_PER_ROTATION_DOUBLE) * Math.PI;
         periodicIo.rightDistance += deltaRightTicks * DRIVE_WHEEL_DIAMETER;
+
+        periodicIo.leftFrontTemperature = leftMaster.getMotorTemperature();
+        if (periodicIo.leftFrontTemperature > MAXIMUM_MOTOR_TEMPERATURE) {
+            DriverStation.reportError("Left Master TEMPERATURE TOO HIGH", false);
+        }
+
+        periodicIo.rightFrontTemperature = rightMaster.getMotorTemperature();
+        if (periodicIo.rightFrontTemperature > MAXIMUM_MOTOR_TEMPERATURE) {
+            DriverStation.reportError("Right Master TEMPERATURE TOO HIGH", false);
+        }
+
+        periodicIo.leftRearTemperature = leftSlave.getMotorTemperature();
+        if (periodicIo.leftRearTemperature > MAXIMUM_MOTOR_TEMPERATURE) {
+            DriverStation.reportError("Left Slave TEMPERATURE TOO HIGH", false);
+        }
+
+        periodicIo.rightRearTemperature = rightSlave.getMotorTemperature();
+        if (periodicIo.rightRearTemperature > MAXIMUM_MOTOR_TEMPERATURE) {
+            DriverStation.reportError("Right Slave TEMPERATURE TOO HIGH", false);
+        }
     }
 
     private synchronized void setVelocity(DriveSignal velocities, DriveSignal feedForwards) {
@@ -394,6 +415,10 @@ public final class NeoDrive extends DriveTrain {
     // All the periodic values
     private static class PeriodicIO {
         // Input
+        double leftFrontTemperature;
+        double leftRearTemperature;
+        double rightFrontTemperature;
+        double rightRearTemperature;
         double leftPositionTicks;
         double rightPositionTicks;
         double leftVelocityTicksPer100ms;

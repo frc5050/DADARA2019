@@ -21,18 +21,18 @@ import static frc.utils.Constants.*;
  */
 public final class Jacks extends Subsystem {
   // Motion magic parameters when retracting
-  private static final int REAR_MOTION_MAGIC_VELOCITY_RETRACT = 2000;
-  private static final int REAR_MOTION_MAGIC_ACCELERATION_RETRACT = 600;
-  private static final int FRONT_MOTION_MAGIC_VELOCITY_RETRACT = 2000;
-  private static final int FRONT_MOTION_MAGIC_ACCELERATION_RETRACT = 600;
-  private static final int LIFT_TOLERANCE = 300;
+  private static final int REAR_MOTION_MAGIC_VELOCITY_RETRACT = 4000;
+  private static final int REAR_MOTION_MAGIC_ACCELERATION_RETRACT = 1500;
+  private static final int FRONT_MOTION_MAGIC_VELOCITY_RETRACT = 4000;
+  private static final int FRONT_MOTION_MAGIC_ACCELERATION_RETRACT = 1500;
+  private static final int LIFT_TOLERANCE = 350;
 
   private static final DriveSignal RETRACT_FRONT_JACK_DRIVE_BASE = new DriveSignal(0.3, 0.3);
   private static final DriveSignal RUN_DRIVE_BASE_HAB_CLIMB = new DriveSignal(0.2, 0.2);
 
   private static final DriveSignal RUN_JACK_WHEELS_HAB_CLIMB = new DriveSignal(1.0, 1.0);
-  private static final double MAX_AMP_DRAW_ZEROING = 4.0;
-  private static final double HAB_CLIMB_FINISH_DRIVING_TIME = 0.5;
+  private static final double MAX_AMP_DRAW_ZEROING = 5.0;
+  private static final double HAB_CLIMB_FINISH_DRIVING_TIME = 1;
   private static Jacks instance;
   private final CheapWpiTalonSrx rightRearJack;
   private final CheapWpiTalonSrx leftRearJack;
@@ -63,8 +63,8 @@ public final class Jacks extends Subsystem {
     leftRearWheel.setInverted(true);
     forwardIrSensor = new DigitalInput(DRIVE_FRONT_IR_SENSOR);
     rearIrSensor = new DigitalInput(DRIVE_REAR_IR_SENSOR);
-    configureTalon(rightRearJack, true, false, 1.0, 1.0, -1.0);
-    configureTalon(leftRearJack, false, false, 1.0, 1.0, -1.0);
+    configureTalon(rightRearJack, true, false, 1.4, 1.0, -1.0);
+    configureTalon(leftRearJack, false, false, 1.6, 1.0, -1.0);
     configureTalon(frontJack, true, false, 1.1, 1.0, -1.0);
   }
 
@@ -458,6 +458,9 @@ public final class Jacks extends Subsystem {
     JACKS_SHUFFLEBOARD.putNumber("Encoder RRJ", periodicIo.rightJackEncoder);
     JACKS_SHUFFLEBOARD.putNumber("Encoder LRF", periodicIo.leftJackEncoder);
     JACKS_SHUFFLEBOARD.putNumber("Encoder FJ", periodicIo.frontJackEncoder);
+    JACKS_SHUFFLEBOARD.putNumber("FJ Velocity", frontJack.getActiveTrajectoryVelocity());
+    JACKS_SHUFFLEBOARD.putNumber("LRF Velocity", leftRearJack.getActiveTrajectoryVelocity());
+    JACKS_SHUFFLEBOARD.putNumber("RRJ Velocity", rightRearJack.getActiveTrajectoryVelocity());
   }
 
   @Override
