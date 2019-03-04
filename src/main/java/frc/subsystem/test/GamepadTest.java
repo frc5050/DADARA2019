@@ -36,7 +36,7 @@ public class GamepadTest implements SubsystemTest {
         final DriveSignal runJackWheelsDriveSignal = gameController.runJackWheels();
         putNumber("Jacks/Wheels/Signal Left", runJackWheelsDriveSignal.getLeftOutput());
         putNumber("Jacks/Wheels/Signal Right", runJackWheelsDriveSignal.getRightOutput());
-        putBoolean("Jacks/Wheels/Use Override", gameController.manualJackWheelOverride());
+        putBoolean("Jacks/Wheels/Use Override", gameController.manualJackOverride());
         // Cargo
         putBoolean("Cargo/Outtake Front", gameController.cargoOuttakeFront());
         putBoolean("Cargo/Outtake Left", gameController.cargoOuttakeLeft());

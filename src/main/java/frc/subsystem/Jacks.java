@@ -27,7 +27,7 @@ public final class Jacks extends Subsystem {
   private static final int FRONT_MOTION_MAGIC_VELOCITY_RETRACT = 4000;
   private static final int FRONT_MOTION_MAGIC_ACCELERATION_RETRACT = 1500;
   private static final int LIFT_TOLERANCE = 350;
-
+  private static boolean waspressed = false;
   private static final DriveSignal RETRACT_FRONT_JACK_DRIVE_BASE = new DriveSignal(0.3, 0.3);
   private static final DriveSignal RUN_DRIVE_BASE_HAB_CLIMB = new DriveSignal(0.2, 0.2);
 
@@ -195,14 +195,14 @@ public final class Jacks extends Subsystem {
               controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
               break;
             case INIT_HAB_CLIMB:
-              if (zero() || controller.manualJackOverride()) {
+              if (zero() || overrideToggle()) {
                 drive.resetNavX();
                 setState(JackSystem.HAB_CLIMB_LIFT_ALL);
               }
               break;
             case HAB_CLIMB_LIFT_ALL:
               controlJacks(habLevelToClimbTo, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
-              if (checkEncoders(LIFT_TOLERANCE) || controller.manualJackOverride()) {
+              if (checkEncoders(LIFT_TOLERANCE) || overrideToggle()) {
                 setState(JackSystem.HAB_CLIMB_RUN_FORWARD);
                 leftRearJack.configPeakOutputForward(1.0);
                 rightRearJack.configPeakOutputForward(1.0);
@@ -212,7 +212,7 @@ public final class Jacks extends Subsystem {
               controlJacks(habLevelToClimbTo, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
               drive.setOpenLoop(DriveSignal.NEUTRAL);
               setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
-              if (periodicIo.frontIrDetectsGround || controller.manualJackOverride()) {
+              if (periodicIo.frontIrDetectsGround || overrideToggle()) {
                 setState(JackSystem.HAB_CLIMB_RETRACT_FRONT_JACK);
               }
               break;
@@ -220,7 +220,7 @@ public final class Jacks extends Subsystem {
               controlJacks(JackState.RETRACT, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
               drive.setOpenLoop(new DriveSignal(0.05, 0.05));
               setWheels(new DriveSignal(0.20, 0.20));
-              if (checkEncoders((int) (LIFT_TOLERANCE / 1.3)) || controller.manualJackOverride()) {
+              if (checkEncoders((int) (LIFT_TOLERANCE / 1.3)) || overrideToggle()) {
                 finishTimestamp = timestamp;
                 setState(JackSystem.HAB_CLIMB_HOLD_REAR_AND_RUN_FORWARD);
               }
@@ -229,7 +229,7 @@ public final class Jacks extends Subsystem {
               controlJacks(JackState.RETRACT, habLevelToClimbTo, habLevelToClimbTo, GainsState.LIFT);
               drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
               setWheels(RUN_JACK_WHEELS_HAB_CLIMB);
-              if (periodicIo.rearIrDetectsGround || controller.manualJackOverride()) {
+              if (periodicIo.rearIrDetectsGround || overrideToggle()) {
                 finishTimestamp = timestamp;
                 setState(JackSystem.HAB_CLIMB_RETRACT_REAR_JACKS);
               }
@@ -238,7 +238,7 @@ public final class Jacks extends Subsystem {
               controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
               drive.setOpenLoop(new DriveSignal(0.03, 0.03));
               setWheels(DriveSignal.NEUTRAL);
-              if (checkEncoders((int) (LIFT_TOLERANCE / 1.4)) || controller.manualJackOverride()) {
+              if (checkEncoders((int) (LIFT_TOLERANCE / 1.4)) || overrideToggle()) {
                 finishTimestamp = timestamp;
                 setState(JackSystem.HAB_CLIMB_FINISH_DRIVING_FORWARD);
               }
@@ -246,7 +246,7 @@ public final class Jacks extends Subsystem {
             case HAB_CLIMB_FINISH_DRIVING_FORWARD:
               drive.setOpenLoop(RUN_DRIVE_BASE_HAB_CLIMB);
               controlJacks(JackState.RETRACT, JackState.RETRACT, JackState.RETRACT, GainsState.RETRACT);
-              if (timestamp - finishTimestamp >= HAB_CLIMB_FINISH_DRIVING_TIME/*0.8 @ 30%*/ || controller.manualJackOverride()) {
+              if (timestamp - finishTimestamp >= HAB_CLIMB_FINISH_DRIVING_TIME/*0.8 @ 30%*/ || overrideToggle()) {
                 setState(JackSystem.STOP);
               }
               break;
@@ -334,6 +334,17 @@ public final class Jacks extends Subsystem {
 
   public synchronized void lift() {
     setState(JackSystem.DRIVER_LIFT);
+  }
+
+  private boolean overrideToggle() {
+    if (controller.manualJackOverride() && !waspressed){
+      waspressed = controller.manualJackOverride();
+      return true;
+    } else {
+      waspressed = controller.manualJackOverride();
+      return false;
+    }
+    
   }
 
   private synchronized void gyroCorrect() {

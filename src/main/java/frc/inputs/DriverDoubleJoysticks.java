@@ -79,7 +79,7 @@ public final class DriverDoubleJoysticks implements DriverHid {
     }
 
     @Override
-    public boolean manualJackWheelOverride() {
+    public boolean manualJackOverride() {
         return false;
     }
 
