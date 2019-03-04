@@ -75,8 +75,8 @@ public final class DriverJoystick implements DriverHid {
     }
 
     @Override
-    public boolean manualJackWheelOverride() {
-        return false;
+    public boolean manualJackOverride() {
+        return driverJoystick.getRawButton(5);
     }
 
     @Override

@@ -204,11 +204,11 @@ public class Robot extends TimedRobot {
         cargo.intakeTilt(gameController.intakeTilt());
         cargo.setDesiredState(gameController.getDesiredCargoIntakeState());
 
-        if (!gameController.manualJackWheelOverride()) {
+        /*if (!gameController.manualJackWheelOverride()) {
             jacks.setWheels(gameController.runJackWheels());
         } else {
             jacks.setWheels(DriveSignal.NEUTRAL);
-        }
+        }*/
 
         if (gameController.liftAllJacks()) {
             jacks.lift();
@@ -295,11 +295,11 @@ public class Robot extends TimedRobot {
 
         final double tCargo = Timer.getFPGATimestamp();
 
-        if (!gameController.manualJackWheelOverride()) {
+        /*if (!gameController.manualJackWheelOverride()) {
             jacks.setWheels(gameController.runJackWheels());
         } else {
             jacks.setWheels(DriveSignal.NEUTRAL);
-        }
+        }*/
 
         if (gameController.liftAllJacks()) {
             jacks.lift();

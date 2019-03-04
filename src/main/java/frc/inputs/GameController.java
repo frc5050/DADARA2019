@@ -82,8 +82,8 @@ public final class GameController implements GameHid {
     }
 
     @Override
-    public boolean manualJackWheelOverride() {
-        return driverHid.manualJackWheelOverride();
+    public boolean manualJackOverride() {
+        return driverHid.manualJackOverride();
     }
 
     @Override

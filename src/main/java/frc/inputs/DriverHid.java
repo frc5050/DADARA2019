@@ -64,7 +64,7 @@ interface DriverHid {
      *
      * @return true if manual control should override wheel control on the jack wheels, false otherwise.
      */
-    boolean manualJackWheelOverride();
+    boolean manualJackOverride();
 
     /**
      * Returns true if the {@link frc.subsystem.Jacks} should initiate the zeroing procedure, false otherwise.

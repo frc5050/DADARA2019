@@ -81,7 +81,7 @@ public final class DriverGamepad implements DriverHid {
     }
 
     @Override
-    public boolean manualJackWheelOverride() {
+    public boolean manualJackOverride() {
         return gamepad.getStartButton();
     }
 
