@@ -9,7 +9,7 @@ public final class Constants {
     public static final int SETTINGS_TIMEOUT = 30;
     // Motor controller ports
     public static final int LEFT_DRIVE_1 = 15; // SRX
-    public static final int LEFT_DRIVE_2 = 16; // SPX
+    public static int LEFT_DRIVE_2 = 16; // SPX
     public static final int RIGHT_DRIVE_1 = 2; // SRX
     public static final int RIGHT_DRIVE_2 = 3; // SPX
     public static final int HATCH = 12; // SRX
@@ -51,7 +51,7 @@ public final class Constants {
     public static final int HATCH_PLACE_ENCODER_POSITION;
     public static final int HATCH_PULL_ENCODER_POSITION;
     public static final boolean ELEVATOR_LIMIT_SWITCH_INVERTED;
-    public static final Robot ROBOT = Robot.A_BOT;
+    public static final Robot ROBOT = Robot.B_BOT;
     private static final String DEFAULT_NETWORK_TABLE_KEY = "SmartDashboard";
     private static final boolean USE_CUSTOM_NETWORK_TABLE_KEYS = true;
 
@@ -85,6 +85,7 @@ public final class Constants {
                 ELEVATOR_POSITION_LOOP_KV = -0.68;
                 break;
             case B_BOT:
+                LEFT_DRIVE_2 = 0;
                 HATCH_PLACE_ENCODER_POSITION = 470;
                 HATCH_PULL_ENCODER_POSITION = 760;
                 ELEVATOR_LIMIT_SWITCH_INVERTED = false;
@@ -92,11 +93,11 @@ public final class Constants {
                 BOTTOM_DIST_FROM_GROUND = inchesToMeters(9.0 + (4.0 / 8.0));
                 UPPER_DIST_FROM_GROUND = inchesToMeters(74.75);
                 HAB3_ENCODER_VALUE = 20000;
-                HAB2_ENCODER_VALUE = 4000;/*TODO*/
-                REAR_MOTION_MAGIC_VELOCITY_LIFT = 1000;
-                REAR_MOTION_MAGIC_ACCELERATION_LIFT = 500;
-                FRONT_MOTION_MAGIC_VELOCITY_LIFT = 1000;
-                FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 650;
+                HAB2_ENCODER_VALUE = 8000;/*TODO*/
+                REAR_MOTION_MAGIC_VELOCITY_LIFT = 2000; //1000
+                REAR_MOTION_MAGIC_ACCELERATION_LIFT = 1500;  //600
+                FRONT_MOTION_MAGIC_VELOCITY_LIFT = 1700;  //1000
+                FRONT_MOTION_MAGIC_ACCELERATION_LIFT = 1700; //650
                 ELEVATOR_POSITION_LOOP_KV = -0.66;
                 break;
             default:
